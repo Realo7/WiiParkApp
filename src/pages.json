@@ -3,22 +3,12 @@
         {
             "path": "pages/main/main",
             "style": {
-                "navigationBarTitleText": "登录模板"
+                "navigationBarTitleText": "主页"
             }
         }, {
             "path": "pages/login/login",
             "style": {
                 "navigationBarTitleText": "登录"
-            }
-        }, {
-            "path": "pages/reg/reg",
-            "style": {
-                "navigationBarTitleText": "注册"
-            }
-        }, {
-            "path": "pages/pwd/pwd",
-            "style": {
-                "navigationBarTitleText": "找回密码"
             }
         }, {
             "path": "pages/user/user",
