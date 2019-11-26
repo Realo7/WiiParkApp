@@ -1,5 +1,5 @@
 {
-    "pages": [ //pages数组中第一项表示应用启动页,
+    "pages": [ 
         {
             "path": "pages/main/main",
             "style": {
@@ -15,27 +15,68 @@
             "style": {
                 "navigationBarTitleText": "我的"
             }
+        },
+        {
+            "path": "pages/parkrecord/parkrecord",
+            "style": {
+                "navigationBarTitleText": "停车记录"
+            }
+        },
+        {
+            "path": "pages/main/tabbar-add/tabbar-add",
+            "style": {
+                "navigationBarTitleText": "其他功能"
+            }
+        },{
+            "path": "pages/message/message",
+            "style": {
+                "navigationBarTitleText": "消息查询"
+            }
         }
+
     ],
-    "tabBar": {
-        "color": "#7a7e83",
-        "selectedColor": "#0faeff",
-        "backgroundColor": "#ffffff",
+"tabBar": {
+        "borderStyle": "black",
+        "backgroundColor": "#333",
+        "color": "#8F8F94",
+        "selectedColor": "#f33e54",
         "list": [{
-            "pagePath": "pages/main/main",
-            "text": "首页",
-            "iconPath": "static/img/home.png",
-            "selectedIconPath": "static/img/homeHL.png"
-        }, {
-            "pagePath": "pages/user/user",
-            "text": "我的",
-            "iconPath": "static/img/user.png",
-            "selectedIconPath": "static/img/userHL.png"
-        }]
+                "pagePath": "pages/main/main",
+                "iconPath": "static/img/tabbar/home.png",
+                "selectedIconPath": "static/img/tabbar/homeactive.png",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/parkrecord/parkrecord",
+                "iconPath": "static/img/tabbar/guanzhu.png",
+                "selectedIconPath": "static/img/tabbar/guanzhuactive.png",
+                "text": "停车记录"
+            },
+            
+            {
+                "pagePath": "pages/main/tabbar-add/tabbar-add",
+                "iconPath": "static/img/tabbar/add.png",
+                "selectedIconPath": "static/img/tabbar/addactive.png"
+            },
+            
+            {
+                "pagePath": "pages/message/message",
+                "iconPath": "static/img/tabbar/news.png",
+                "selectedIconPath": "static/img/tabbar/newsactive.png",
+                "text": "信息查询"
+            },
+            {
+                "pagePath": "pages/user/user",
+                "iconPath": "static/img/tabbar/me.png",
+                "selectedIconPath": "static/img/tabbar/meactive.png",
+                "text": "我的"
+            }
+        ]
     },
     "globalStyle": {
-        "navigationBarTextStyle": "white",
-        "navigationBarBackgroundColor": "#0faeff",
-        "backgroundColor": "#fbf9fe"
-    }
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
 }

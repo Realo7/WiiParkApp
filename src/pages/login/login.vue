@@ -93,28 +93,7 @@ export default {
   computed: mapState(['forcedLogin']),
   methods: {
     ...mapMutations(['login']),
-    initProvider () {
-      const filters = ['weixin', 'qq', 'sinaweibo'];
-      uni.getProvider({
-        service: 'oauth',
-        success: (res) => {
-          if (res.provider && res.provider.length) {
-            for (let i = 0; i < res.provider.length; i++) {
-              if (~filters.indexOf(res.provider[i])) {
-                this.providerList.push({
-                  value: res.provider[i],
-                  image: '../../static/img/' + res.provider[i] + '.png'
-                });
-              }
-            }
-            this.hasProvider = true;
-          }
-        },
-        fail: (err) => {
-          console.error('获取服务供应商失败：' + JSON.stringify(err));
-        }
-      });
-    },
+
     initPosition () {
       /**
        * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
@@ -211,7 +190,7 @@ export default {
   }, //方法体的结尾
   onReady () {
     this.initPosition();
-    this.initProvider();
+
   }
 }
 </script>

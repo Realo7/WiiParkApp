@@ -1,4 +1,6 @@
 export const m={
+    confirm:"confirm",
+    cancel:"cancel",
     login:"Login", //登录
     account:"account", //账号
     password:"password", //密码
