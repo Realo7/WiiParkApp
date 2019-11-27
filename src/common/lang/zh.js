@@ -5,5 +5,6 @@ export const m={
     account:"账号", //账号
     password:"密码", //密码
     pleaseinputyouraccount:"请输入你的账号",//请输入你的账号
-    pleaseinputyourpassword:"请输入你的密码"//请输入你的密码
+    pleaseinputyourpassword:"请输入你的密码",//请输入你的密码
+    tip1:"请先登录来浏览全部信息"
 }

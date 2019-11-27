@@ -176,9 +176,7 @@ export default {
       }
 
     },
-    /**
- * 切换语言 
- */
+    // 切换语言
     changeen () {
       this.lang = 'en-US';
       this.$i18n.locale = this.lang;//关键语句
