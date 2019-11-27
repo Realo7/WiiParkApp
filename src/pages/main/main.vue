@@ -1,101 +1,53 @@
 <template>
   <view class="content">
-    <view
-      v-if="hasLogin"
-      class="hello"
-    >
-      <view class="title">
-        您好 {{userName}}，您已成功登录。
-        下拉刷新，lsit列表，搜索
-      </view>
+    <uni-search-bar
+      radius="100"
+      :placeholder="$t('m.plzinput')"
+      @confirm="search"
+    />
+    <uni-list>
+      <uni-list-item
+        :show-badge="true"
+        title=""
+        badge-text="2"
+        @click="goindetail()"
+      >
+        <view style="white-space：nowrap;">
+          <span>{{$t('m.parkname')}}</span>
+          <span style="padding-left:80rpx;">{{$t('m.totalnum')}}</span>
+          <view>
+            <span>{{$t('m.hadstopednum')}}</span>
+            <span>{{$t('m.remainnum')}}</span>
+          </view>
+        </view>
+      </uni-list-item>
+    </uni-list>
+    <!-- 测试i18n的用法，回头移除 -->
+    <view class="ul">
+      <span v-text="$t('m.tip1')"></span>
+    </view>
 
-    </view>
-    <view
-      v-if="!hasLogin"
-      class="hello"
-    >
-      <view class="title">
-        您好 游客。
-      </view>
-      <uni-list>
-        <uni-list-item
-          :show-badge="true"
-          title="列表右侧带箭头 + 角标"
-          badge-text="2"
-          @click=""
-        />
-      </uni-list>
-      <view class="ul">
-        <span v-text="$t('m.tip1')"></span>
-      </view>
-    </view>
   </view>
 </template>
 
 <script>
-import {
-  mapState
-} from 'vuex'
-import uniSection from '@/components/uni-section/uni-section.vue'
-import uniList from '@/components/uni-list/uni-list.vue'
-import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+import { mapState } from 'vuex'
 export default {
-  components: {
-    uniSection,
-    uniList,
-    uniListItem
-  },
   computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
   data () {
     return {
-      extraIcon1: {
-        color: '#007aff',
-        size: '22',
-        type: 'gear-filled'
-      },
-      extraIcon2: {
-        color: '#4cd964',
-        size: '22',
-        type: 'image'
-      }
+
     }
   },
   methods: {
-    switchChange (e) {
-      uni.showToast({
-        title: 'change:' + e.value,
-        icon: 'none'
-      })
-    }
-  },
-  onLoad () {
-    if (!this.hasLogin) {
-      uni.showModal({
-        title: '未登录',
-        content: '您未登录，需要登陆之后才能继续浏览主页',
-        /**
-         * 如果需要强制登录，不显示取消按钮
-         */
-        showCancel: !this.forcedLogin,
-        success: (res) => {
-          if (res.confirm) {
-            /**
-             * 如果需要强制登录，使用reLaunch方式
-             */
-            if (this.forcedLogin) {
-              uni.reLaunch({
-                url: '../login/login'
-              });
-            } else {
-              uni.navigateTo({
-                url: '../login/login'
-              });
-            }
-          }
-        }
+    goindetail () {
+      uni.reLaunch({
+        url: '../parkdetail/parkdetail',
       });
-    }
-  }
+    },
+
+  },
+
 }
 </script>
 
