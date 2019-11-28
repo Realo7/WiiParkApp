@@ -11,5 +11,13 @@ export const m={
     totalnum:"totalnum", //总车位
     hadstopednum:"hadstopednum",//已停车位
     remainnum:"remainnum",//剩余车位
-    plzinput:"plz input search info"//请输入搜索信息
+    plzinput:"plz input search info",//请输入搜索信息
+    SpaceNo:"SpaceNo",//车位号
+    SpaceState:"SpaceState",// 车位状态
+    SpaceLockNo:"SpaceLockNo",//车位锁号
+    linkState:" linkState",//联机状态
+    SpaceLockState:"SpaceLockState",//车位锁状态
+    runState:"runState",//运行状态
+    controlStyle:"controlStyle",//控制方式
+
 }

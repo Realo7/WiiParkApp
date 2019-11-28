@@ -3,17 +3,17 @@
     class="content"
     :class="{'active':active}"
   >
-    <image
+    <!-- <image
       class="logo"
       :class="{'active':active}"
       src="../../../static/img/logo.png"
       mode="aspectFit"
-    ></image>
+    ></image> -->
     <view class="tabbar-box-wrap">
       <view class="tabbar-box">
         <view
           class="tabbar-box-item"
-          @click="goToPage('/pages/main/tabbar-add/tabbar-3-release/tabbar-3-release')"
+          @click="goToPage('../../parkdetail/pagedetail')"
         >
           <image
             class="box-image"

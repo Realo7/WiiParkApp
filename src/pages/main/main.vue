@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     goindetail () {
-      uni.reLaunch({
+      uni.navigateTo({
         url: '../parkdetail/parkdetail',
       });
     },
