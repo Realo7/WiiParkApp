@@ -26,12 +26,7 @@ export default {
 /* 头条小程序需要把 iconfont 样式放到组件外 */
 @import 'components/m-icon/m-icon.css';
 
-/*每个页面公共css */
-page {
-  min-height: 100%;
-  display: flex;
-  font-size: 16px;
-}
+/* 每个页面公共css */
 
 /* #ifdef MP-BAIDU */
 page {
@@ -68,14 +63,6 @@ m-input {
   /* min-height: 100%; */
   display: flex;
   flex: 1;
-}
-
-.content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  background-color: #efeff4;
-  padding: 10px;
 }
 
 .input-group {

@@ -193,7 +193,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .action-row {
   display: flex;
   flex-direction: row;
@@ -289,5 +289,17 @@ export default {
   width: 35%;
   margin-right: 15%;
   float: left;
+}
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #efeff4;
+  padding: 10px;
+}
+page {
+  min-height: 100%;
+  display: flex;
+  font-size: 16px;
 }
 </style>
