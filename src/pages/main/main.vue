@@ -12,14 +12,16 @@
         badge-text="2"
         @click="goindetail()"
       >
-        <view style="white-space：nowrap;">
-          <span>{{$t('m.parkname')}}</span>
-          <span style="padding-left:80rpx;">{{$t('m.totalnum')}}</span>
-          <view>
-            <span>{{$t('m.hadstopednum')}}</span>
-            <span>{{$t('m.remainnum')}}</span>
-          </view>
-        </view>
+        <table id="tb1">
+          <tr>
+            <td class="td1">{{$t('m.parkname')}}</td>
+            <td class="td1">{{$t('m.totalnum')}}</td>
+          </tr>
+          <tr>
+            <td class="td1">{{$t('m.hadstopednum')}}</td>
+            <td class="td1">{{$t('m.remainnum')}}</td>
+          </tr>
+        </table>
       </uni-list-item>
     </uni-list>
     <!-- 测试i18n的用法，回头移除 -->
@@ -166,5 +168,19 @@ view {
 
 .word-btn--hover {
   background-color: #4ca2ff;
+}
+#tb1 {
+  // border: 1px solid #f00;
+  width: 100%;
+  tr {
+    .td1 {
+      width: 50%;
+      // border: 1px solid #f00;
+    }
+    .td2 {
+      width: 50%;
+      // border: 1px solid #f00;
+    }
+  }
 }
 </style>

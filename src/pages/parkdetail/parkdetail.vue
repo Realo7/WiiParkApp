@@ -1,5 +1,20 @@
 <template>
   <view class="content">
+    <view class="uni-flex uni-row">
+      <view
+        class="flex-item"
+        @click="chosepark"
+      >
+        <text>选择停车场</text>
+      </view>
+      <uni-search-bar
+        radius="100"
+        :placeholder="$t('m.plzinput')"
+        @confirm="search"
+        class="flex-item2"
+      />
+    </view>
+
     <sl-filter
       :independence="true"
       :color="titleColor"
@@ -8,23 +23,38 @@
       @result="result"
     >
     </sl-filter>
-    <uni-list>
+    <uni-list class="newbtn">
       <uni-list-item
         :show-badge="true"
         title=""
         badge-text="2"
-        @click="goindetail()"
+        @click="goincontrol()"
       >
-        <view style="white-space：nowrap;">
-          <span>{{$t('m.parkname')}}</span>
-          <span style="padding-left:80rpx;">{{$t('m.totalnum')}}</span>
-          <view>
-            <span>{{$t('m.hadstopednum')}}</span>
-            <span>{{$t('m.remainnum')}}</span>
-          </view>
+        <view>
+
+          <table id="tb1">
+            <tr>
+              <td class="td1">{{$t('m.SpaceNo')}}</td>
+              <td class="td1">{{$t('m.SpaceState')}}</td>
+            </tr>
+            <tr>
+              <td class="td1">{{$t('m.SpaceLockNo')}}</td>
+              <td class="td1">{{$t('m.linkState')}}</td>
+            </tr>
+            <tr>
+              <td class="td1">{{$t('m.SpaceLockState')}}</td>
+              <td class="td1">{{$t('m.runState')}}</td>
+            </tr>
+            <tr>
+              <td class="td1">{{$t('m.controlStyle')}}</td>
+              <td class="td1"></td>
+            </tr>
+          </table>
+
         </view>
       </uni-list-item>
     </uni-list>
+
     <view class="text">
       <text>{{filterResult}}</text>
     </view>
@@ -205,15 +235,53 @@ export default {
     result (val) {
       console.log('filter_result:' + JSON.stringify(val));
       this.filterResult = JSON.stringify(val, null, 2)
+    },
+    chosepark () {
+      alert("选择停车场")
+    },
+    goincontrol () {
+      uni.navigateTo({
+        url: '../parkdetail/detailcontrol/sLockcontrol',
+      });
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .text {
   margin-top: 50px;
   margin-left: 20px;
   width: 100%;
+}
+.newbtn {
+  white-space: nowrap;
+  background: url('../../static/img/分割线.png');
+  background-repeat: no-repeat;
+  background-position-y: bottom; /*背景图片在纵向的最下方显示*/
+  background-size: 100% 30%;
+}
+.flex-item {
+  width: 25%;
+  text-align: center;
+  padding-top: 25rpx;
+}
+.flex-item2 {
+  width: 72%;
+  text-align: center;
+}
+#tb1 {
+  // border: 1px solid #f00;
+  width: 100%;
+  tr {
+    .td1 {
+      width: 60%;
+      // border: 1px solid #f00;
+    }
+    .td2 {
+      width: 40%;
+      // border: 1px solid #f00;
+    }
+  }
 }
 </style>

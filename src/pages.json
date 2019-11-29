@@ -39,6 +39,18 @@
             "style": {
                 "navigationBarTitleText": "停车场相关细节"
             }
+        },       
+        {
+            "path": "pages/parkdetail/detailcontrol/sLockcontrol",
+            "style": {
+                "navigationBarTitleText": "车位锁控制"
+            }
+        },
+        {
+            "path": "pages/parkdetail/detailcontrol/inoutcontrol",
+            "style": {
+                "navigationBarTitleText": "出入口控制"
+            }
         }
 
     ],
