@@ -5,8 +5,10 @@ import uniSearchBar from '@/components/uni-search-bar/uni-search-bar.vue'
 import uniSection from '@/components/uni-section/uni-section.vue'
 import uniList from '@/components/uni-list/uni-list.vue'
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+import wPicker from "@/components/w-picker/w-picker.vue";
 import store from './store'
 
+Vue.component("wPicker",wPicker);
 Vue.component('uniSearchBar',uniSearchBar);
 Vue.component('uniSection',uniSection);
 Vue.component('uniList',uniList);

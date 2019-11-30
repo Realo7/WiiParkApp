@@ -69,7 +69,7 @@ export default {
   width: 33.3%;
   height: 150upx;
   text-align: center;
-  line-height: 200upx;
+  line-height: 150upx;
 }
 
 .flex-item-V {
