@@ -55,6 +55,7 @@
           </table>
         </view>
       </uni-list-item>
+
     </uni-list>
 
   </div>
@@ -115,6 +116,7 @@ export default {
   margin-top: 50px;
   margin-left: 20px;
   width: 100%;
+  font-family: Microsoft-YaHei;
 }
 .newbtn {
   white-space: nowrap;

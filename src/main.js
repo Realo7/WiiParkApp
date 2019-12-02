@@ -7,6 +7,11 @@ import uniList from '@/components/uni-list/uni-list.vue'
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 import wPicker from "@/components/w-picker/w-picker.vue";
 import store from './store'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+
+axios.defaults.baseURL = ""
 
 Vue.component("wPicker",wPicker);
 Vue.component('uniSearchBar',uniSearchBar);
@@ -18,6 +23,10 @@ Vue.config.productionTip = false
 Vue.use(VueI18n)
 
 Vue.prototype.$store = store
+Vue.prototype.$axios = axios;
+
+
+Vue.use(VueAxios, axios)
 
 App.mpType = 'app'
 

@@ -8,7 +8,7 @@
       <button
         class="cnbtn"
         @click="changecn()"
-      >国语</button>
+      >中文</button>
     </div>
 
     <image
@@ -50,22 +50,7 @@
         @tap="bindLogin"
       >登录</button>
     </view>
-    <view
-      class="oauth-row"
-      v-if="hasProvider"
-      v-bind:style="{top: positionTop + 'px'}"
-    >
-      <view
-        class="oauth-image"
-        v-for="provider in providerList"
-        :key="provider.value"
-      >
-        <image
-          :src="provider.image"
-          @tap="oauth(provider.value)"
-        ></image>
-      </view>
-    </view>
+
   </view>
 </template>
 
@@ -87,7 +72,18 @@ export default {
       hasProvider: false,
       account: '',
       password: '',
-      positionTop: 0
+      positionTop: 0,
+      loginInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userCode": "001",
+          "loginType": "1",
+          "passWord": "defero@123",
+          "SMSCode": "",
+          "userType": "2",
+        }
+      }
     }
   },
   computed: mapState(['forcedLogin']),
@@ -125,55 +121,35 @@ export default {
        * 检测用户账号密码是否在已注册的用户列表中
        * 使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
        */
-      const data = {
-        account: this.account,
-        password: this.password
-      };
-      const validUser = service.getUsers().some(function (user) {
-        return data.account === user.account && data.password === user.password;
-      });
-      if (validUser) {
-        this.toMain(this.account);
-      } else {
-        uni.showToast({
-          icon: 'none',
-          title: '用户账号或密码不正确',
-        });
-      }
+      this.$axios({
+        method: 'post',
+        url: '/CustomerLogInHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          let trb = JSON.stringify(res.data)
+          console.log('手动开闸返回的数据' + trb)
+          if (res.data.statusCode != 200) {
+            this.open2(res.data.message)
+            //开闸之后自动调用完成本次服务
+            this.comService()
+          }
+          // this.tradeback = JSON.parse(JSON.parse(trb).datas)
+          console.log('手动开闸模块需要显示的数据' + this.tradeback)
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+
     },
-    oauth (value) {
-      uni.login({
-        provider: value,
-        success: (res) => {
-          uni.getUserInfo({
-            provider: value,
-            success: (infoRes) => {
-              /**
-               * 获取用户信息后，需要将信息上报至服务端。
-               * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-               */
-              this.toMain(infoRes.userInfo.nickName);
-            }
-          });
-        },
-        fail: (err) => {
-          console.error('授权登录失败：' + JSON.stringify(err));
-        }
-      });
-    },
+
     toMain (userName) {
-      this.login(userName);
-      /**
-       * 强制登录时使用reLaunch方式跳转过来
-       * 返回首页也使用reLaunch方式
-       */
-      if (this.forcedLogin) {
-        uni.reLaunch({
-          url: '../main/main',
-        });
-      } else {
-        uni.navigateBack();
-      }
+      uni.reLaunch({
+        url: '../main/main',
+      });
+
 
     },
     // 切换语言
