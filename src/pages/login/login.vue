@@ -121,6 +121,8 @@ export default {
        * 检测用户账号密码是否在已注册的用户列表中
        * 使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
        */
+      let submit = {}
+      submit = JSON.stringify(this.opendoorinfo)
       this.$axios({
         method: 'post',
         url: '/CustomerLogInHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
@@ -129,14 +131,14 @@ export default {
         emulateJSON: true
       })
         .then(res => {
-          let trb = JSON.stringify(res.data)
-          console.log('手动开闸返回的数据' + trb)
+          let back0 = JSON.stringify(res.data)
+          console.log('手动开闸返回的数据' + back0)
           if (res.data.statusCode != 200) {
             this.open2(res.data.message)
             //开闸之后自动调用完成本次服务
             this.comService()
           }
-          // this.tradeback = JSON.parse(JSON.parse(trb).datas)
+          // this.tradeback = JSON.parse(JSON.parse(back0).datas)
           console.log('手动开闸模块需要显示的数据' + this.tradeback)
         })
         .catch(err => {

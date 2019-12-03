@@ -51,6 +51,12 @@
             "style": {
                 "navigationBarTitleText": "出入口控制"
             }
+        },
+        {
+            "path": "pages/parkdetail/detailcontrol/micontrol",
+            "style": {
+                "navigationBarTitleText": "咪表控制"
+            }
         }
 
     ],

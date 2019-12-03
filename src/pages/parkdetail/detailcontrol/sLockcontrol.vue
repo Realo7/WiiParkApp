@@ -1,38 +1,93 @@
 <template>
   <view class="uni-flex uni-column">
-    <view class="name">停车场名称</view>
+    <view class="name">德飞测试停车场</view>
     <view>
-      <view>停车场：</view>
-      <view>车位号：</view>
-      <view>车位锁状态：</view>
+      <view class="tt1">停车场：</view>
+      <view class="tt1">车位号：</view>
+      <view class="tt1">车位锁状态：</view>
     </view>
     <view class="CC">基本控制</view>
     <view class="uni-flex uni-row">
-      <view
-        class="flex-item uni-bg-red"
-        @click="forceopen"
-      >强制开</view>
-      <view class="flex-item uni-bg-green">强制关</view>
-      <view class="flex-item uni-bg-blue">恢复正常</view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="forceopen"
+        >强制开</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >强制关</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >恢复正常</button>
+      </view>
     </view>
     <view class="uni-flex uni-row">
-      <view class="flex-item uni-bg-green">停止</view>
-      <view class="flex-item uni-bg-blue">车位锁重启</view>
-      <view class="flex-item uni-bg-red">清除</view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >停止</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >车位锁重启</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >清除</button>
+      </view>
     </view>
     <view class="uni-flex uni-row">
-      <view class="flex-item uni-bg-blue">检测器重启</view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >检测器重启</button>
+      </view>
 
     </view>
 
-    <view class="CC">应急控制</view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item uni-bg-red">查询联机</view>
-      <view class="flex-item uni-bg-green">开始营业</view>
-      <view class="flex-item uni-bg-blue">关闭营业</view>
+    <view class="CC">
+      应急控制
     </view>
     <view class="uni-flex uni-row">
-      <view class="flex-item uni-bg-green">手动入场</view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >查询联机</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >开始营业</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >关闭营业</button>
+      </view>
+    </view>
+    <view class="uni-flex uni-row">
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+        >手动入场</button>
+      </view>
 
     </view>
   </view>
@@ -61,8 +116,16 @@ export default {
 }
 .CC {
   text-align: center;
-  line-height: 80rpx;
-  background-color: aqua;
+  margin-top: 2%;
+  line-height: 100upx;
+  background-color: deepskyblue;
+  color: white;
+  font-size: 24px;
+}
+.nbt1 {
+  margin-top: 20upx;
+  margin-left: 10upx;
+  margin-right: 10upx;
 }
 
 .flex-item {
@@ -88,6 +151,18 @@ export default {
   text-align: center;
   color: #777;
   font-size: 26upx;
+}
+button {
+  background-color: deepskyblue;
+  font-size: 16px;
+  height: 85%;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.tt1 {
+  font-size: 18px;
 }
 
 .desc {

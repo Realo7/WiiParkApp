@@ -24,10 +24,10 @@
         </table>
       </uni-list-item>
     </uni-list>
-    <!-- 测试i18n的用法，回头移除 -->
+    <!-- 测试i18n的用法，回头移除
     <view class="ul">
       <span v-text="$t('m.tip1')"></span>
-    </view>
+    </view> -->
 
   </view>
 </template>
