@@ -1,10 +1,10 @@
 <template>
   <view class="uni-flex uni-column">
-    <view class="name">德飞测试停车场</view>
+    <!-- <view class="name">德飞测试停车场</view> -->
     <view>
-      <view class="tt1">停车场：</view>
-      <view class="tt1">车位号：</view>
-      <view class="tt1">车位锁状态：</view>
+      <view class="tt1">停车场：绿地之窗停车场</view>
+      <view class="tt1">车位号：001</view>
+      <view class="tt1">车位锁状态：上升到位</view>
     </view>
     <view class="CC">基本控制</view>
     <view class="uni-flex uni-row">

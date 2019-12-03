@@ -77,9 +77,9 @@ export default {
         "appId": "",
         "privatekey": "",
         "datas": {
-          "userCode": "001",
+          "userCode": "",
           "loginType": "1",
-          "passWord": "defero@123",
+          "passWord": "",
           "SMSCode": "",
           "userType": "2",
         }
@@ -102,10 +102,10 @@ export default {
        * 客户端对账号信息进行一些必要的校验。
        * 根据业务需要进行处理，这里仅做示例。
        */
-      if (this.account.length < 5) {
+      if (this.account.length < 3) {
         uni.showToast({
           icon: 'none',
-          title: '账号最短为 5 个字符'
+          title: '账号最短为 3 个字符'
         });
         return;
       }
@@ -121,8 +121,10 @@ export default {
        * 检测用户账号密码是否在已注册的用户列表中
        * 使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
        */
+      this.loginInfo.datas.userCode = this.account
+      this.loginInfo.datas.passWord = this.password
       let submit = {}
-      submit = JSON.stringify(this.opendoorinfo)
+      submit = JSON.stringify(this.loginInfo)
       this.$axios({
         method: 'post',
         url: '/CustomerLogInHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
@@ -131,15 +133,16 @@ export default {
         emulateJSON: true
       })
         .then(res => {
-          let back0 = JSON.stringify(res.data)
-          console.log('手动开闸返回的数据' + back0)
-          if (res.data.statusCode != 200) {
-            this.open2(res.data.message)
-            //开闸之后自动调用完成本次服务
-            this.comService()
+          console.log(res)
+          //保存后台返回的token到localStorage
+          localStorage.setItem('token', res.data.datas)
+          // localStorage.setItem('user', this.formdata.datas.userCode)
+          //跳转home
+          if (res.data.statusCode == '200') {
+            this.toMain()
+          } else {
+            alert('账号或者密码错误')
           }
-          // this.tradeback = JSON.parse(JSON.parse(back0).datas)
-          console.log('手动开闸模块需要显示的数据' + this.tradeback)
         })
         .catch(err => {
           console.log('出现了错误' + err)
@@ -147,7 +150,7 @@ export default {
 
     },
 
-    toMain (userName) {
+    toMain () {
       uni.reLaunch({
         url: '../main/main',
       });
@@ -166,7 +169,6 @@ export default {
   }, //方法体的结尾
   onReady () {
     this.initPosition();
-
   }
 }
 </script>

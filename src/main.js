@@ -11,7 +11,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 
-axios.defaults.baseURL = ""
+axios.defaults.baseURL = "http://192.168.1.166:3830/Handlers/"
 
 Vue.component("wPicker",wPicker);
 Vue.component('uniSearchBar',uniSearchBar);

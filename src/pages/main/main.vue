@@ -5,29 +5,40 @@
       :placeholder="$t('m.plzinput')"
       @confirm="search"
     />
+    <!-- badge-text小绿点 -->
     <uni-list>
       <uni-list-item
         :show-badge="true"
         title=""
-        badge-text="2"
+        badge-text=""
+        v-for="(item, index) in parkInfoBack"
+        :key="index"
         @click="goindetail()"
       >
         <table id="tb1">
           <tr>
-            <td class="td1">{{$t('m.parkname')}}</td>
-            <td class="td1">{{$t('m.totalnum')}}</td>
+            <td class="td1">
+              <!-- <div>{{$t('m.parkname')}}</div> -->
+              <div>{{item.name}}</div>
+            </td>
+            <td class="td1">
+              {{$t('m.totalnum')}}：
+              {{item.totalSpace}}
+            </td>
           </tr>
           <tr>
-            <td class="td1">{{$t('m.hadstopednum')}}</td>
-            <td class="td1">{{$t('m.remainnum')}}</td>
+            <td class="td1">
+              {{$t('m.hadstopednum')}}：
+              {{item.totalSpace-item.availableSpace}}
+            </td>
+            <td class="td1">
+              {{$t('m.remainnum')}}：
+              {{item.availableSpace}}
+            </td>
           </tr>
         </table>
       </uni-list-item>
     </uni-list>
-    <!-- 测试i18n的用法，回头移除
-    <view class="ul">
-      <span v-text="$t('m.tip1')"></span>
-    </view> -->
 
   </view>
 </template>
@@ -38,10 +49,56 @@ export default {
   computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
   data () {
     return {
+      GetParkInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "pageIndex": "1",
+          "pageSize": "10",
+          "parkName": "",
+          "longitude": "",//经度  
+          "latitude": "",//纬度
+          "provinceId": "",//省ID
+          "cityId": "",//市ID
+          "districtId": "",//县ID
+          "companyId": "",//公众号或者小程序Id
+        }
+      },
+      parkInfoBack: []
 
     }
   },
   methods: {
+    getInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      console.log("从token中获取的userCode:" + userCode)
+      this.GetParkInfo.datas.userCode = userCode
+      let submit = {}
+      submit = JSON.stringify(this.GetParkInfo)
+      this.$axios({
+        method: 'post',
+        url: '/GetParkInfoHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.parkInfoBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.parkInfoBack)
+
+          } else {
+            alert('2222')
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
     goindetail () {
       uni.navigateTo({
         url: '../parkdetail/parkdetail',
@@ -49,6 +106,9 @@ export default {
     },
 
   },
+  mounted () {
+    this.getInfo()
+  }
 
 }
 </script>
