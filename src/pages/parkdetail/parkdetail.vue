@@ -23,30 +23,34 @@
       @result="result"
     >
     </sl-filter>
-    <uni-list class="newbtn">
+    <uni-list>
       <uni-list-item
         :show-badge="true"
         title=""
-        badge-text="2"
-        @click="goincontrol()"
+        badge-text=""
+        v-for="(item, index) in lockBack"
+        :key="index"
+        @click="goincontrol(index)"
       >
         <view>
 
           <table id="tb1">
             <tr>
-              <td class="td1">{{$t('m.SpaceNo')}}</td>
-              <td class="td1">{{$t('m.SpaceState')}}</td>
+              <td class="td1">{{$t('m.SpaceNo')}} {{item.parkLockNum}}</td>
+              <td class="td1">{{$t('m.SpaceState')}} {{item.carState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockNo')}}</td>
-              <td class="td1">{{$t('m.linkState')}}</td>
+              <td class="td1">{{$t('m.SpaceLockNo')}}
+                <div> {{item.parkLockId}}</div>
+              </td>
+              <td class="td1">{{$t('m.linkState')}} {{item.onlineState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockState')}}</td>
-              <td class="td1">{{$t('m.runState')}}</td>
+              <td class="td1">{{$t('m.SpaceLockState')}} {{item.parkLockState}}</td>
+              <td class="td1">{{$t('m.runState')}} {{item.runState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.controlStyle')}}</td>
+              <td class="td1">{{$t('m.controlStyle')}} {{item.priority}}</td>
               <td class="td1"></td>
             </tr>
           </table>
@@ -225,11 +229,27 @@ export default {
         }
         ]
       }
-      ]
+      ],
+      lockInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkId": "",
+          "parkName": "",
+          "deviceId": "",//节点Id
+          "deviceName": "",//节点名称
+          "parkLockNum": "",//车位号
+        }
+      },
+      lockBack: []
     }
-  },
-  onLoad () {
 
+  },
+  onLoad (options) {
+    let parkId = options.parkId;
+    console.log(parkId)
+    this.lockInfo.datas.parkId = parkId
   },
   methods: {
     result (val) {
@@ -239,12 +259,48 @@ export default {
     chosepark () {
       alert("选择停车场")
     },
-    goincontrol () {
+    goincontrol (index) {
+      console.log(this.lockBack[index].parkLockNum)
       uni.navigateTo({
         url: '../parkdetail/detailcontrol/sLockcontrol',
       });
-    }
+    },
+    getlockInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.lockInfo.datas.userId = userCode
+      let submit = {}
+      submit = JSON.stringify(this.lockInfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/GetParkLockListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.lockBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.lockBack)
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
+
+
+  },
+  mounted () {
+    this.getlockInfo()
   }
+
 }
 </script>
 

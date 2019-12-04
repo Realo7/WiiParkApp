@@ -12,19 +12,21 @@
         <button
           type="primary"
           class="nbt1"
-          @click="forceopen"
+          @click="slockcom (COpen)"
         >强制开</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CClose)"
         >强制关</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CNormal)"
         >恢复正常</button>
       </view>
     </view>
@@ -33,18 +35,21 @@
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CStop)"
         >停止</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (Reboot)"
         >车位锁重启</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CClearErr)"
         >清除</button>
       </view>
     </view>
@@ -53,6 +58,7 @@
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CLVDReboot)"
         >检测器重启</button>
       </view>
 
@@ -66,18 +72,21 @@
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CServerCheckLock)"
         >查询联机</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (COpenBus)"
         >开始营业</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
+          @click="slockcom (CCloseBus)"
         >关闭营业</button>
       </view>
     </view>
@@ -97,15 +106,90 @@ export default {
 
   data () {
     return {
-      lol: "lol"
+      lol: "lol",
+      slockinfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkLockId": "",
+          "command": "",
+          "devType": "1"
+        }
+      }
+
     }
   },
+  onLoad (options) {
+    let parkLockNum = options.parkLockNum;
+    console.log(parkLockNum)
+    this.slockInfo.datas.parkLockId = parkLockNum
+  },
   methods: {
-    forceopen () {
-      alert("强制卡")
-    }
+    slockcom (value) {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.slockInfo.datas.userId = userCode
 
+      this.slockinfo.datas.command = value
+      let submit = {}
+      submit = JSON.stringify(this.slockInfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/ParkLockControlHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            console.log(res.data.message)
+            this.togglePopup('bottom', 'popup')
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+
+    },
+    togglePopup (type, open) {
+      switch (type) {
+        case 'top':
+          this.content = '顶部弹出 popup'
+          break
+
+        case 'bottom':
+          this.content = '操作成功'
+          break
+        case 'center':
+          this.content = '居中弹出 popup'
+          break
+      }
+      this.type = type
+      this.$nextTick(() => {
+        this.$refs['show' + open].open()
+      })
+    },
+    cancel (type) {
+      this.$refs['show' + type].close()
+    },
+    change (e) {
+      console.log('是否打开:' + e.show)
+    }
+  },
+  onBackPress () {
+    this.$refs['showpopup'].close()
+    this.$refs['showtip'].close()
+    this.$refs['showimage'].close()
+    this.$refs['showshare'].close()
   }
+}
 
 }
 </script>

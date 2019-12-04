@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{resultInfo.result}}
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <view
@@ -13,7 +14,7 @@
           mode="range"
           startYear="2017"
           endYear="2030"
-          :defaultVal="['2017','12','31','-','2019','12','31']"
+          :defaultVal="['2019','01','01','-','2019','12','31']"
           :current="false"
           @confirm="onConfirm"
           ref="range"
@@ -27,30 +28,31 @@
         class="flex-item2"
       />
     </view>
-    停车记录页面
-    <uni-list class="newbtn">
+    <uni-list>
       <uni-list-item
         :show-badge="true"
         :show-arrow="false"
-        @click="goincontrol()"
+        v-for="(item, index) in recordBack"
+        :key="index"
+        class="newbtn"
       >
         <view>
           <table id="tb1">
             <tr>
-              <td class="td1">{{$t('m.SpaceNo')}}</td>
-              <td class="td1">{{$t('m.SpaceState')}}</td>
+              <td class="td1">{{item.parkName}}</td>
+              <td class="td1">{{item.parkLockId}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockNo')}}</td>
-              <td class="td1">{{$t('m.linkState')}}</td>
+              <td class="td1">入场时间：{{item.inTm}}</td>
+              <td class="td1">{{item.payState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockState')}}</td>
-              <td class="td1">{{$t('m.runState')}}</td>
-            </tr>
-            <tr>
-              <td class="td1">{{$t('m.controlStyle')}}</td>
+              <td class="td1">停留时间：{{item.payTm}}</td>
               <td class="td1"></td>
+            </tr>
+            <tr>
+              <td class="td1">出场时间：{{item.outTm}}</td>
+              <td class="td1">状态：{{item.outState}}</td>
             </tr>
           </table>
         </view>
@@ -84,9 +86,64 @@ export default {
       resultInfo: {
         result: "2019-12-20 10:00:00"
       },
+      wantInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "pageIndex": "1",
+          "pageSize": "10",
+          "parkId": "PK0067",
+          "parkName": "",
+          "payMode": "-1",//支付方式
+          "payState": "-1",//支付状态
+          "outState": "-1",//交易状态
+          "payStationType": "-2",//支付设备类型
+          "inTmS": "",//起始入场时间
+          "inTmE": "",//截止入场时间
+          "payTmS": "",//起始付费时间
+          "payTmE": "",//截止付费时间
+          "outTmS": "",//起始出场时间
+          "outTmE": "",//截止出场时间
+          "infoType": "0"//数据来源 0:临时信息 1:历史信息 
+        }
+      },
+      recordBack: []
     }
   },
   methods: {
+    search () {
+      alert("搜索")
+    },
+    getrecordInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      console.log("从token中获取的userCode:" + userCode)
+      this.wantInfo.datas.userId = userCode
+      let submit = {}
+      submit = JSON.stringify(this.wantInfo)
+      // console.log("sub" + submit)
+      this.$axios({
+        method: 'post',
+        url: '/GetParkLockDealInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.recordBack)
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
     toggleTab (item, index) {
       this.tabIndex = index;
       this.mode = item.mode;
@@ -102,6 +159,9 @@ export default {
       // }
       this.resultInfo = val;
     }
+  },
+  mounted () {
+    this.getrecordInfo()
   }
 }
 </script>
@@ -138,10 +198,10 @@ export default {
   width: 100%;
   tr {
     .td1 {
-      width: 60%;
+      width: 70%;
     }
     .td2 {
-      width: 40%;
+      width: 30%;
     }
   }
 }

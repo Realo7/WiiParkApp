@@ -6,6 +6,7 @@ import uniSection from '@/components/uni-section/uni-section.vue'
 import uniList from '@/components/uni-list/uni-list.vue'
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 import wPicker from "@/components/w-picker/w-picker.vue";
+import uniPopup from "@/components/uni-popup/uni-popup.vue";
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -13,6 +14,7 @@ import VueAxios from 'vue-axios'
 
 axios.defaults.baseURL = "http://192.168.1.166:3830/Handlers/"
 
+Vue.component("uniPopup",uniPopup);
 Vue.component("wPicker",wPicker);
 Vue.component('uniSearchBar',uniSearchBar);
 Vue.component('uniSection',uniSection);

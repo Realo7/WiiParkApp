@@ -13,7 +13,7 @@
         badge-text=""
         v-for="(item, index) in parkInfoBack"
         :key="index"
-        @click="goindetail()"
+        @click="goindetail(index)"
       >
         <table id="tb1">
           <tr>
@@ -55,7 +55,7 @@ export default {
         "datas": {
           "userId": "",
           "pageIndex": "1",
-          "pageSize": "10",
+          "pageSize": "",
           "parkName": "",
           "longitude": "",//经度  
           "latitude": "",//纬度
@@ -90,18 +90,21 @@ export default {
           if (res.data.statusCode == '200') {
             this.parkInfoBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(this.parkInfoBack)
-
           } else {
-            alert('2222')
+            alert(res.data.message)
           }
         })
         .catch(err => {
           console.log('出现了错误' + err)
         })
     },
-    goindetail () {
+    goindetail (index) {
+      console.log(this.parkInfoBack[index].parkId)
       uni.navigateTo({
-        url: '../parkdetail/parkdetail',
+        url: '../parkdetail/parkdetail?parkId=' + this.parkInfoBack[index].parkId,
+        // params: {
+        //   parkId: this.parkInfoBack[index].parkId
+        // }
       });
     },
 
