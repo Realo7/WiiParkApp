@@ -2,9 +2,9 @@
   <view class="uni-flex uni-column">
     <!-- <view class="name">德飞测试停车场</view> -->
     <view>
-      <view class="tt1">停车场：绿地之窗停车场</view>
-      <view class="tt1">车位号：001</view>
-      <view class="tt1">车位锁状态：上升到位</view>
+      <view class="tt1">停车场：{{parkName}}</view>
+      <view class="tt1">车位号：{{parkLockId}}</view>
+      <view class="tt1">车位锁状态：{{parkLockState}}</view>
     </view>
     <view class="CC">基本控制</view>
     <view class="uni-flex uni-row">
@@ -12,21 +12,21 @@
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (COpen)"
+          @click="slockcom ('COpen')"
         >强制开</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CClose)"
+          @click="slockcom ('CClose')"
         >强制关</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CNormal)"
+          @click="slockcom ('CNormal')"
         >恢复正常</button>
       </view>
     </view>
@@ -35,21 +35,21 @@
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CStop)"
+          @click="slockcom ('CStop')"
         >停止</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (Reboot)"
+          @click="slockcom ('Reboot')"
         >车位锁重启</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CClearErr)"
+          @click="slockcom ('CClearErr')"
         >清除</button>
       </view>
     </view>
@@ -58,10 +58,23 @@
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CLVDReboot)"
+          @click="slockcom ('CLVDReboot')"
         >检测器重启</button>
       </view>
-
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="selectM()"
+        >查询费用</button>
+      </view>
+      <!-- <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="handpay()"
+        >手动付费</button>
+      </view> -->
     </view>
 
     <view class="CC">
@@ -72,21 +85,22 @@
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CServerCheckLock)"
+          @click="slockcom ('CServerCheckLock')"
         >查询联机</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (COpenBus)"
+          @click="slockcom (
+          COpenBus)"
         >开始营业</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
-          @click="slockcom (CCloseBus)"
+          @click="slockcom ('CCloseBus')"
         >关闭营业</button>
       </view>
     </view>
@@ -95,10 +109,18 @@
         <button
           type="primary"
           class="nbt1"
+          @click="handin"
         >手动入场</button>
       </view>
 
     </view>
+    <!-- <view style="height: 400px;"></view> -->
+    <uni-popup
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    ><text class="popup-content">{{ content }}</text></uni-popup>
+
   </view>
 </template>
 <script>
@@ -107,6 +129,11 @@ export default {
   data () {
     return {
       lol: "lol",
+      type: '',
+      content: 'popup',
+      parkName: {},
+      parkLockState: {},
+      parkLockId: {},
       slockinfo: {
         "appId": "",
         "privatekey": "",
@@ -116,26 +143,49 @@ export default {
           "command": "",
           "devType": "1"
         }
-      }
-
+      },
+      selectMinfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkLockId": "",
+        }
+      },
+      selectMback: {},
+      handininfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkLockId": "",
+          "inTm": ""
+        }
+      },
+      handinback: {}
     }
   },
   onLoad (options) {
-    let parkLockNum = options.parkLockNum;
-    console.log(parkLockNum)
-    this.slockInfo.datas.parkLockId = parkLockNum
+    let parkLockId1 = options.parkLockId;
+    let parkLockState = options.parkLockState;
+    let parkName = options.parkName
+    console.log(parkLockId1)
+
+    this.parkLockId = parkLockId1
+    this.parkLockState = parkLockState
+    this.parkName = parkName
   },
   methods: {
     slockcom (value) {
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.slockInfo.datas.userId = userCode
-
+      console.log("从token中获取的userCode:" + userCode)
+      this.slockinfo.datas.userId = userCode
+      this.slockinfo.datas.parkLockId = this.parkLockId
       this.slockinfo.datas.command = value
       let submit = {}
-      submit = JSON.stringify(this.slockInfo)
+      submit = JSON.stringify(this.slockinfo)
       console.log(submit)
       this.$axios({
         method: 'post',
@@ -148,7 +198,40 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             console.log(res.data.message)
-            this.togglePopup('bottom', 'popup')
+            this.togglePopup('center', 'popup', '操作成功')
+          } else {
+            this.togglePopup('center', 'popup', res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+
+    },
+    selectM () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.selectMinfo.datas.userId = userCode
+
+      this.selectMinfo.datas.parkLockId = this.parkLockId
+      let submit = {}
+      submit = JSON.stringify(this.selectMinfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/ParkLockManualPayHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.selectMback = JSON.parse(res.data.datas)
+            console.log(res.data.message)
+            alert("您需要支付" + this.selectMback.shouldPay + "元")
           } else {
             alert(res.data.message)
           }
@@ -158,17 +241,46 @@ export default {
         })
 
     },
-    togglePopup (type, open) {
+    handin () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.handininfo.datas.userId = userCode
+
+      this.handininfo.datas.parkLockId = this.parkLockId
+      let submit = {}
+      submit = JSON.stringify(this.handininfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/ParkLockManualEntryHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.togglePopup('center', 'popup', res.data.message)
+          } else {
+            this.togglePopup('center', 'popup', res.data.message)
+          }
+        })
+        .catch(err => {
+          this.togglePopup('top', 'popup', '出现了错误' + err)
+        })
+    },
+    togglePopup (type, open, value) {
       switch (type) {
         case 'top':
-          this.content = '顶部弹出 popup'
+          this.content = value
           break
-
         case 'bottom':
-          this.content = '操作成功'
+          this.content = value
           break
         case 'center':
-          this.content = '居中弹出 popup'
+          this.content = value
           break
       }
       this.type = type
@@ -191,9 +303,10 @@ export default {
   }
 }
 
-}
+
 </script>
 <style lang="scss">
+@import url('popup.css');
 .name {
   text-align: center;
   font-size: 20px;
@@ -204,7 +317,7 @@ export default {
   line-height: 100upx;
   background-color: deepskyblue;
   color: white;
-  font-size: 24px;
+  font-size: 20px;
 }
 .nbt1 {
   margin-top: 20upx;

@@ -257,12 +257,14 @@ export default {
       this.filterResult = JSON.stringify(val, null, 2)
     },
     chosepark () {
-      alert("选择停车场")
+      uni.switchTab({
+        url: '../main/main',
+      });
     },
     goincontrol (index) {
       console.log(this.lockBack[index].parkLockNum)
       uni.navigateTo({
-        url: '../parkdetail/detailcontrol/sLockcontrol',
+        url: '../parkdetail/detailcontrol/sLockcontrol?parkLockId=' + this.lockBack[index].parkLockId + '&parkName=' + this.lockBack[index].parkName + '&parkLockState=' + this.lockBack[index].parkLockState,
       });
     },
     getlockInfo () {

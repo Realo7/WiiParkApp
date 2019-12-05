@@ -3,71 +3,7 @@
     class="content"
     :class="{'active':active}"
   >
-    <!-- <image
-      class="logo"
-      :class="{'active':active}"
-      src="../../../static/img/logo.png"
-      mode="aspectFit"
-    ></image> -->
-    <view class="tabbar-box-wrap">
-      <view class="tabbar-box">
-        <view
-          class="tabbar-box-item"
-          @click="goToPage('../../parkdetail/pagedetail')"
-        >
-          <image
-            class="box-image"
-            src="../../../static/img/release.png"
-            mode="aspectFit"
-          ></image>
-          <text class="explain">远程抬杆</text>
-        </view>
-        <view
-          class="tabbar-box-item"
-          @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')"
-        >
-          <image
-            class="box-image"
-            src="../../../static/img/video.png"
-            mode="aspectFit"
-          ></image>
-          <text class="explain">远程推送</text>
-        </view>
-        <view
-          class="tabbar-box-item"
-          @click="goToPage('/pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa')"
-        >
-          <image
-            class="box-image"
-            src="../../../static/img/qa.png"
-            mode="aspectFit"
-          ></image>
-          <text class="explain">缴费机管理</text>
-        </view>
-        <view
-          class="tabbar-box-item"
-          @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')"
-        >
-          <image
-            class="box-image"
-            src="../../../static/img/video.png"
-            mode="aspectFit"
-          ></image>
-          <text class="explain">设备状态</text>
-        </view>
-        <view
-          class="tabbar-box-item"
-          @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')"
-        >
-          <image
-            class="box-image"
-            src="../../../static/img/video.png"
-            mode="aspectFit"
-          ></image>
-          <text class="explain">班结</text>
-        </view>
-      </view>
-    </view>
+    这是什么界面
   </view>
 </template> 
 
