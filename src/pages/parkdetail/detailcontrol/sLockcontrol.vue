@@ -1,5 +1,5 @@
 <template>
-  <view class="uni-flex uni-column">
+  <view class="uni-flex uni-column outout">
     <!-- <view class="name">德飞测试停车场</view> -->
     <view>
       <view class="tt1">停车场：{{parkName}}</view>
@@ -402,25 +402,30 @@ export default {
 </script>
 <style lang="scss">
 @import url('popup.css');
+.outout {
+  width: 90%;
+  margin-left: 5%;
+  // text-align: center;
+}
 .name {
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
 }
 .CC1 {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: deepskyblue;
-  color: white;
-  font-size: 20px;
+  background-color: gainsboro;
+  color: black;
+  font-size: 16px;
 }
 .CC2 {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: red;
-  color: white;
-  font-size: 20px;
+  background-color: gainsboro;
+  color: black;
+  font-size: 16px;
 }
 .nbt1 {
   margin-top: 20upx;
@@ -430,9 +435,9 @@ export default {
 
 .flex-item {
   width: 33.3%;
-  height: 150upx;
+  height: 120upx;
   text-align: center;
-  line-height: 150upx;
+  line-height: 120upx;
 }
 
 .flex-item-V {
@@ -450,19 +455,20 @@ export default {
   line-height: 70upx;
   text-align: center;
   color: #777;
-  font-size: 26upx;
+  font-size: 16upx;
 }
 button {
-  background-color: deepskyblue;
-  font-size: 16px;
-  height: 85%;
+  background-color: rgba(0, 0, 0, 0);
+  color: black;
+  font-size: 14px;
+  height: 75%;
   text-align: center;
   align-items: center;
   display: flex;
   justify-content: center;
 }
 .tt1 {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 35px;
 }
 

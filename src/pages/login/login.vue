@@ -4,16 +4,18 @@
       <button
         class="enbtn"
         @click="changeen()"
+        :disabled="enactive"
       >English</button>
       <button
         class="cnbtn"
         @click="changecn()"
+        :disabled="cnactive"
       >中文</button>
     </div>
 
     <image
       class="logo"
-      src="/static/img/icon.png"
+      src="/static/img/logo_huxiaor.png"
     ></image>
     <view class="input-group">
       <view class="input-row border">
@@ -68,6 +70,8 @@ export default {
   },
   data () {
     return {
+      enactive: false,
+      cnactive: true,
       providerList: [],
       hasProvider: false,
       account: '',
@@ -161,10 +165,14 @@ export default {
     changeen () {
       this.lang = 'en-US';
       this.$i18n.locale = this.lang;//关键语句
+      this.enactive = !this.enactive
+      this.cnactive = !this.cnactive
     },
     changecn () {
       this.lang = 'zh-CN';
       this.$i18n.locale = this.lang;//关键语句
+      this.enactive = !this.enactive
+      this.cnactive = !this.cnactive
     }
   }, //方法体的结尾
   onReady () {
@@ -227,6 +235,7 @@ export default {
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
+  background-color: #777;
 }
 
 .inp {
@@ -323,9 +332,11 @@ m-input {
 }
 
 .input-group {
-  background-color: #ffffff;
-  margin-top: 20px;
+  background-color: #efeff4;
+  margin-top: 0px;
   position: relative;
+  margin-left: 5%;
+  width: 90%;
 }
 
 .input-group::before {
@@ -337,7 +348,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  background-color: #c8c7cc;
+  // background-color: #c8c7cc;
 }
 
 .input-group::after {
@@ -349,7 +360,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  background-color: #c8c7cc;
+  // background-color: #c8c7cc;
 }
 
 .input-row {
@@ -358,6 +369,7 @@ m-input {
   position: relative;
   font-size: 18px;
   line-height: 40px;
+  margin-top: 8px;
 }
 
 .input-row .title {
@@ -374,7 +386,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  background-color: #c8c7cc;
+  // background-color: #c8c7cc;
 }
 
 .btn-row {

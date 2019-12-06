@@ -403,12 +403,11 @@ export default {
         });
       } else if (this.grid == "inout") {
         uni.navigateTo({
-          url: url + '?devAdr=' + this.crkBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName,
+          url: url + '?devAdr=' + this.crkBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName + '&deviceType=' + this.crkBack[index].deviceType,
         });
       } else if ((this.grid == "zzj")) {
-        uni.navigateTo({
-          url: url + '?devAdr=' + this.zzjBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName,
-        });
+        alert("自助机没有详情")
+
       }
     },
     getlockInfo () {
@@ -506,7 +505,7 @@ export default {
             console.log(this.zzjBack)
             this.showlist = this.zzjBack
             // console.log(this.lockBack)
-            this.tourl = "detailcontrol/micontrol"
+            // this.tourl = "detailcontrol/micontrol"
             this.grid = "zzj"
           } else {
             alert(res.data.message)

@@ -9,7 +9,7 @@
         {
             "path": "pages/main/main",
             "style": {
-                "navigationBarTitleText": "主页"
+                "navigationBarTitleText": "停车场管理"
             }
         },  {
             "path": "pages/user/user",
@@ -62,14 +62,14 @@
     ],
 "tabBar": {
         "borderStyle": "black",
-        "backgroundColor": "#333",
-        "color": "#8F8F94",
-        "selectedColor": "#f33e54",
+        "backgroundColor": "gainsboro",
+        "color": "black",
+        "selectedColor": "#1A43C9",
         "list": [{
                 "pagePath": "pages/main/main",
                 "iconPath": "static/img/tabbar/home.png",
                 "selectedIconPath": "static/img/tabbar/homeactive.png",
-                "text": "首页"
+                "text": "车场管理"
             },
             {
                 "pagePath": "pages/parkrecord/parkrecord",

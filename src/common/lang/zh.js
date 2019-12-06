@@ -1,4 +1,5 @@
 export const m={
+    parkmanagement:"车场管理",
     confirm:"确定",
     cancel:"取消",
     login:"登录", //登录

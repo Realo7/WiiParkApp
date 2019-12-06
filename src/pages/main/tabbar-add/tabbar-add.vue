@@ -3,7 +3,7 @@
     class="content"
     :class="{'active':active}"
   >
-    这是什么界面
+    其他功能待开发
   </view>
 </template> 
 
