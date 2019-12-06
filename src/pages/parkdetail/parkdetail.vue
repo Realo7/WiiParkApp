@@ -9,12 +9,13 @@
       </view>
       <uni-search-bar
         radius="100"
-        :placeholder="$t('m.plzinput')"
-        @confirm="search"
+        :placeholder="$t('m.plzinput2')"
+        @input="input"
+        @confirm="getlockInfo"
         class="flex-item2"
       />
     </view>
-
+    <!-- {{filterResult}} -->
     <sl-filter
       :independence="true"
       :color="titleColor"
@@ -25,10 +26,11 @@
     </sl-filter>
     <uni-list>
       <uni-list-item
+        v-if="grid=='slock'||grid=='inout'"
         :show-badge="true"
         title=""
         badge-text=""
-        v-for="(item, index) in lockBack"
+        v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
       >
@@ -36,32 +38,109 @@
 
           <table id="tb1">
             <tr>
-              <td class="td1">{{$t('m.SpaceNo')}} {{item.parkLockNum}}</td>
-              <td class="td1">{{$t('m.SpaceState')}} {{item.carState}}</td>
+              <td
+                v-if="item.parkLockNum"
+                class="td1"
+              >{{$t('m.SpaceNo')}} {{item.parkLockNum}}</td>
+              <td
+                v-if="item.devAdr"
+                class="td1"
+              >设备号： {{item.devAdr}}</td>
+              <td
+                v-if="item.carState"
+                class="td1"
+              >{{$t('m.SpaceState')}} {{item.carState}}</td>
+              <td
+                v-if="item.deviceType"
+                class="td1"
+              >{{item.deviceType}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockNo')}}
+              <td
+                v-if="item.parkLockId"
+                class="td1"
+              >{{$t('m.SpaceLockNo')}}
                 <div> {{item.parkLockId}}</div>
               </td>
-              <td class="td1">{{$t('m.linkState')}} {{item.onlineState}}</td>
+              <td
+                v-if="item.devName"
+                class="td1"
+              >设备名称： {{item.devName}}
+              </td>
+              <td
+                v-if="item.onlineState=='脱机'"
+                class="td1"
+                style="color:red"
+              >{{$t('m.linkState')}} {{item.onlineState}}</td>
+              <td
+                v-if="item.onlineState!='脱机'"
+                class="td1"
+                style="color:green"
+              >{{$t('m.linkState')}} {{item.onlineState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.SpaceLockState')}} {{item.parkLockState}}</td>
-              <td class="td1">{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                v-if="item.parkLockState"
+                class="td1"
+              >{{$t('m.SpaceLockState')}} {{item.parkLockState}}</td>
+
+              <td
+                v-if="item.runState&&item.runState=='脱机'"
+                class="td1"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                v-if="item.runState&&item.runState!='脱机'"
+                class="td1"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                v-if="item.parkAreaName"
+                class="td1"
+              >停车场区域名： {{item.parkAreaName}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.controlStyle')}} {{item.priority}}</td>
+              <td
+                v-if="item.priority"
+                class="td1"
+              >{{$t('m.controlStyle')}} {{item.priority}}</td>
               <td class="td1"></td>
             </tr>
           </table>
 
         </view>
       </uni-list-item>
+      <uni-list-item
+        v-if="grid=='zzj'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
+        <view>
+          <table id="tb1">
+            <tr>
+              <td class="td1">地址：{{item.address}}</td>
+              <td class="td1">{{item.parkName}}</td>
+            </tr>
+            <tr>
+              <td class="td1">设备Id：{{item.deviceId}}</td>
+              <td class="td1">
+                <div>区域名称：</div>
+                {{item.parkAreaName}}
+              </td>
+            </tr>
+            <tr>
+              <td class="td1">位置属性：{{item.locationType}}</td>
+              <td class="td1">连接状态：{{item.onlineState}}</td>
+            </tr>
+          </table>
+        </view>
+      </uni-list-item>
     </uni-list>
 
-    <view class="text">
-      <text>{{filterResult}}</text>
-    </view>
   </view>
 </template>
 
@@ -73,163 +152,148 @@ export default {
   },
   data () {
     return {
+      showlist: [],
       themeColor: '#000000',
       titleColor: '#666666',
       filterResult: '',
-      menuList: [{
-        'title': '设备类型',
-        'detailTitle': '请选择设备类型（可多选）',
-        'isMutiple': true,
-        'key': 'jobType',
-        'defaultSelectedIndex': [0],
-        'detailList': [{
-          'title': '不限',
-          'value': ''
-        },
+      tourl: "",
+      grid: "",//用来判断状态
+      menuList: [
         {
-          'title': '车位锁',
-          'value': '车位锁'
-        },
-        {
-          'title': '出入口',
-          'value': '出入口'
-        },
-        {
-          'title': '自助机',
-          'value': '自助机'
-        },
-        {
-          'title': '节点',
-          'value': '节点'
-        }
-        ]
+          'title': '设备类型',
+          'detailTitle': '请选择设备类型（单选）',
+          'isMutiple': false,
+          'key': 'Type',
+          'defaultSelectedIndex': [0],
+          'detailList': [{
+            'title': '不限',
+            'value': ''
+          },
+          {
+            'title': '车位锁',
+            'value': '车位锁'
+          },
+          {
+            'title': '出入口',
+            'value': '出入口'
+          },
+          {
+            'title': '自助机',
+            'value': '自助机'
+          }
+          ]
 
-      },
-      {
-        'title': '全部状态',
-        'key': 'salary',
-        'isMutiple': true,
-        'detailList': [{
+        },
+        {
           'title': '全部状态',
-          'value': ''
-        },
-        {
-          'title': '空闲',
-          'value': '空闲'
-        },
-        {
-          'title': '新车入场',
-          'value': '新车入场'
-        },
-        {
-          'title': '计费中',
-          'value': '计费中'
-        },
-        {
-          'title': '已缴费',
-          'value': '已缴费'
-        },
-        {
-          'title': '缴费未离开',
-          'value': '缴费未离开'
-        },
-        {
-          'title': '缴费已超时',
-          'value': '缴费已超时'
-        },
-        {
-          'title': '脱机',
-          'value': '脱机'
-        },
-        {
-          'title': '上升遇阻',
-          'value': '上升遇阻'
-        },
-        {
-          'title': '下降遇阻',
-          'value': '下降遇阻'
-        },
-        {
-          'title': '车检器误报',
-          'value': '车检器误报'
-        },
-        {
-          'title': '其它',
-          'value': '其它'
-        }
-        ]
+          'key': 'states',
+          'isMutiple': false,
+          'detailList': [{
+            'title': '全部状态',
+            'value': ''
+          },
+          {
+            'title': '空闲',
+            'value': '空闲'
+          },
+          {
+            'title': '新车入场',
+            'value': '新车入场'
+          },
+          {
+            'title': '计费中',
+            'value': '计费中'
+          },
+          {
+            'title': '已缴费',
+            'value': '已缴费'
+          },
+          {
+            'title': '缴费未离开',
+            'value': '缴费未离开'
+          },
+          {
+            'title': '缴费已超时',
+            'value': '缴费已超时'
+          },
+          {
+            'title': '脱机',
+            'value': '脱机'
+          },
+          {
+            'title': '上升遇阻',
+            'value': '上升遇阻'
+          },
+          {
+            'title': '下降遇阻',
+            'value': '下降遇阻'
+          },
+          {
+            'title': '车检器误报',
+            'value': '车检器误报'
+          },
+          {
+            'title': '其它',
+            'value': '其它'
+          }
+          ]
 
-      },
-      {
-        'title': '单选',
-        'key': 'single',
-        'isMutiple': false,
-        'detailTitle': '请选择（单选）',
-        'reflexTitle': true,
-        'defaultSelectedIndex': 0,
-        'detailList': [{
-          'title': '不限',
-          'value': ''
         },
         {
-          'title': '条件1',
-          'value': 'test_1'
-        },
-        {
-          'title': '条件2',
-          'value': 'test_2'
-        },
-        {
-          'title': '条件3',
-          'value': 'test_3'
-        },
-        {
-          'title': '条件4',
-          'value': 'test_4'
-        },
-        {
-          'title': '条件5',
-          'value': 'test_5'
-        },
-        {
-          'title': '条件6',
-          'value': 'test_6'
-        },
-        {
-          'title': '条件7',
-          'value': 'test_7'
-        },
-        {
-          'title': '条件8',
-          'value': 'test_8'
-        },
-        ]
-      },
-      {
-        'title': '排序',
-        'key': 'sort',
-        'isSort': true,
-        'reflexTitle': true,
-        'defaultSelectedIndex': 0,
-        'detailList': [{
-          'title': '默认排序',
-          'value': ''
-        },
-        {
-          'title': '发布时间',
-          'value': 'add_time'
-        },
-        {
-          'title': '薪资最高',
-          'value': 'wages_up'
-        },
-        {
-          'title': '离我最近',
-          'value': 'location'
+          'title': '单选',
+          'key': 'jiedian',
+          'isMutiple': false,
+          'detailTitle': '请选择（单选）',
+          'reflexTitle': true,
+          'defaultSelectedIndex': 0,
+          'detailList': [{
+            'title': '选择节点',
+            'value': ''
+          },
+          {
+            'title': '条件1',
+            'value': 'test_1'
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          },
+          {
+            'title': '',
+            'value': ''
+          }
+          ]
         }
-        ]
-      }
       ],
+      parkId: "",
       lockInfo: {
         "appId": "",
         "privatekey": "",
@@ -242,19 +306,88 @@ export default {
           "parkLockNum": "",//车位号
         }
       },
-      lockBack: []
+      lockBack: [],
+      crkInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkId": "",
+          "parkName": "",
+          "parkAreaId": "",//区域Id
+          "parkAreaName": "",//区域名称
+          "deviceName": "",//设备名称
+          "deviceType": "",//出入口类型 1 : 入口  2 : 出口
+        }
+      },
+      crkBack: [],
+      zzjInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkId": "",
+          "parkName": "",
+          "deviceName": "",//设备名称
+        }
+      },
+      zzjBack: [],
+      jiedianInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkId": "",
+          "parkName": "",
+          "deviceName": "",//节点名称
+        }
+      },
+      jiedianback: [],
+      searchVal: ""
     }
 
   },
   onLoad (options) {
     let parkId = options.parkId;
     console.log(parkId)
-    this.lockInfo.datas.parkId = parkId
+    this.parkId = parkId
   },
   methods: {
     result (val) {
       console.log('filter_result:' + JSON.stringify(val));
       this.filterResult = JSON.stringify(val, null, 2)
+      this.filterinfo()
+    },
+    filterinfo () {
+      if (JSON.parse(this.filterResult).Type) {
+        // 筛选设备类型
+        let case1 = JSON.parse(this.filterResult).Type
+        console.log(case1)
+        {
+          if (case1 == "车位锁") {
+            this.getlockInfo()
+
+          } else if (case1 == "出入口") {
+            console.log("crk")
+            this.getcrkInfo()
+          } else if (case1 == "自助机") {
+            console.log("zzj")
+            this.getzzjInfo()
+          }
+        }
+      } else if (JSON.parse(this.filterResult).states) {
+        // 筛选设备状态
+        let case2 = JSON.parse(this.filterResult).states
+        console.log(case2)
+
+      } else if (JSON.parse(this.filterResult).jiedian) {
+        //筛选节点
+        let case3 = JSON.parse(this.filterResult).jiedian
+        console.log(case3)
+        this.lockInfo.datas.deviceId = case3
+        this.getlockInfo()
+
+      }
     },
     chosepark () {
       uni.switchTab({
@@ -262,10 +395,21 @@ export default {
       });
     },
     goincontrol (index) {
-      console.log(this.lockBack[index].parkLockNum)
-      uni.navigateTo({
-        url: '../parkdetail/detailcontrol/sLockcontrol?parkLockId=' + this.lockBack[index].parkLockId + '&parkName=' + this.lockBack[index].parkName + '&parkLockState=' + this.lockBack[index].parkLockState,
-      });
+      // console.log(this.lockBack[index].parkLockNum)
+      var url = this.tourl
+      if (this.grid == "slock") {
+        uni.navigateTo({
+          url: url + '?parkLockId=' + this.lockBack[index].parkLockId + '&parkName=' + this.lockBack[index].parkName + '&parkLockState=' + this.lockBack[index].parkLockState,
+        });
+      } else if (this.grid == "inout") {
+        uni.navigateTo({
+          url: url + '?devAdr=' + this.crkBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName,
+        });
+      } else if ((this.grid == "zzj")) {
+        uni.navigateTo({
+          url: url + '?devAdr=' + this.zzjBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName,
+        });
+      }
     },
     getlockInfo () {
       // 从localStorage的Token中获取userCode：U1
@@ -273,6 +417,9 @@ export default {
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
       // console.log("从token中获取的userCode:" + userCode)
       this.lockInfo.datas.userId = userCode
+      this.lockInfo.datas.parkId = this.parkId
+      // 搜索需要的信息
+      this.lockInfo.datas.parkLockNum = this.searchVal
       let submit = {}
       submit = JSON.stringify(this.lockInfo)
       console.log(submit)
@@ -287,7 +434,10 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.lockBack = JSON.parse(JSON.parse(res.data.datas).list)
-            console.log(this.lockBack)
+            this.showlist = this.lockBack
+            // console.log(this.lockBack)
+            this.tourl = "detailcontrol/sLockcontrol"
+            this.grid = "slock"
           } else {
             alert(res.data.message)
           }
@@ -296,11 +446,121 @@ export default {
           console.log('出现了错误' + err)
         })
     },
+    getcrkInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.crkInfo.datas.userId = userCode
+      this.crkInfo.datas.parkId = this.parkId
+
+      let submit = {}
+      submit = JSON.stringify(this.crkInfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/GetConnDeviceListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.crkBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.crkBack)
+            this.showlist = this.crkBack
+            // console.log(this.lockBack)
+            this.tourl = "detailcontrol/inoutcontrol"
+            this.grid = "inout"
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
+    getzzjInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.zzjInfo.datas.userId = userCode
+      this.zzjInfo.datas.parkId = this.parkId
+
+      let submit = {}
+      submit = JSON.stringify(this.zzjInfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/GetPayStationListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.zzjBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.zzjBack)
+            this.showlist = this.zzjBack
+            // console.log(this.lockBack)
+            this.tourl = "detailcontrol/micontrol"
+            this.grid = "zzj"
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
+    getjiedianInfo () {
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+      this.jiedianInfo.datas.userId = userCode
+      this.jiedianInfo.datas.parkId = this.parkId
+
+      let submit = {}
+      submit = JSON.stringify(this.jiedianInfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/GetParkLockNodeListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.jiedianBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.jiedianBack)
+            console.log(this.jiedianBack[0].deviceName)
+            for (var i = 0; i < this.jiedianBack.length; i++) {
+              this.menuList[2].detailList[i + 1].title = this.jiedianBack[i].deviceName
+              this.menuList[2].detailList[i + 1].value = this.jiedianBack[i].deviceId
+            }
+          } else {
+            alert(res.data.message)
+          }
+        })
+        .catch(err => {
+          console.log('出现了错误' + err)
+        })
+    },
+    input (res) {
+      this.searchVal = res.value
+    },
 
 
   },
   mounted () {
     this.getlockInfo()
+    this.getjiedianInfo()
   }
 
 }

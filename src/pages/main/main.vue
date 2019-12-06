@@ -1,9 +1,11 @@
 <template>
   <view class="content">
+    <!-- {{searchVal}} -->
     <uni-search-bar
       radius="100"
-      :placeholder="$t('m.plzinput')"
-      @confirm="search"
+      @input="input"
+      :placeholder="$t('m.plzinput1')"
+      @confirm="getInfo"
     />
     <!-- badge-text小绿点 -->
     <uni-list>
@@ -65,8 +67,8 @@ export default {
           "companyId": "",//公众号或者小程序Id
         }
       },
-      parkInfoBack: []
-
+      parkInfoBack: [],
+      searchVal: ""
     }
   },
   methods: {
@@ -76,6 +78,7 @@ export default {
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
       console.log("从token中获取的userCode:" + userCode)
       this.GetParkInfo.datas.userCode = userCode
+      this.GetParkInfo.datas.parkName = this.searchVal
       let submit = {}
       submit = JSON.stringify(this.GetParkInfo)
       this.$axios({
@@ -97,6 +100,9 @@ export default {
         .catch(err => {
           console.log('出现了错误' + err)
         })
+    },
+    input (res) {
+      this.searchVal = res.value
     },
     goindetail (index) {
       console.log(this.parkInfoBack[index].parkId)

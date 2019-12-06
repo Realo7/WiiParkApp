@@ -23,7 +23,7 @@
       </view>
       <uni-search-bar
         radius="100"
-        :placeholder="$t('m.plzinput')"
+        :placeholder="$t('m.plzinput2')"
         @confirm="search"
         class="flex-item2"
       />

@@ -11,7 +11,8 @@ export const m={
     totalnum:"totalnum", //总车位
     hadstopednum:"hadstopednum",//已停车位
     remainnum:"remainnum",//剩余车位
-    plzinput:"plz input search info",//请输入搜索信息
+    plzinput1:"plz input parkname search info",//请输入搜索信息
+    plzinput1:"plz input carlocknum search info",//请输入搜索信息
     SpaceNo:"SpaceNo",//车位号
     SpaceState:"SpaceState",// 车位状态
     SpaceLockNo:"SpaceLockNo",//车位锁号

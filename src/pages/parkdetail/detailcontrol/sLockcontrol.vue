@@ -6,7 +6,7 @@
       <view class="tt1">车位号：{{parkLockId}}</view>
       <view class="tt1">车位锁状态：{{parkLockState}}</view>
     </view>
-    <view class="CC">基本控制</view>
+    <view class="CC1">基本控制</view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
@@ -77,7 +77,7 @@
       </view> -->
     </view>
 
-    <view class="CC">
+    <view class="CC2">
       应急控制
     </view>
     <view class="uni-flex uni-row">
@@ -119,8 +119,29 @@
       ref="showpopup"
       :type="type"
       @change="change"
-    ><text class="popup-content">{{ content }}</text></uni-popup>
-
+    ><text class="popup-content">{{ content }}</text>
+    </uni-popup>
+    <uni-popup
+      ref="showtip"
+      :type="type"
+      :mask-click="false"
+      @change="change"
+    >
+      <view class="uni-tip">
+        <text class="uni-tip-title">message</text>
+        <text class="uni-tip-content">您需要支付{{selectMback.shouldPay}}元</text>
+        <view class="uni-tip-group-button">
+          <text
+            class="uni-tip-button"
+            @click="cancel('tip')"
+          >取消</text>
+          <text
+            class="uni-tip-button"
+            @click="handpay()"
+          >手动支付</text>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 <script>
@@ -128,6 +149,7 @@ export default {
 
   data () {
     return {
+      time: "",
       lol: "lol",
       type: '',
       content: 'popup',
@@ -162,7 +184,22 @@ export default {
           "inTm": ""
         }
       },
-      handinback: {}
+      handinback: {},
+      handpayinfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "parkLockId": "",
+          "dealId": "",//交易流水号
+          "stayTm": "",//停留时间(分)
+          "shouldPay": "",//应收金额
+          "dscountPay": "",//优惠金额
+          "realPay": "",//实收金额
+
+        }
+      },
+      handpayback: {}
     }
   },
   onLoad (options) {
@@ -230,10 +267,10 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.selectMback = JSON.parse(res.data.datas)
-            console.log(res.data.message)
-            alert("您需要支付" + this.selectMback.shouldPay + "元")
+            console.log(this.selectMback)
+            this.togglePopup('center', 'tip', "您需要支付" + this.selectMback.shouldPay + "元")
           } else {
-            alert(res.data.message)
+            this.togglePopup('center', 'popup', res.data.message)
           }
         })
         .catch(err => {
@@ -249,6 +286,8 @@ export default {
       this.handininfo.datas.userId = userCode
 
       this.handininfo.datas.parkLockId = this.parkLockId
+      this.getnow()
+      this.handininfo.datas.inTm = this.time
       let submit = {}
       submit = JSON.stringify(this.handininfo)
       console.log(submit)
@@ -270,6 +309,62 @@ export default {
         .catch(err => {
           this.togglePopup('top', 'popup', '出现了错误' + err)
         })
+    },
+    handpay () {
+      this.cancel('tip')
+      this.togglePopup('center', 'popup', '请等待')
+      // 从localStorage的Token中获取userCode：U1
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      // console.log("从token中获取的userCode:" + userCode)
+
+      this.handpayinfo.datas.userId = userCode
+      this.handpayinfo.datas.parkLockId = this.parkLockId
+      this.handpayinfo.datas.dealId = this.selectMback.dealId
+      this.handpayinfo.datas.stayTm = this.selectMback.stayTm
+      this.handpayinfo.datas.shouldPay = this.selectMback.shouldPay
+      this.handpayinfo.datas.dscountPay = this.selectMback.dscountPay
+      // this.handpayinfo.datas.realPay = this.selectMback.realPay
+
+      let submit = {}
+      submit = JSON.stringify(this.handpayinfo)
+      console.log(submit)
+      this.$axios({
+        method: 'post',
+        url: '/ParkLockManualPayHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        // headers: { 'Content-Type': 'application/json' },
+        data: submit,
+        emulateJSON: true
+      })
+        .then(res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.togglePopup('center', 'popup', res.data.message)
+          } else {
+            this.togglePopup('center', 'popup', res.data.message)
+          }
+        })
+        .catch(err => {
+          this.togglePopup('top', 'popup', '出现了错误' + err)
+        })
+    },
+    getnow () {
+      var now = new Date()
+      let year = now.getFullYear()
+      let month = now.getMonth() + 1
+      let date = now.getDate()
+      let hours = now.getHours()
+      let minutes = now.getMinutes()
+      let seconds = now.getSeconds()
+
+      var nowtime =
+        year + '-' + this.conver(month) + '-' + this.conver(date) + ' ' + this.conver(hours) + ':' + this.conver(minutes) + ':' + this.conver(seconds)
+
+      this.time = nowtime.toString()
+      return nowtime.toString()
+    },
+    conver (a) {
+      return a < 10 ? '0' + a : a
     },
     togglePopup (type, open, value) {
       switch (type) {
@@ -311,11 +406,19 @@ export default {
   text-align: center;
   font-size: 20px;
 }
-.CC {
+.CC1 {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
   background-color: deepskyblue;
+  color: white;
+  font-size: 20px;
+}
+.CC2 {
+  text-align: center;
+  margin-top: 2%;
+  line-height: 100upx;
+  background-color: red;
   color: white;
   font-size: 20px;
 }
@@ -360,6 +463,7 @@ button {
 }
 .tt1 {
   font-size: 18px;
+  line-height: 35px;
 }
 
 .desc {
