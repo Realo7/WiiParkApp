@@ -128,7 +128,7 @@
       @change="change"
     >
       <view class="uni-tip">
-        <text class="uni-tip-title">message</text>
+        <text class="uni-tip-title">支付</text>
         <text class="uni-tip-content">您需要支付{{selectMback.shouldPay}}元</text>
         <view class="uni-tip-group-button">
           <text

@@ -26,7 +26,7 @@
     </sl-filter>
     <uni-list>
       <uni-list-item
-        v-if="grid=='slock'||grid=='inout'"
+        v-if="grid=='slock'"
         :show-badge="true"
         title=""
         badge-text=""
@@ -38,35 +38,59 @@
 
           <table id="tb1">
             <tr>
+              <td class="td3">{{item.parkLockNum}}</td>
+              <td class="td3">{{item.carState}}</td>
               <td
-                v-if="item.parkLockNum"
-                class="td1"
-              >{{$t('m.SpaceNo')}} {{item.parkLockNum}}</td>
+                v-if="item.onlineState=='脱机'"
+                class="td3"
+                style="color:red"
+              >{{item.onlineState}}</td>
               <td
-                v-if="item.devAdr"
-                class="td1"
-              >设备号： {{item.devAdr}}</td>
-              <td
-                v-if="item.carState"
-                class="td1"
-              >{{$t('m.SpaceState')}} {{item.carState}}</td>
-              <td
-                v-if="item.deviceType"
-                class="td1"
-              >{{item.deviceType}}</td>
+                v-if="item.onlineState!='脱机'"
+                style="color:green"
+              >{{item.onlineState}}</td>
+              <td class="td3">{{item.priority}}</td>
+              <td class="td3">{{item.parkLockState}}</td>
             </tr>
             <tr>
-              <td
-                v-if="item.parkLockId"
-                class="td1"
-              >{{$t('m.SpaceLockNo')}}
+              <td colspan="3">
                 <div> {{item.parkLockId}}</div>
               </td>
               <td
-                v-if="item.devName"
-                class="td1"
-              >设备名称： {{item.devName}}
-              </td>
+                colspan="2"
+                v-if="item.runState&&item.runState=='脱机'"
+                class="td3"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                colspan="2"
+                v-if="item.runState&&item.runState!='脱机'"
+                class="td3"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
+            </tr>
+
+          </table>
+
+        </view>
+      </uni-list-item>
+      <uni-list-item
+        v-if="grid=='inout'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
+        <view>
+          <table id="tb1">
+            <tr>
+              <td class="td1">设备号： {{item.devAdr}}</td>
+              <td class="td1">{{item.deviceType}}</td>
+            </tr>
+            <tr>
+              <td class="td1">设备名称： {{item.devName}}</td>
               <td
                 v-if="item.onlineState=='脱机'"
                 class="td1"
@@ -79,35 +103,9 @@
               >{{$t('m.linkState')}} {{item.onlineState}}</td>
             </tr>
             <tr>
-              <td
-                v-if="item.parkLockState"
-                class="td1"
-              >{{$t('m.SpaceLockState')}} {{item.parkLockState}}</td>
-
-              <td
-                v-if="item.runState&&item.runState=='脱机'"
-                class="td1"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
-              <td
-                v-if="item.runState&&item.runState!='脱机'"
-                class="td1"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
-              <td
-                v-if="item.parkAreaName"
-                class="td1"
-              >停车场区域名： {{item.parkAreaName}}</td>
-            </tr>
-            <tr>
-              <td
-                v-if="item.priority"
-                class="td1"
-              >{{$t('m.controlStyle')}} {{item.priority}}</td>
-              <td class="td1"></td>
+              <td class="td1">停车场区域名： {{item.parkAreaName}}</td>
             </tr>
           </table>
-
         </view>
       </uni-list-item>
       <uni-list-item
@@ -597,6 +595,10 @@ export default {
     }
     .td2 {
       width: 40%;
+      // border: 1px solid #f00;
+    }
+    .td3 {
+      width: 20%;
       // border: 1px solid #f00;
     }
   }

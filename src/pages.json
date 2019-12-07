@@ -37,7 +37,7 @@
         {
             "path": "pages/parkdetail/parkdetail",
             "style": {
-                "navigationBarTitleText": "停车场相关细节"
+                "navigationBarTitleText": "停车场相关设备"
             }
         },       
         {

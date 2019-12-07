@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{resultInfo.result}}
+    <!-- {{resultInfo.result}} -->
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <view
@@ -39,20 +39,41 @@
         <view>
           <table id="tb1">
             <tr>
-              <td class="td1">{{item.parkName}}</td>
-              <td class="td1">{{item.parkLockId}}</td>
+              <td>{{item.parkName}}</td>
+              <td>{{item.parkLockId}}</td>
+              <td
+                v-if="item.payState=='已支付'"
+                style="color:green"
+              >{{item.payState}}</td>
+              <td
+                v-if="item.payState!='已支付'"
+                style="color:red"
+              >{{item.payState}}</td>
+              <td
+                v-if="item.outState=='未出场'"
+                style="color:green"
+              >{{item.outState}}</td>
+              <td
+                v-if="item.outState!='未出场'"
+                style="color:green"
+              >{{item.outState}}</td>
             </tr>
             <tr>
-              <td class="td1">入场时间：{{item.inTm}}</td>
-              <td class="td1">{{item.payState}}</td>
+              <td
+                class="td1"
+                colspan="2"
+              >入场：{{item.inTm}}</td>
+              <td
+                class="td1"
+                colspan="2"
+              >停留时间：</td>
             </tr>
             <tr>
-              <td class="td1">停留时间：{{item.payTm}}</td>
-              <td class="td1"></td>
-            </tr>
-            <tr>
-              <td class="td1">出场时间：{{item.outTm}}</td>
-              <td class="td1">状态：{{item.outState}}</td>
+              <td
+                class="td1"
+                colspan="2"
+              >出场：{{item.outTm}}</td>
+              <td class="td2">实付金额：{{item.realpay}}</td>
             </tr>
           </table>
         </view>
@@ -180,10 +201,10 @@ export default {
 }
 .newbtn {
   white-space: nowrap;
-  background: url('../../static/img/fengexian.png');
-  background-repeat: no-repeat;
-  background-position-y: bottom; /*背景图片在纵向的最下方显示*/
-  background-size: 100% 30%;
+  // background: url('../../static/img/fengexian.png');
+  // background-repeat: no-repeat;
+  // background-position-y: bottom; /*背景图片在纵向的最下方显示*/
+  // background-size: 100% 30%;
 }
 .flex-item {
   width: 25%;
@@ -196,12 +217,16 @@ export default {
 }
 #tb1 {
   width: 100%;
+  // border: 1px solid #f00;
   tr {
     .td1 {
       width: 70%;
     }
     .td2 {
       width: 30%;
+    }
+    .td3 {
+      width: 35%;
     }
   }
 }
