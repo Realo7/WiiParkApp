@@ -180,7 +180,7 @@ export default {
 }
 .newbtn {
   white-space: nowrap;
-  background: url('../../static/img/分割线.png');
+  background: url('../../static/img/fengexian.png');
   background-repeat: no-repeat;
   background-position-y: bottom; /*背景图片在纵向的最下方显示*/
   background-size: 100% 30%;
