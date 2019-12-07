@@ -11,8 +11,8 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-
-axios.defaults.baseURL = "http://192.168.1.166:3830/Handlers/"
+import url from '../src/static/config'
+axios.defaults.baseURL = url.BaseUrl
 
 Vue.component("uniPopup",uniPopup);
 Vue.component("wPicker",wPicker);

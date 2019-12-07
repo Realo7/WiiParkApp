@@ -189,7 +189,7 @@ export default {
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
-        url: '/PlateManualPayHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/PlateManualPayHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
         data: submit,
         emulateJSON: true
       })
