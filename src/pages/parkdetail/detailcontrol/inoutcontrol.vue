@@ -4,6 +4,24 @@
     <view class="uni-flex uni-column">
       <span class="tx">{{parkName}} {{deviceType}}</span>
       <view class="tx1">点击按钮控制杆的抬起</view>
+      <br>
+      <view class="uni-list">
+        <view class="uni-list-cell">
+          <view class="uni-list-cell-left">
+            选择开闸原因
+          </view>
+          <view class="uni-list-cell-db">
+            <picker
+              @change="PickerChange"
+              :value="index"
+              :range="array"
+              range-key="name"
+            >
+              <view class="uni-input">{{array[index].name}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
       <view
         class="flex-item flex-item-V open"
         @click="inoutCon()"
@@ -94,6 +112,8 @@ export default {
       deviceType: "",
       parkName: "",
       inplate: "",
+      array: [{ name: '支付成功，闸机未自动开闸' }, { name: '人工审核通过，手动开闸' }, { name: '其他' }],
+      index: 0,
       inoutinfo: {
         "appId": "",
         "privatekey": "",
@@ -165,6 +185,12 @@ export default {
 
   },
   methods: {
+    PickerChange: function (e) {
+      this.index = e.target.value
+      let index = this.index
+      this.inoutinfo.reason = this.array[index].name
+
+    },
     inoutCon () {
       this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1

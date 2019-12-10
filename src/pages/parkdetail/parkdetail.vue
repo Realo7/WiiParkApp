@@ -24,7 +24,7 @@
       @result="result"
     >
     </sl-filter>
-    <uni-list>
+    <uni-list v-if="showlist">
       <uni-list-item
         v-if="grid=='slock'"
         :show-badge="true"
@@ -166,7 +166,11 @@
         </view>
       </uni-list-item>
     </uni-list>
-
+    <image
+      v-if="!showlist"
+      src="../../static/img/logo_huxiaor.png"
+      alt="未有相关数据"
+    >
   </view>
 </template>
 
