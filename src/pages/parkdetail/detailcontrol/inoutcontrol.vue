@@ -2,7 +2,8 @@
 
   <view class="uni-padding-wrap uni-common-mt">
     <view class="uni-flex uni-column">
-      <view class="tx">点击按钮控制杆的抬起</view>
+      <span class="tx">{{parkName}} {{deviceType}}</span>
+      <view class="tx1">点击按钮控制杆的抬起</view>
       <view
         class="flex-item flex-item-V open"
         @click="inoutCon()"
@@ -13,12 +14,68 @@
           v-if="deviceType=='入口'"
           @click="inspace()"
         >手动入场(车牌识别)</button>
+
         <br>
-        <button @click="spay()">查询费用(车牌识别)</button>
+        <view
+          v-if="deviceType=='出口'"
+          class="uni-flex uni-row"
+        >
+          <view class="flex-item-ipt">
+            <input
+              class="uni-input"
+              focus
+              v-model="inpt"
+              placeholder="请输入票号"
+            />
+          </view>
+          <view class="flex-item-btn">
+            <button
+              class="newbtn"
+              @click="spay()"
+            >查询费用</button>
+          </view>
+        </view>
+
         <br>
-        <button @click="handpay()">手动付费(车牌识别)</button>
+        <!-- <button
+          v-if="deviceType=='出口'"
+          @click="handpay()"
+        >手动付费(车牌识别)</button> -->
       </view>
     </view>
+    <!-- <view style="height: 400px;"></view> -->
+    <uni-popup
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
+      <text class="popup-content">
+        {{ content1 }}
+        <br>
+        {{content2}}
+      </text>
+    </uni-popup>
+    <uni-popup
+      ref="showtip"
+      :type="type"
+      :mask-click="false"
+      @change="change"
+    >
+      <view class="uni-tip">
+        <text class="uni-tip-title">查询费用</text>
+        <text class="uni-tip-content">您需要支付{{spayback.shouldPay}}元</text>
+        <view class="uni-tip-group-button">
+          <text
+            class="uni-tip-button"
+            @click="cancel('tip')"
+          >取消</text>
+          <text
+            class="uni-tip-button"
+            @click="handpay()"
+          >手动支付</text>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 
 </template>
@@ -28,6 +85,10 @@ export default {
   data () {
     return {
       title: 'Hello',
+      inpt: "",
+      type: '',
+      content1: 'popup',
+      content2: "",
       time: "",
       devAdr: "",
       deviceType: "",
@@ -105,6 +166,7 @@ export default {
   },
   methods: {
     inoutCon () {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -128,8 +190,11 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
+            this.togglePopup('center', 'popup', '抬杆' + res.data.message)
           } else {
-            alert(res.data.message)
+
+            this.togglePopup('center', 'popup', '抬杆' + res.data.message)
+
           }
         })
         .catch(err => {
@@ -138,6 +203,7 @@ export default {
     },
     // 手动入场
     inspace () {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -165,8 +231,9 @@ export default {
             this.inspaceback = JSON.parse(res.data.datas).ticketCode
             console.log(res.data.message)
             console.log(this.inspaceback)
+            this.togglePopup('center', 'popup', '手动入场' + res.data.message, "票号" + this.inspaceback)
           } else {
-            alert(res.data.message)
+            this.togglePopup('center', 'popup', '手动入场' + res.data.message)
           }
         })
         .catch(err => {
@@ -175,13 +242,18 @@ export default {
     },
     // 查询费用
     spay () {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
       console.log("从token中获取的userCode:" + userCode)
 
       this.spayinfo.datas.userId = userCode
-      this.spayinfo.datas.ticketCode = this.inspaceback
+      if (this.inspaceback) {
+        this.spayinfo.datas.ticketCode = this.inspaceback
+      } else {
+        this.spayinfo.datas.ticketCode = this.inpt
+      }
       this.spayinfo.datas.plate = this.inplate
 
       let submit = {}
@@ -195,10 +267,16 @@ export default {
       })
         .then(res => {
           console.log(res)
-          if (res.data.statusCode == '200') {
-            this.spayBack = JSON.parse(res.data.datas)
+          if (res.status == '200') {
+            if (res.data.datas != null) {
+              this.spayback = JSON.parse(res.data.datas)
+              console.log(this.spayback)
+              this.togglePopup('center', 'tip', "您需要支付" + this.spayback.shouldPay + "元")
+            } else {
+              this.togglePopup('center', 'popup', res.data.message)
+            }
           } else {
-            alert(res.data.message)
+            this.togglePopup('center', 'popup', '查询费用模块' + res.data.message)
           }
         })
         .catch(err => {
@@ -207,6 +285,7 @@ export default {
     },
     //手动付款
     handpay () {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -219,7 +298,7 @@ export default {
       this.handpayinfo.datas.dscountPay = this.spayback.dscountPay
       this.handpayinfo.datas.parkId = this.spayback.parkId
       let submit = {}
-      submit = JSON.stringify(this.inoutinfo)
+      submit = JSON.stringify(this.handpayinfo)
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
@@ -233,8 +312,9 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
+            this.togglePopup('center', 'popup', '手动付款' + res.data.message)
           } else {
-            alert(res.data.message)
+            this.togglePopup('center', 'popup', '手动付款' + res.data.message)
           }
         })
         .catch(err => {
@@ -260,16 +340,19 @@ export default {
     conver (a) {
       return a < 10 ? '0' + a : a
     },
-    togglePopup (type, open, value) {
+    togglePopup (type, open, value1, value2) {
       switch (type) {
         case 'top':
-          this.content = value
+          this.content1 = value1
+          this.content2 = value2
           break
         case 'bottom':
-          this.content = value
+          this.content1 = value1
+          this.content2 = value2
           break
         case 'center':
-          this.content = value
+          this.content1 = value1
+          this.content2 = value2
           break
       }
       this.type = type
@@ -296,6 +379,7 @@ export default {
 }
 </script>
 <style lang="scss">
+@import url('popup.css');
 .open {
   background: url('../../../static/img/openinout.png');
   background-size: 50% 70%;
@@ -313,20 +397,30 @@ export default {
   font-family: MicroSoft-YaHei;
   text-align: center;
 }
+.tx1 {
+  font-size: 18px;
+  font-family: MicroSoft-YaHei;
+  text-align: center;
+}
 .flex-item {
   width: 100%;
   height: 480upx;
   text-align: center;
   line-height: 20upx;
 }
-
+.flex-item-ipt {
+  padding-top: 3px;
+  width: 65%;
+}
+.flex-item-btn {
+  width: 30%;
+}
 .flex-item-V {
   width: 100%;
   height: 480upx;
   text-align: center;
   line-height: 480upx;
 }
-
 .text {
   margin: 15upx 10upx;
   padding: 0 20upx;
@@ -336,5 +430,13 @@ export default {
   text-align: center;
   color: #777;
   font-size: 26upx;
+}
+.popup-content {
+  width: 500upx;
+  height: 250upx;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -50,7 +50,7 @@
         type="primary"
         class="btnlogin"
         @tap="bindLogin"
-      >登录</button>
+      >{{$t('m.login')}}</button>
     </view>
 
   </view>
@@ -218,8 +218,8 @@ export default {
   margin: 10px;
 }
 .logo {
-  height: 150rpx;
-  width: 150rpx;
+  height: 200rpx;
+  width: 200rpx;
   margin-top: 100rpx;
   margin-left: auto;
   margin-right: auto;
@@ -235,7 +235,7 @@ export default {
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
-  background-color: #777;
+  background-color: black;
 }
 
 .inp {
@@ -255,8 +255,8 @@ export default {
 }
 
 .left {
-  width: 70rpx;
-  height: 70rpx;
+  width: 50rpx;
+  height: 50rpx;
   display: flex;
   flex-direction: column;
   margin: 5px;
@@ -273,11 +273,15 @@ export default {
   width: 35%;
   margin-left: 15%;
   float: left;
+  background-color: black;
+  color: #fff;
 }
 .cnbtn {
   width: 35%;
   margin-right: 15%;
   float: left;
+  background-color: black;
+  color: #fff;
 }
 .content {
   display: flex;
@@ -348,7 +352,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  // background-color: #c8c7cc;
+  background-color: #c8c7cc;
 }
 
 .input-group::after {
@@ -360,7 +364,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  // background-color: #c8c7cc;
+  background-color: #c8c7cc;
 }
 
 .input-row {
@@ -386,7 +390,7 @@ m-input {
   content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
-  // background-color: #c8c7cc;
+  background-color: #c8c7cc;
 }
 
 .btn-row {

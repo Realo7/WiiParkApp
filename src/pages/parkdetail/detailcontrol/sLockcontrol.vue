@@ -2,32 +2,32 @@
   <view class="uni-flex uni-column outout">
     <!-- <view class="name">德飞测试停车场</view> -->
     <view>
-      <view class="tt1">停车场：{{parkName}}</view>
-      <view class="tt1">车位号：{{parkLockId}}</view>
-      <view class="tt1">车位锁状态：{{parkLockState}}</view>
+      <view class="tt1">{{$t('m.parkname')}}：{{parkName}}</view>
+      <view class="tt1">{{$t('m.parklocknum')}}：{{parkLockNum}}</view>
+      <view class="tt1">{{$t('m.parklockstate')}}：{{parkLockState}}</view>
     </view>
-    <view class="CC1">基本控制</view>
+    <view class="CC1">{{$t('m.basecontrol')}}</view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('COpen')"
-        >强制开</button>
+        >{{$t('m.forceopen')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('CClose')"
-        >强制关</button>
+        >{{$t('m.forceclose')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('CNormal')"
-        >恢复正常</button>
+        >{{$t('m.renormal')}}</button>
       </view>
     </view>
     <view class="uni-flex uni-row">
@@ -36,21 +36,21 @@
           type="primary"
           class="nbt1"
           @click="slockcom ('CStop')"
-        >停止</button>
+        >{{$t('m.cease')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('Reboot')"
-        >车位锁重启</button>
+        >{{$t('m.parklockrestart')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('CClearErr')"
-        >清除</button>
+        >{{$t('m.clean')}}</button>
       </view>
     </view>
     <view class="uni-flex uni-row">
@@ -59,14 +59,14 @@
           type="primary"
           class="nbt1"
           @click="slockcom ('CLVDReboot')"
-        >检测器重启</button>
+        >{{$t('m.detectorrestart')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="selectM()"
-        >查询费用</button>
+        >{{$t('m.selectM')}}</button>
       </view>
       <!-- <view class="flex-item">
         <button
@@ -78,7 +78,7 @@
     </view>
 
     <view class="CC2">
-      应急控制
+      {{$t('m.emergencycontrol')}}
     </view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
@@ -86,7 +86,7 @@
           type="primary"
           class="nbt1"
           @click="slockcom ('CServerCheckLock')"
-        >查询联机</button>
+        >{{$t('m.selectlink')}}</button>
       </view>
       <view class="flex-item">
         <button
@@ -94,14 +94,14 @@
           class="nbt1"
           @click="slockcom (
           COpenBus)"
-        >开始营业</button>
+        >{{$t('m.startbusiness')}}</button>
       </view>
       <view class="flex-item">
         <button
           type="primary"
           class="nbt1"
           @click="slockcom ('CCloseBus')"
-        >关闭营业</button>
+        >{{$t('m.closebusiness')}}</button>
       </view>
     </view>
     <view class="uni-flex uni-row">
@@ -110,7 +110,7 @@
           type="primary"
           class="nbt1"
           @click="handin"
-        >手动入场</button>
+        >{{$t('m.handinpark')}}</button>
       </view>
 
     </view>
@@ -119,7 +119,8 @@
       ref="showpopup"
       :type="type"
       @change="change"
-    ><text class="popup-content">{{ content }}</text>
+    >
+      <text class="popup-content">{{ content }}</text>
     </uni-popup>
     <uni-popup
       ref="showtip"
@@ -156,6 +157,7 @@ export default {
       parkName: {},
       parkLockState: {},
       parkLockId: {},
+      parkLockNum: "",
       slockinfo: {
         "appId": "",
         "privatekey": "",
@@ -204,16 +206,19 @@ export default {
   },
   onLoad (options) {
     let parkLockId1 = options.parkLockId;
+    let parkLockNum1 = options.parkLockNum
     let parkLockState = options.parkLockState;
     let parkName = options.parkName
     console.log(parkLockId1)
 
     this.parkLockId = parkLockId1
+    this.parkLockNum = parkLockNum1
     this.parkLockState = parkLockState
     this.parkName = parkName
   },
   methods: {
     slockcom (value) {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -279,6 +284,7 @@ export default {
 
     },
     handin () {
+      this.togglePopup('center', 'popup', '请等待')
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -415,17 +421,19 @@ export default {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: gainsboro;
-  color: black;
+  background-color: black;
+  color: white;
   font-size: 16px;
+  font-weight: bold;
 }
 .CC2 {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: gainsboro;
-  color: black;
+  background-color: black;
+  color: white;
   font-size: 16px;
+  font-weight: bold;
 }
 .nbt1 {
   margin-top: 20upx;
@@ -444,7 +452,7 @@ export default {
   width: 100%;
   height: 150upx;
   text-align: center;
-  line-height: 150upx;
+  line-height: 120upx;
 }
 
 .text {
@@ -462,7 +470,8 @@ button {
   color: black;
   font-size: 14px;
   height: 75%;
-  text-align: center;
+  width: 90%;
+  // text-align: center;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -471,7 +480,14 @@ button {
   font-size: 16px;
   line-height: 35px;
 }
-
+.popup-content {
+  width: 400upx;
+  height: 200upx;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
 .desc {
   /* text-indent: 40upx; */
 }

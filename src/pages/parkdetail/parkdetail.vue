@@ -5,7 +5,7 @@
         class="flex-item"
         @click="chosepark"
       >
-        <text>选择停车场</text>
+        <text>{{$t('m.chosepark')}}</text>
       </view>
       <uni-search-bar
         radius="100"
@@ -35,7 +35,7 @@
         @click="goincontrol(index)"
       >
         <view>
-
+          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
               <td class="td3">{{item.parkLockNum}}</td>
@@ -74,6 +74,7 @@
 
         </view>
       </uni-list-item>
+      <!-- //出入口设备的列表样式 -->
       <uni-list-item
         v-if="grid=='inout'"
         :show-badge="true"
@@ -84,13 +85,14 @@
         @click="goincontrol(index)"
       >
         <view>
+          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
-              <td class="td1">设备号： {{item.devAdr}}</td>
+              <td class="td1">{{$t('m.deviceid')}}： {{item.devAdr}}</td>
               <td class="td1">{{item.deviceType}}</td>
             </tr>
             <tr>
-              <td class="td1">设备名称： {{item.devName}}</td>
+              <td class="td1">{{$t('m.devicename')}}： {{item.devName}}</td>
               <td
                 v-if="item.onlineState=='脱机'"
                 class="td1"
@@ -103,11 +105,12 @@
               >{{$t('m.linkState')}} {{item.onlineState}}</td>
             </tr>
             <tr>
-              <td class="td1">停车场区域名： {{item.parkAreaName}}</td>
+              <td class="td1">{{$t('m.parkareaname')}}： {{item.parkAreaName}}</td>
             </tr>
           </table>
         </view>
       </uni-list-item>
+      <!-- //自助机 -->
       <uni-list-item
         v-if="grid=='zzj'"
         :show-badge="true"
@@ -118,20 +121,45 @@
         @click="goincontrol(index)"
       >
         <view>
+          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
               <td class="td1">地址：{{item.address}}</td>
-              <td class="td1">{{item.parkName}}</td>
+              <td>{{item.deviceId}}</td>
             </tr>
             <tr>
-              <td class="td1">设备Id：{{item.deviceId}}</td>
               <td class="td1">
-                <div>区域名称：</div>
+                {{item.parkAreaName}}
+              </td>
+              <td class="td1">连接状态：{{item.onlineState}}</td>
+            </tr>
+          </table>
+        </view>
+      </uni-list-item>
+      <!-- 节点 -->
+      <uni-list-item
+        v-if="grid=='jiedian'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
+        <view>
+          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
+          <table id="tb1">
+            <tr>
+              <td class="td1">{{item.deviceId}}</td>
+              <td class="td1">{{item.address}}</td>
+            </tr>
+            <tr>
+              <td class="td1">设备名称：{{item.deviceName}}</td>
+              <td class="td1">
                 {{item.parkAreaName}}
               </td>
             </tr>
             <tr>
-              <td class="td1">位置属性：{{item.locationType}}</td>
               <td class="td1">连接状态：{{item.onlineState}}</td>
             </tr>
           </table>
@@ -178,6 +206,10 @@ export default {
           {
             'title': '自助机',
             'value': '自助机'
+          },
+          {
+            'title': '节点',
+            'value': '节点'
           }
           ]
 
@@ -237,59 +269,6 @@ export default {
           ]
 
         },
-        {
-          'title': '单选',
-          'key': 'jiedian',
-          'isMutiple': false,
-          'detailTitle': '请选择（单选）',
-          'reflexTitle': true,
-          'defaultSelectedIndex': 0,
-          'detailList': [{
-            'title': '选择节点',
-            'value': ''
-          },
-          {
-            'title': '条件1',
-            'value': 'test_1'
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          },
-          {
-            'title': '',
-            'value': ''
-          }
-          ]
-        }
       ],
       parkId: "",
       lockInfo: {
@@ -340,7 +319,7 @@ export default {
           "deviceName": "",//节点名称
         }
       },
-      jiedianback: [],
+      jiedianBack: [],
       searchVal: ""
     }
 
@@ -371,19 +350,15 @@ export default {
           } else if (case1 == "自助机") {
             console.log("zzj")
             this.getzzjInfo()
+          } else if (case1 == "节点") {
+            console.log("jd")
+            this.getjiedianInfo()
           }
         }
       } else if (JSON.parse(this.filterResult).states) {
         // 筛选设备状态
         let case2 = JSON.parse(this.filterResult).states
         console.log(case2)
-
-      } else if (JSON.parse(this.filterResult).jiedian) {
-        //筛选节点
-        let case3 = JSON.parse(this.filterResult).jiedian
-        console.log(case3)
-        this.lockInfo.datas.deviceId = case3
-        this.getlockInfo()
 
       }
     },
@@ -397,7 +372,7 @@ export default {
       var url = this.tourl
       if (this.grid == "slock") {
         uni.navigateTo({
-          url: url + '?parkLockId=' + this.lockBack[index].parkLockId + '&parkName=' + this.lockBack[index].parkName + '&parkLockState=' + this.lockBack[index].parkLockState,
+          url: url + '?parkLockId=' + this.lockBack[index].parkLockId + '&parkName=' + this.lockBack[index].parkName + '&parkLockState=' + this.lockBack[index].parkLockState + '&parkLockNum=' + this.lockBack[index].parkLockNum,
         });
       } else if (this.grid == "inout") {
         uni.navigateTo({
@@ -432,7 +407,7 @@ export default {
           if (res.data.statusCode == '200') {
             this.lockBack = JSON.parse(JSON.parse(res.data.datas).list)
             this.showlist = this.lockBack
-            // console.log(this.lockBack)
+            console.log(this.lockBack)
             this.tourl = "detailcontrol/sLockcontrol"
             this.grid = "slock"
           } else {
@@ -537,10 +512,12 @@ export default {
             this.jiedianBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(this.jiedianBack)
             console.log(this.jiedianBack[0].deviceName)
-            for (var i = 0; i < this.jiedianBack.length; i++) {
-              this.menuList[2].detailList[i + 1].title = this.jiedianBack[i].deviceName
-              this.menuList[2].detailList[i + 1].value = this.jiedianBack[i].deviceId
-            }
+            this.grid = "jiedian"
+            this.showlist = this.jiedianBack
+            // for (var i = 0; i < this.jiedianBack.length; i++) {
+            //   this.menuList[2].detailList[i + 1].title = this.jiedianBack[i].deviceName
+            //   this.menuList[2].detailList[i + 1].value = this.jiedianBack[i].deviceId
+            // }
           } else {
             alert(res.data.message)
           }
@@ -557,7 +534,6 @@ export default {
   },
   mounted () {
     this.getlockInfo()
-    this.getjiedianInfo()
   }
 
 }
