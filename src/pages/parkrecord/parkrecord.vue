@@ -3,77 +3,55 @@
     <!-- {{resultInfo.result}} -->
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <view
-          class="tab"
-          :class="{'active':index==tabIndex}"
-          @tap="toggleTab(item,index)"
-          v-for="(item,index) in tabList"
-          :key="index"
-        >{{item.name}}</view>
-        <w-picker
-          mode="range"
-          startYear="2017"
-          endYear="2030"
-          :defaultVal="['2019','01','01','-','2019','12','31']"
-          :current="false"
-          @confirm="onConfirm"
-          ref="range"
-          themeColor="#f00"
-        ></w-picker>
+        <view class="tab"
+              :class="{'active':index==tabIndex}"
+              @tap="toggleTab(item,index)"
+              v-for="(item,index) in tabList"
+              :key="index">{{item.name}}</view>
+        <w-picker mode="range"
+                  startYear="2017"
+                  endYear="2030"
+                  :defaultVal="['2019','01','01','-','2019','12','31']"
+                  :current="false"
+                  @confirm="onConfirm"
+                  ref="range"
+                  themeColor="#f00"></w-picker>
       </view>
-      <uni-search-bar
-        radius="100"
-        :placeholder="$t('m.plzinput2')"
-        @confirm="search"
-        class="flex-item2"
-      />
+      <uni-search-bar radius="100"
+                      :placeholder="$t('m.plzinput2')"
+                      @confirm="search"
+                      class="flex-item2" />
     </view>
     <uni-list>
-      <uni-list-item
-        :show-badge="true"
-        :show-arrow="false"
-        v-for="(item, index) in recordBack"
-        :key="index"
-        class="newbtn"
-      >
+      <uni-list-item :show-badge="true"
+                     :show-arrow="false"
+                     v-for="(item, index) in recordBack"
+                     :key="index"
+                     class="newbtn">
         <view>
           <table id="tb1">
             <tr>
               <td>{{item.parkName}}</td>
               <td>{{item.parkLockId}}</td>
-              <td
-                v-if="item.payState=='已支付'"
-                style="color:green"
-              >{{item.payState}}</td>
-              <td
-                v-if="item.payState!='已支付'"
-                style="color:red"
-              >{{item.payState}}</td>
-              <td
-                v-if="item.outState=='未出场'"
-                style="color:green"
-              >{{item.outState}}</td>
-              <td
-                v-if="item.outState!='未出场'"
-                style="color:green"
-              >{{item.outState}}</td>
+              <td v-if="item.payState=='已支付'"
+                  style="color:green">{{item.payState}}</td>
+              <td v-if="item.payState!='已支付'"
+                  style="color:red">{{item.payState}}</td>
+              <td v-if="item.outState=='未出场'"
+                  style="color:green">{{item.outState}}</td>
+              <td v-if="item.outState!='未出场'"
+                  style="color:green">{{item.outState}}</td>
             </tr>
             <tr>
-              <td
-                class="td1"
-                colspan="2"
-              >入场：{{item.inTm}}</td>
-              <td
-                class="td1"
-                colspan="2"
-              >停留时间：</td>
+              <td class="td1"
+                  colspan="2">{{$t('m.intime')}}：{{item.inTm}}</td>
+              <td class="td1"
+                  colspan="2">{{$t('m.staytime')}}：</td>
             </tr>
             <tr>
-              <td
-                class="td1"
-                colspan="2"
-              >出场：{{item.outTm}}</td>
-              <td class="td2">实付金额：{{item.realpay}}</td>
+              <td class="td1"
+                  colspan="2">{{$t('m.outtime')}}：{{item.outTm}}</td>
+              <td class="td2">{{$t('m.realpay')}}：{{item.realpay}}</td>
             </tr>
           </table>
         </view>

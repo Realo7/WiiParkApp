@@ -47,7 +47,52 @@ export const m={
     //parkdetail的自助机
     address:"Address",
     areaname:"AreaName",
-    
-
-
+    linkstate:"LinkState",
+    //menulist模块
+    deviceclass:"device class",
+    plzchosedeviceclass:"Please Chose Device Class",
+    unlimited:"Unlimited",
+    parklock:"ParkLock",
+    inout:"Entry and exit",
+    selfhelpmachine:"Self help machine",
+    node:"Node",
+     //detailList模块
+    AllStates:"All States",
+    Free:"Free",
+    Newcarentrance:"New car entrance",
+    Billing:"Billing",
+    Paid:"Paid",
+    PaidNotLeft:"PaidNotLeft",
+    Paymentisoverdue:"Payment is overdue",
+    offline:"offline",
+    Riseandfall:"Rise and fall",
+    Dropinresistance:"Drop in resistance",
+    Falsealarmofvehicledetector:"False alarm of vehicle detector",
+    Other:"other",
+    //重置和确认
+    reset:"Reset",
+    confirm:"Confirm",
+    //slock弹出框popup
+    payment:"payment",
+    Transactionnumber:"Transaction number",
+    intime:"in time",
+    staytime:"stay time",
+    Preferentialamount:"Preferential amount",
+    Youneedtopay:"You need to pay",
+    yuan:"yuan",
+    cancel:"cancel",
+    handpay:"pay by hands",
+    //出入口控制的汉化
+    controlopen:"Click to lift the control lever",
+    choseopenreason:"Reason for opening",
+    open:"Open",
+    inbyhand:"Manual entry (license plate recognition)",
+    plzinticket:"Please enter the ticket number",
+    querycost:"Inquiry cost",
+    reason1:"Payment successful, the gate is not opened automatically",
+    reason2:"Manual approval, manual opening",
+    reason3:"Other",  
+    //记录界面
+    outtime:"OutTime",
+    realpay:"RealPay",  
 }

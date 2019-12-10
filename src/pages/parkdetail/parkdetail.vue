@@ -1,54 +1,42 @@
 <template>
   <view class="content">
     <view class="uni-flex uni-row">
-      <view
-        class="flex-item"
-        @click="chosepark"
-      >
+      <view class="flex-item"
+            @click="chosepark">
         <text>{{$t('m.chosepark')}}</text>
       </view>
-      <uni-search-bar
-        radius="100"
-        :placeholder="$t('m.plzinput2')"
-        @input="input"
-        @confirm="getlockInfo"
-        class="flex-item2"
-      />
+      <uni-search-bar radius="100"
+                      :placeholder="$t('m.plzinput2')"
+                      @input="input"
+                      @confirm="getlockInfo"
+                      class="flex-item2" />
     </view>
     <!-- {{filterResult}} -->
-    <sl-filter
-      :independence="true"
-      :color="titleColor"
-      :themeColor="themeColor"
-      :menuList.sync="menuList"
-      @result="result"
-    >
+    <sl-filter :independence="true"
+               :color="titleColor"
+               :themeColor="themeColor"
+               :menuList.sync="menuList"
+               @result="result">
     </sl-filter>
     <uni-list v-if="showlist">
-      <uni-list-item
-        v-if="grid=='slock'"
-        :show-badge="true"
-        title=""
-        badge-text=""
-        v-for="(item, index) in showlist"
-        :key="index"
-        @click="goincontrol(index)"
-      >
+      <uni-list-item v-if="grid=='slock'"
+                     :show-badge="true"
+                     title=""
+                     badge-text=""
+                     v-for="(item, index) in showlist"
+                     :key="index"
+                     @click="goincontrol(index)">
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
               <td class="td3">{{item.parkLockNum}}</td>
-              <td class="td3">{{item.carState}}</td>
-              <td
-                v-if="item.onlineState=='脱机'"
-                class="td3"
-                style="color:red"
-              >{{item.onlineState}}</td>
-              <td
-                v-if="item.onlineState!='脱机'"
-                style="color:green"
-              >{{item.onlineState}}</td>
+              <td class="td3">{{item.carState }}</td>
+              <td v-if="item.onlineState=='脱机'"
+                  class="td3"
+                  style="color:red">{{item.onlineState}}</td>
+              <td v-if="item.onlineState!='脱机'"
+                  style="color:green">{{item.onlineState}}</td>
               <td class="td3">{{item.priority}}</td>
               <td class="td3">{{item.parkLockState}}</td>
             </tr>
@@ -56,18 +44,14 @@
               <td colspan="3">
                 <div> {{item.parkLockId}}</div>
               </td>
-              <td
-                colspan="2"
-                v-if="item.runState&&item.runState=='脱机'"
-                class="td3"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
-              <td
-                colspan="2"
-                v-if="item.runState&&item.runState!='脱机'"
-                class="td3"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
+              <td colspan="2"
+                  v-if="item.runState&&item.runState=='脱机'"
+                  class="td3"
+                  style="color:red">{{$t('m.runState')}} {{item.runState}}</td>
+              <td colspan="2"
+                  v-if="item.runState&&item.runState!='脱机'"
+                  class="td3"
+                  style="color:red">{{$t('m.runState')}} {{item.runState}}</td>
             </tr>
 
           </table>
@@ -75,15 +59,13 @@
         </view>
       </uni-list-item>
       <!-- //出入口设备的列表样式 -->
-      <uni-list-item
-        v-if="grid=='inout'"
-        :show-badge="true"
-        title=""
-        badge-text=""
-        v-for="(item, index) in showlist"
-        :key="index"
-        @click="goincontrol(index)"
-      >
+      <uni-list-item v-if="grid=='inout'"
+                     :show-badge="true"
+                     title=""
+                     badge-text=""
+                     v-for="(item, index) in showlist"
+                     :key="index"
+                     @click="goincontrol(index)">
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
@@ -93,59 +75,51 @@
             </tr>
             <tr>
               <td class="td1">{{$t('m.devicename')}}： {{item.devName}}</td>
-              <td
-                v-if="item.onlineState=='脱机'"
-                class="td1"
-                style="color:red"
-              >{{$t('m.linkState')}} {{item.onlineState}}</td>
-              <td
-                v-if="item.onlineState!='脱机'"
-                class="td1"
-                style="color:green"
-              >{{$t('m.linkState')}} {{item.onlineState}}</td>
+              <td v-if="item.onlineState=='脱机'"
+                  class="td1"
+                  style="color:red">{{$t('m.linkState')}}：{{item.onlineState}}</td>
+              <td v-if="item.onlineState!='脱机'"
+                  class="td1"
+                  style="color:green">{{$t('m.linkState')}}：{{item.onlineState}}</td>
             </tr>
             <tr>
-              <td class="td1">{{$t('m.parkareaname')}}： {{item.parkAreaName}}</td>
+              <td class="td1">{{$t('m.parkareaname')}}：{{item.parkAreaName}}</td>
             </tr>
           </table>
         </view>
       </uni-list-item>
       <!-- //自助机 -->
-      <uni-list-item
-        v-if="grid=='zzj'"
-        :show-badge="true"
-        title=""
-        badge-text=""
-        v-for="(item, index) in showlist"
-        :key="index"
-        @click="goincontrol(index)"
-      >
+      <uni-list-item v-if="grid=='zzj'"
+                     :show-badge="true"
+                     title=""
+                     badge-text=""
+                     v-for="(item, index) in showlist"
+                     :key="index"
+                     @click="goincontrol(index)">
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
-              <td class="td1">地址：{{item.address}}</td>
+              <td class="td1">{{$t('m.address')}}：{{item.address}}</td>
               <td>{{item.deviceId}}</td>
             </tr>
             <tr>
               <td class="td1">
                 {{item.parkAreaName}}
               </td>
-              <td class="td1">连接状态：{{item.onlineState}}</td>
+              <td class="td1">{{$t('m.linkstate')}}：{{item.onlineState}}</td>
             </tr>
           </table>
         </view>
       </uni-list-item>
       <!-- 节点 -->
-      <uni-list-item
-        v-if="grid=='jiedian'"
-        :show-badge="true"
-        title=""
-        badge-text=""
-        v-for="(item, index) in showlist"
-        :key="index"
-        @click="goincontrol(index)"
-      >
+      <uni-list-item v-if="grid=='jiedian'"
+                     :show-badge="true"
+                     title=""
+                     badge-text=""
+                     v-for="(item, index) in showlist"
+                     :key="index"
+                     @click="goincontrol(index)">
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
@@ -154,23 +128,21 @@
               <td class="td1">{{item.address}}</td>
             </tr>
             <tr>
-              <td class="td1">设备名称：{{item.deviceName}}</td>
+              <td class="td1">{{$t('m.devicename')}}：{{item.deviceName}}</td>
               <td class="td1">
                 {{item.parkAreaName}}
               </td>
             </tr>
             <tr>
-              <td class="td1">连接状态：{{item.onlineState}}</td>
+              <td class="td1">{{$t('m.linkstate')}}：{{item.onlineState}}</td>
             </tr>
           </table>
         </view>
       </uni-list-item>
     </uni-list>
-    <image
-      v-if="!showlist"
-      src="../../static/img/logo_huxiaor.png"
-      alt="未有相关数据"
-    >
+    <image v-if="!showlist"
+           src="../../static/img/logo_huxiaor.png"
+           alt="未有相关数据">
   </view>
 </template>
 
@@ -190,85 +162,85 @@ export default {
       grid: "",//用来判断状态
       menuList: [
         {
-          'title': '设备类型',
-          'detailTitle': '请选择设备类型（单选）',
+          'title': this.$t('m.deviceclass'),
+          'detailTitle': this.$t('m.plzchosedeviceclass'),
           'isMutiple': false,
           'key': 'Type',
           'defaultSelectedIndex': [0],
           'detailList': [{
-            'title': '不限',
-            'value': ''
+            'title': this.$t('m.unlimited'),
+            'value': this.$t('m.parklock')
           },
           {
-            'title': '车位锁',
-            'value': '车位锁'
+            'title': this.$t('m.parklock'),
+            'value': this.$t('m.parklock')
           },
           {
-            'title': '出入口',
-            'value': '出入口'
+            'title': this.$t('m.inout'),
+            'value': this.$t('m.inout')
           },
           {
-            'title': '自助机',
-            'value': '自助机'
+            'title': this.$t('m.selfhelpmachine'),
+            'value': this.$t('m.selfhelpmachine')
           },
           {
-            'title': '节点',
-            'value': '节点'
+            'title': this.$t('m.node'),
+            'value': this.$t('m.node')
           }
           ]
 
         },
         {
-          'title': '全部状态',
+          'title': this.$t('m.AllStates'),
           'key': 'states',
           'isMutiple': false,
           'detailList': [{
-            'title': '全部状态',
+            'title': this.$t('m.AllStates'),
             'value': ''
           },
           {
-            'title': '空闲',
-            'value': '空闲'
+            'title': this.$t('m.Free'),
+            'value': this.$t('m.Free')
           },
           {
-            'title': '新车入场',
-            'value': '新车入场'
+            'title': this.$t('m.Newcarentrance'),
+            'value': this.$t('m.Newcarentrance')
           },
           {
-            'title': '计费中',
-            'value': '计费中'
+            'title': this.$t('m.Billing'),
+            'value': this.$t('m.Billing')
           },
           {
-            'title': '已缴费',
-            'value': '已缴费'
+            'title': this.$t('m.Paid'),
+            'value': this.$t('m.Paid')
           },
           {
-            'title': '缴费未离开',
-            'value': '缴费未离开'
+            'title': this.$t('m.PaidNotLeft'),
+            'value': this.$t('m.PaidNotLeft')
           },
           {
-            'title': '缴费已超时',
-            'value': '缴费已超时'
+            'title': this.$t('m.Paymentisoverdue'),
+            'value': this.$t('m.Paymentisoverdue')
           },
           {
-            'title': '脱机',
-            'value': '脱机'
+            'title': this.$t('m.offline'),
+            'value': this.$t('m.offline')
           },
           {
-            'title': '上升遇阻',
-            'value': '上升遇阻'
+            'title': this.$t('m.Riseandfall'),
+            'value': this.$t('m.Riseandfall')
           },
           {
-            'title': '下降遇阻',
-            'value': '下降遇阻'
+            'title': this.$t('m.Dropinresistance'),
+            'value': this.$t('m.Dropinresistance')
           },
           {
-            'title': '车检器误报',
-            'value': '车检器误报'
+            'title': this.$t('m.Falsealarmofvehicledetector'),
+            'value': this.$t('m.Falsealarmofvehicledetector')
           },
           {
-            'title': '其它',
-            'value': '其它'
+            'title': this.$t('m.Other'),
+            'value': this.$t('m.Other')
           }
           ]
 
@@ -345,25 +317,25 @@ export default {
         let case1 = JSON.parse(this.filterResult).Type
         console.log(case1)
         {
-          if (case1 == "车位锁") {
+          if (case1 == "车位锁" || case1 == "ParkLock") {
             this.getlockInfo()
 
-          } else if (case1 == "出入口") {
+          } else if (case1 == "出入口" || case1 == "Entry and exit") {
             console.log("crk")
             this.getcrkInfo()
-          } else if (case1 == "自助机") {
+          } else if (case1 == "自助机" || case1 == "Self help machine") {
             console.log("zzj")
             this.getzzjInfo()
-          } else if (case1 == "节点") {
+          } else if (case1 == "节点" || case1 == "Node") {
             console.log("jd")
             this.getjiedianInfo()
           }
         }
-      } else if (JSON.parse(this.filterResult).states) {
-        // 筛选设备状态
-        let case2 = JSON.parse(this.filterResult).states
-        console.log(case2)
-
+      } else if (!JSON.parse(this.filterResult).Type) {
+        // 筛选设备状态,重置为不限
+        // let case2 = JSON.parse(this.filterResult).Type
+        // console.log(case2)
+        this.getlockInfo()
       }
     },
     chosepark () {
@@ -551,7 +523,7 @@ export default {
 }
 .newbtn {
   white-space: nowrap;
-  background: url('../../static/img/fengexian.png');
+  background: url("../../static/img/fengexian.png");
   background-repeat: no-repeat;
   background-position-y: bottom; /*背景图片在纵向的最下方显示*/
   background-size: 100% 30%;

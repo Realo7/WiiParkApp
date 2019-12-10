@@ -3,54 +3,42 @@
   <view class="uni-padding-wrap uni-common-mt">
     <view class="uni-flex uni-column">
       <span class="tx">{{parkName}} {{deviceType}}</span>
-      <view class="tx1">点击按钮控制杆的抬起</view>
+      <view class="tx1">{{$t('m.controlopen')}}</view>
       <br>
       <view class="uni-list">
         <view class="uni-list-cell">
           <view class="uni-list-cell-left">
-            选择开闸原因
+            {{$t('m.choseopenreason')}}
           </view>
           <view class="uni-list-cell-db">
-            <picker
-              @change="PickerChange"
-              :value="index"
-              :range="array"
-              range-key="name"
-            >
+            <picker @change="PickerChange"
+                    :value="index"
+                    :range="array"
+                    range-key="name">
               <view class="uni-input">{{array[index].name}}</view>
             </picker>
           </view>
         </view>
       </view>
-      <view
-        class="flex-item flex-item-V open"
-        @click="inoutCon()"
-      >开</view>
+      <view class="flex-item flex-item-V open"
+            @click="inoutCon()">{{$t('m.open')}}</view>
       <view class="blank"></view>
       <view class="flex-item">
-        <button
-          v-if="deviceType=='入口'"
-          @click="inspace()"
-        >手动入场(车牌识别)</button>
+        <button v-if="deviceType=='入口'"
+                @click="inspace()">{{$t('m.inbyhand')}}</button>
 
         <br>
-        <view
-          v-if="deviceType=='出口'"
-          class="uni-flex uni-row"
-        >
+        <view v-if="deviceType=='出口'"
+              class="uni-flex uni-row">
           <view class="flex-item-ipt">
-            <input
-              class="uni-input"
-              focus
-              v-model="inpt"
-              placeholder="请输入票号"
-            />
+            <input class="uni-input"
+                   focus
+                   v-model="inpt"
+                   :placeholder="$t('m.plzinticket')" />
           </view>
           <view class="flex-item-btn">
-            <button
-              class="newbtn"
-              @click="spay()"
-            >查询费用</button>
+            <button class="newbtn"
+                    @click="spay()">{{$t('m.querycost')}}</button>
           </view>
         </view>
 
@@ -62,35 +50,27 @@
       </view>
     </view>
     <!-- <view style="height: 400px;"></view> -->
-    <uni-popup
-      ref="showpopup"
-      :type="type"
-      @change="change"
-    >
+    <uni-popup ref="showpopup"
+               :type="type"
+               @change="change">
       <text class="popup-content">
         {{ content1 }}
         <br>
         {{content2}}
       </text>
     </uni-popup>
-    <uni-popup
-      ref="showtip"
-      :type="type"
-      :mask-click="false"
-      @change="change"
-    >
+    <uni-popup ref="showtip"
+               :type="type"
+               :mask-click="false"
+               @change="change">
       <view class="uni-tip">
-        <text class="uni-tip-title">查询费用</text>
-        <text class="uni-tip-content">您需要支付{{spayback.shouldPay}}元</text>
+        <text class="uni-tip-title">{{$t('m.querycost')}}</text>
+        <text class="uni-tip-content">{{$t('m.Youneedtopay')}}{{spayback.shouldPay}}{{$t('m.yuan')}}</text>
         <view class="uni-tip-group-button">
-          <text
-            class="uni-tip-button"
-            @click="cancel('tip')"
-          >取消</text>
-          <text
-            class="uni-tip-button"
-            @click="handpay()"
-          >手动支付</text>
+          <text class="uni-tip-button"
+                @click="cancel('tip')">{{$t('m.cancel')}}</text>
+          <text class="uni-tip-button"
+                @click="handpay()">{{$t('m.handpay')}}</text>
         </view>
       </view>
     </uni-popup>
@@ -112,7 +92,7 @@ export default {
       deviceType: "",
       parkName: "",
       inplate: "",
-      array: [{ name: '支付成功，闸机未自动开闸' }, { name: '人工审核通过，手动开闸' }, { name: '其他' }],
+      array: [{ name: this.$t('m.reason1') }, { name: this.$t('m.reason2') }, { name: this.$t('m.reason3') }],
       index: 0,
       inoutinfo: {
         "appId": "",
@@ -405,9 +385,9 @@ export default {
 }
 </script>
 <style lang="scss">
-@import url('popup.css');
+@import url("popup.css");
 .open {
-  background: url('../../../static/img/openinout.png');
+  background: url("../../../static/img/openinout.png");
   background-size: 50% 70%;
   background-repeat: no-repeat;
   background-position: center center;
