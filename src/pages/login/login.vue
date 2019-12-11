@@ -87,7 +87,25 @@ export default {
           "SMSCode": "",
           "userType": "2",
         }
-      }
+      },
+      textArr: [
+        { text: this.$t('m.parkmanagement') },
+        { text: this.$t('m.parkrecord') },
+        { text: this.$t('m.InfoQuery') },
+        { text: this.$t('m.me') }
+      ],
+      titleArr: [
+        { text: this.$t('m.login') },
+        { text: this.$t('m.parkmanagement') },
+        { text: this.$t('m.me') },
+        { text: this.$t('m.parkrecord') },
+        { text: this.$t('m.Other') },
+        { text: this.$t('m.querymessage') },
+        { text: this.$t('m.parkabout') },
+        { text: this.$t('m.slockcontrol') },
+        { text: this.$t('m.inoutcontrol') },
+        { text: this.$t('m.micontorl') },
+      ]
     }
   },
   computed: mapState(['forcedLogin']),
@@ -131,7 +149,7 @@ export default {
       submit = JSON.stringify(this.loginInfo)
       this.$axios({
         method: 'post',
-        url: '/CustomerLogInHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -167,12 +185,20 @@ export default {
       this.$i18n.locale = this.lang;//关键语句
       this.enactive = !this.enactive
       this.cnactive = !this.cnactive
+
+      uni.setNavigationBarTitle({
+        title: this.$t('m.login')
+      });
     },
     changecn () {
       this.lang = 'zh-CN';
       this.$i18n.locale = this.lang;//关键语句
       this.enactive = !this.enactive
       this.cnactive = !this.cnactive
+
+      uni.setNavigationBarTitle({
+        title: this.$t('m.login')
+      });
     }
   }, //方法体的结尾
   onReady () {

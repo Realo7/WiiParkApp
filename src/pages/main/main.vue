@@ -83,7 +83,7 @@ export default {
       submit = JSON.stringify(this.GetParkInfo)
       this.$axios({
         method: 'post',
-        url: '/GetParkInfoHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/GetParkInfoHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -113,10 +113,31 @@ export default {
         // }
       });
     },
-
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.login')
+      });
+      uni.setTabBarItem({
+        index: 0,
+        text: this.$t('m.parkmanagement')
+      })
+      uni.setTabBarItem({
+        index: 1,
+        text: this.$t('m.parkrecord')
+      })
+      uni.setTabBarItem({
+        index: 3,
+        text: this.$t('m.InfoQuery')
+      })
+      uni.setTabBarItem({
+        index: 4,
+        text: this.$t('m.me')
+      })
+    }
   },
   mounted () {
     this.getInfo()
+    this.changetabbar()
   }
 
 }

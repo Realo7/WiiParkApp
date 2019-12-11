@@ -1,4 +1,4 @@
-const BaseUrl = "http://112.25.208.10:9932/Handlers"
+const BaseUrl = "http://103.253.112.12:9902/Handlers"
 export default {
     BaseUrl
 }

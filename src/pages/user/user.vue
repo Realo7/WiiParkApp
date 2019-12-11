@@ -43,7 +43,14 @@ export default {
           url: '../login/login',
         });
       }
-    }
+    },
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.me')
+      });    }
+  },
+  mounted () {
+    this.changetabbar()
   }
 }
 </script>

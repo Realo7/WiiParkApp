@@ -11,34 +11,46 @@
             {{$t('m.choseopenreason')}}
           </view>
           <view class="uni-list-cell-db">
-            <picker @change="PickerChange"
-                    :value="index"
-                    :range="array"
-                    range-key="name">
+            <picker
+              @change="PickerChange"
+              :value="index"
+              :range="array"
+              range-key="name"
+            >
               <view class="uni-input">{{array[index].name}}</view>
             </picker>
           </view>
         </view>
       </view>
-      <view class="flex-item flex-item-V open"
-            @click="inoutCon()">{{$t('m.open')}}</view>
+      <view
+        class="flex-item flex-item-V open"
+        @click="inoutCon()"
+      >{{$t('m.open')}}</view>
       <view class="blank"></view>
       <view class="flex-item">
-        <button v-if="deviceType=='入口'"
-                @click="inspace()">{{$t('m.inbyhand')}}</button>
+        <button
+          v-if="deviceType=='入口'"
+          @click="inspace()"
+        >{{$t('m.inbyhand')}}</button>
 
         <br>
-        <view v-if="deviceType=='出口'"
-              class="uni-flex uni-row">
+        <view
+          v-if="deviceType=='出口'"
+          class="uni-flex uni-row"
+        >
           <view class="flex-item-ipt">
-            <input class="uni-input"
-                   focus
-                   v-model="inpt"
-                   :placeholder="$t('m.plzinticket')" />
+            <input
+              class="uni-input"
+              focus
+              v-model="inpt"
+              :placeholder="$t('m.plzinticket')"
+            />
           </view>
           <view class="flex-item-btn">
-            <button class="newbtn"
-                    @click="spay()">{{$t('m.querycost')}}</button>
+            <button
+              class="newbtn"
+              @click="spay()"
+            >{{$t('m.querycost')}}</button>
           </view>
         </view>
 
@@ -50,27 +62,35 @@
       </view>
     </view>
     <!-- <view style="height: 400px;"></view> -->
-    <uni-popup ref="showpopup"
-               :type="type"
-               @change="change">
+    <uni-popup
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
       <text class="popup-content">
         {{ content1 }}
         <br>
         {{content2}}
       </text>
     </uni-popup>
-    <uni-popup ref="showtip"
-               :type="type"
-               :mask-click="false"
-               @change="change">
+    <uni-popup
+      ref="showtip"
+      :type="type"
+      :mask-click="false"
+      @change="change"
+    >
       <view class="uni-tip">
         <text class="uni-tip-title">{{$t('m.querycost')}}</text>
         <text class="uni-tip-content">{{$t('m.Youneedtopay')}}{{spayback.shouldPay}}{{$t('m.yuan')}}</text>
         <view class="uni-tip-group-button">
-          <text class="uni-tip-button"
-                @click="cancel('tip')">{{$t('m.cancel')}}</text>
-          <text class="uni-tip-button"
-                @click="handpay()">{{$t('m.handpay')}}</text>
+          <text
+            class="uni-tip-button"
+            @click="cancel('tip')"
+          >{{$t('m.cancel')}}</text>
+          <text
+            class="uni-tip-button"
+            @click="handpay()"
+          >{{$t('m.handpay')}}</text>
         </view>
       </view>
     </uni-popup>
@@ -186,7 +206,7 @@ export default {
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
-        url: '/OpenGateFuncHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/OpenGateFuncHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -226,7 +246,7 @@ export default {
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
-        url: '/PlateManualEntryHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/PlateManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -267,7 +287,7 @@ export default {
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
-        url: '/PlateManualPayHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/PlateManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         data: submit,
         emulateJSON: true
       })
@@ -308,7 +328,7 @@ export default {
       console.log("sub" + submit)
       this.$axios({
         method: 'post',
-        url: '/PlateManualPayHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/PlateManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -371,7 +391,11 @@ export default {
     },
     change (e) {
       console.log('是否打开:' + e.show)
-    }
+    },
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.inoutcontrol')
+      });    }
   },
   onBackPress () {
     this.$refs['showpopup'].close()
@@ -380,14 +404,14 @@ export default {
     this.$refs['showshare'].close()
   },
   mounted () {
-
+    this.changetabbar()
   }
 }
 </script>
 <style lang="scss">
-@import url("popup.css");
+@import url('popup.css');
 .open {
-  background: url("../../../static/img/openinout.png");
+  background: url('../../../static/img/openinout.png');
   background-size: 50% 70%;
   background-repeat: no-repeat;
   background-position: center center;

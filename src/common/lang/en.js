@@ -1,4 +1,5 @@
 export const m={
+    lan:"en-US",
     parkmanagement:"parkingmanagement", 
     confirm:"confirm",
     cancel:"cancel",
@@ -94,5 +95,19 @@ export const m={
     reason3:"Other",  
     //记录界面
     outtime:"OutTime",
-    realpay:"RealPay",  
+    realpay:"RealPay",
+    chosedate:"chose date",  
+    //tabbar
+    parkmanagement:"ParkManage",
+    parkrecord:"ParkRecord",
+    InfoQuery:"QueryInfo",
+    me:"Mine",
+    // 头部
+    querymessage:"QueryMessage",
+    parkabout:"Device about park",
+    slockcontrol:"parklockcontrol",
+    inoutcontrol:"inoutcontrol",
+    micontorl:"micontrol"
+    
+
 }

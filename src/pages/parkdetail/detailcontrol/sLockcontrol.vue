@@ -9,48 +9,64 @@
     <view class="CC1">{{$t('m.basecontrol')}}</view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('COpen')">{{$t('m.forceopen')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('COpen')"
+        >{{$t('m.forceopen')}}</button>
       </view>
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CClose')">{{$t('m.forceclose')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CClose')"
+        >{{$t('m.forceclose')}}</button>
       </view>
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CNormal')">{{$t('m.renormal')}}</button>
-      </view>
-    </view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CStop')">{{$t('m.cease')}}</button>
-      </view>
-      <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('Reboot')">{{$t('m.parklockrestart')}}</button>
-      </view>
-      <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CClearErr')">{{$t('m.clean')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CNormal')"
+        >{{$t('m.renormal')}}</button>
       </view>
     </view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CLVDReboot')">{{$t('m.detectorrestart')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CStop')"
+        >{{$t('m.cease')}}</button>
       </view>
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="selectM()">{{$t('m.selectM')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('Reboot')"
+        >{{$t('m.parklockrestart')}}</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CClearErr')"
+        >{{$t('m.clean')}}</button>
+      </view>
+    </view>
+    <view class="uni-flex uni-row">
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CLVDReboot')"
+        >{{$t('m.detectorrestart')}}</button>
+      </view>
+      <view class="flex-item">
+        <button
+          type="primary"
+          class="nbt1"
+          @click="selectM()"
+        >{{$t('m.selectM')}}</button>
       </view>
       <!-- <view class="flex-item">
         <button
@@ -66,48 +82,62 @@
     </view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CServerCheckLock')">{{$t('m.selectlink')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CServerCheckLock')"
+        >{{$t('m.selectlink')}}</button>
       </view>
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom (
-          COpenBus)">{{$t('m.startbusiness')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom (
+          COpenBus)"
+        >{{$t('m.startbusiness')}}</button>
       </view>
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="slockcom ('CCloseBus')">{{$t('m.closebusiness')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="slockcom ('CCloseBus')"
+        >{{$t('m.closebusiness')}}</button>
       </view>
     </view>
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <button type="primary"
-                class="nbt1"
-                @click="handin">{{$t('m.handinpark')}}</button>
+        <button
+          type="primary"
+          class="nbt1"
+          @click="handin"
+        >{{$t('m.handinpark')}}</button>
       </view>
 
     </view>
     <!-- <view style="height: 400px;"></view> -->
-    <uni-popup ref="showpopup"
-               :type="type"
-               @change="change">
+    <uni-popup
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
       <view class="popup-content">
         {{ content }}
         <view style="text-align: center;margin-right:20upx;">
-          <image v-if="content=='请等待'"
-                 class="loadingimg"
-                 src="../../../static/img/loading.gif">
+          <image
+            v-if="content=='请等待'"
+            class="loadingimg"
+            src="../../../static/img/loading.gif"
+          >
         </view>
       </view>
 
     </uni-popup>
-    <uni-popup ref="showtip"
-               :type="type"
-               :mask-click="false"
-               @change="change">
+    <uni-popup
+      ref="showtip"
+      :type="type"
+      :mask-click="false"
+      @change="change"
+    >
       <view class="uni-tip">
         <text class="uni-tip-title">{{$t('m.payment')}}</text>
 
@@ -121,10 +151,14 @@
           {{$t('m.Youneedtopay')}}{{selectMback.shouldPay}}{{$t('m.yuan')}}
         </view>
         <view class="uni-tip-group-button">
-          <text class="uni-tip-button"
-                @click="cancel('tip')">{{$t('m.cancel')}}</text>
-          <text class="uni-tip-button"
-                @click="handpay()">{{$t('m.handpay')}}</text>
+          <text
+            class="uni-tip-button"
+            @click="cancel('tip')"
+          >{{$t('m.cancel')}}</text>
+          <text
+            class="uni-tip-button"
+            @click="handpay()"
+          >{{$t('m.handpay')}}</text>
         </view>
       </view>
     </uni-popup>
@@ -216,7 +250,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/ParkLockControlHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/ParkLockControlHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -248,7 +282,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/ParkLockManualPayHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/ParkLockManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -284,7 +318,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/ParkLockManualEntryHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/ParkLockManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -322,7 +356,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/ParkLockManualPayHandler.ashx?method=POST&lan=zh-CN&type=app&compress=00',
+        url: '/ParkLockManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -379,7 +413,11 @@ export default {
     },
     change (e) {
       console.log('是否打开:' + e.show)
-    }
+    },
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.slockcontrol')
+      });    }
   },
   onBackPress () {
     this.$refs['showpopup'].close()
@@ -388,12 +426,12 @@ export default {
     this.$refs['showshare'].close()
   },
   mounted () {
-
+    this.changetabbar()
   }
 }
 </script>
 <style lang="scss">
-@import url("popup.css");
+@import url('popup.css');
 .outout {
   width: 90%;
   margin-left: 5%;

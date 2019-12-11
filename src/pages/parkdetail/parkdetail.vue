@@ -1,42 +1,54 @@
 <template>
   <view class="content">
     <view class="uni-flex uni-row">
-      <view class="flex-item"
-            @click="chosepark">
+      <view
+        class="flex-item"
+        @click="chosepark"
+      >
         <text>{{$t('m.chosepark')}}</text>
       </view>
-      <uni-search-bar radius="100"
-                      :placeholder="$t('m.plzinput2')"
-                      @input="input"
-                      @confirm="getlockInfo"
-                      class="flex-item2" />
+      <uni-search-bar
+        radius="100"
+        :placeholder="$t('m.plzinput2')"
+        @input="input"
+        @confirm="getlockInfo"
+        class="flex-item2"
+      />
     </view>
     <!-- {{filterResult}} -->
-    <sl-filter :independence="true"
-               :color="titleColor"
-               :themeColor="themeColor"
-               :menuList.sync="menuList"
-               @result="result">
+    <sl-filter
+      :independence="true"
+      :color="titleColor"
+      :themeColor="themeColor"
+      :menuList.sync="menuList"
+      @result="result"
+    >
     </sl-filter>
     <uni-list v-if="showlist">
-      <uni-list-item v-if="grid=='slock'"
-                     :show-badge="true"
-                     title=""
-                     badge-text=""
-                     v-for="(item, index) in showlist"
-                     :key="index"
-                     @click="goincontrol(index)">
+      <uni-list-item
+        v-if="grid=='slock'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
             <tr>
               <td class="td3">{{item.parkLockNum}}</td>
               <td class="td3">{{item.carState }}</td>
-              <td v-if="item.onlineState=='脱机'"
-                  class="td3"
-                  style="color:red">{{item.onlineState}}</td>
-              <td v-if="item.onlineState!='脱机'"
-                  style="color:green">{{item.onlineState}}</td>
+              <td
+                v-if="item.onlineState=='脱机'"
+                class="td3"
+                style="color:red"
+              >{{item.onlineState}}</td>
+              <td
+                v-if="item.onlineState!='脱机'"
+                style="color:green"
+              >{{item.onlineState}}</td>
               <td class="td3">{{item.priority}}</td>
               <td class="td3">{{item.parkLockState}}</td>
             </tr>
@@ -44,14 +56,18 @@
               <td colspan="3">
                 <div> {{item.parkLockId}}</div>
               </td>
-              <td colspan="2"
-                  v-if="item.runState&&item.runState=='脱机'"
-                  class="td3"
-                  style="color:red">{{$t('m.runState')}} {{item.runState}}</td>
-              <td colspan="2"
-                  v-if="item.runState&&item.runState!='脱机'"
-                  class="td3"
-                  style="color:red">{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                colspan="2"
+                v-if="item.runState&&item.runState=='脱机'"
+                class="td3"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
+              <td
+                colspan="2"
+                v-if="item.runState&&item.runState!='脱机'"
+                class="td3"
+                style="color:red"
+              >{{$t('m.runState')}} {{item.runState}}</td>
             </tr>
 
           </table>
@@ -59,13 +75,15 @@
         </view>
       </uni-list-item>
       <!-- //出入口设备的列表样式 -->
-      <uni-list-item v-if="grid=='inout'"
-                     :show-badge="true"
-                     title=""
-                     badge-text=""
-                     v-for="(item, index) in showlist"
-                     :key="index"
-                     @click="goincontrol(index)">
+      <uni-list-item
+        v-if="grid=='inout'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
@@ -75,12 +93,16 @@
             </tr>
             <tr>
               <td class="td1">{{$t('m.devicename')}}： {{item.devName}}</td>
-              <td v-if="item.onlineState=='脱机'"
-                  class="td1"
-                  style="color:red">{{$t('m.linkState')}}：{{item.onlineState}}</td>
-              <td v-if="item.onlineState!='脱机'"
-                  class="td1"
-                  style="color:green">{{$t('m.linkState')}}：{{item.onlineState}}</td>
+              <td
+                v-if="item.onlineState=='脱机'"
+                class="td1"
+                style="color:red"
+              >{{$t('m.linkState')}}：{{item.onlineState}}</td>
+              <td
+                v-if="item.onlineState!='脱机'"
+                class="td1"
+                style="color:green"
+              >{{$t('m.linkState')}}：{{item.onlineState}}</td>
             </tr>
             <tr>
               <td class="td1">{{$t('m.parkareaname')}}：{{item.parkAreaName}}</td>
@@ -89,13 +111,15 @@
         </view>
       </uni-list-item>
       <!-- //自助机 -->
-      <uni-list-item v-if="grid=='zzj'"
-                     :show-badge="true"
-                     title=""
-                     badge-text=""
-                     v-for="(item, index) in showlist"
-                     :key="index"
-                     @click="goincontrol(index)">
+      <uni-list-item
+        v-if="grid=='zzj'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
@@ -113,13 +137,15 @@
         </view>
       </uni-list-item>
       <!-- 节点 -->
-      <uni-list-item v-if="grid=='jiedian'"
-                     :show-badge="true"
-                     title=""
-                     badge-text=""
-                     v-for="(item, index) in showlist"
-                     :key="index"
-                     @click="goincontrol(index)">
+      <uni-list-item
+        v-if="grid=='jiedian'"
+        :show-badge="true"
+        title=""
+        badge-text=""
+        v-for="(item, index) in showlist"
+        :key="index"
+        @click="goincontrol(index)"
+      >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
           <table id="tb1">
@@ -140,9 +166,11 @@
         </view>
       </uni-list-item>
     </uni-list>
-    <image v-if="!showlist"
-           src="../../static/img/logo_huxiaor.png"
-           alt="未有相关数据">
+    <image
+      v-if="!showlist"
+      src="../../static/img/logo_huxiaor.png"
+      alt="未有相关数据"
+    >
   </view>
 </template>
 
@@ -373,7 +401,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/GetParkLockListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/GetParkLockListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -407,7 +435,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/GetConnDeviceListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/GetConnDeviceListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -442,7 +470,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/GetPayStationListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/GetPayStationListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -477,7 +505,7 @@ export default {
       console.log(submit)
       this.$axios({
         method: 'post',
-        url: '/GetParkLockNodeListInfoHandler.ashx?method=GET&lan=zh-CN&type=app&compress=00',
+        url: '/GetParkLockNodeListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
         emulateJSON: true
@@ -505,11 +533,15 @@ export default {
     input (res) {
       this.searchVal = res.value
     },
-
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.parkabout')
+      });    }
 
   },
   mounted () {
     this.getlockInfo()
+    this.changetabbar()
   }
 
 }
@@ -523,7 +555,7 @@ export default {
 }
 .newbtn {
   white-space: nowrap;
-  background: url("../../static/img/fengexian.png");
+  background: url('../../static/img/fengexian.png');
   background-repeat: no-repeat;
   background-position-y: bottom; /*背景图片在纵向的最下方显示*/
   background-size: 100% 30%;

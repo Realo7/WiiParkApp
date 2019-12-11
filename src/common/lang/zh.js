@@ -1,4 +1,5 @@
 export const m={
+    lan:"zh-CN",
     parkmanagement:"车场管理",
     confirm:"确定",
     cancel:"取消",
@@ -95,4 +96,17 @@ export const m={
     //记录界面
     outtime:"出场",
     realpay:"实付金额",
+    chosedate:"选择日期", 
+     //tabbar
+    parkmanagement:"车场管理",
+    parkrecord:"停车记录",
+    InfoQuery:"信息查询",
+    me:"我的",
+    // 头部
+    querymessage:"消息查询",
+    parkabout:"停车场相关设备",
+    slockcontrol:"车位锁控制",
+    inoutcontrol:"出入口控制",
+    micontorl:"咪表控制"
+
 }
