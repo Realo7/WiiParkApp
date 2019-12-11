@@ -32,7 +32,7 @@
       <uni-list-item
         :show-badge="true"
         :show-arrow="false"
-        v-for="(item, index) in recordBack"
+        v-for="(item, index) in showlist"
         :key="index"
         class="newbtn"
       >
@@ -129,7 +129,8 @@ export default {
           "infoType": "0"//数据来源 0:临时信息 1:历史信息 
         }
       },
-      recordBack: []
+      recordBack: [],
+      showlist: []
     }
   },
   methods: {
@@ -157,6 +158,7 @@ export default {
           if (res.data.statusCode == '200') {
             this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(this.recordBack)
+            this.showlist = this.recordBack
           } else {
             alert(res.data.message)
           }
@@ -188,6 +190,13 @@ export default {
   mounted () {
     this.getrecordInfo()
     this.changetabbar()
+  },
+  //监听下拉状态
+  onPullDownRefresh () {
+    this.getrecordInfo()
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
   }
 }
 </script>

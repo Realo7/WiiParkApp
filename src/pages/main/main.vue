@@ -115,7 +115,7 @@ export default {
     },
     changetabbar () {
       uni.setNavigationBarTitle({
-        title: this.$t('m.login')
+        title: this.$t('m.parkmanagement')
       });
       uni.setTabBarItem({
         index: 0,
@@ -150,8 +150,11 @@ export default {
       });
     }
     //if token 存在 ->继续渲染组件
-  }
+  },
+  //监听下拉状态
+  onPullDownRefresh () {
 
+  }
 }
 </script>
 

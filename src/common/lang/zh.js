@@ -111,4 +111,11 @@ export const m={
     //
     needtodev:"其他功能待开发",
     loginout:"退出登陆",
+    //提示
+    plzwait:"请等待",
+    optionsuccess:"操作成功",
+    taigan:"抬杆",
+    ticketnum:"票号",
+    selectcostmode:"查询费用模块",
+    handpay:"手动付款",
 }

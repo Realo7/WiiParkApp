@@ -192,7 +192,7 @@ export default {
 
     },
     inoutCon () {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -216,10 +216,10 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
-            this.togglePopup('center', 'popup', '抬杆' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
           } else {
 
-            this.togglePopup('center', 'popup', '抬杆' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
 
           }
         })
@@ -229,7 +229,7 @@ export default {
     },
     // 手动入场
     inspace () {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -257,9 +257,9 @@ export default {
             this.inspaceback = JSON.parse(res.data.datas).ticketCode
             console.log(res.data.message)
             console.log(this.inspaceback)
-            this.togglePopup('center', 'popup', '手动入场' + res.data.message, "票号" + this.inspaceback)
+            this.togglePopup('center', 'popup', this.$t('m.handinpark') + res.data.message, this.$t('m.ticketnum') + this.inspaceback)
           } else {
-            this.togglePopup('center', 'popup', '手动入场' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.handinpark') + res.data.message)
           }
         })
         .catch(err => {
@@ -268,7 +268,7 @@ export default {
     },
     // 查询费用
     spay () {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -297,12 +297,12 @@ export default {
             if (res.data.datas != null) {
               this.spayback = JSON.parse(res.data.datas)
               console.log(this.spayback)
-              this.togglePopup('center', 'tip', "您需要支付" + this.spayback.shouldPay + "元")
+              this.togglePopup('center', 'tip', this.$t('m.Youneedtopay') + this.spayback.shouldPay + "元")
             } else {
               this.togglePopup('center', 'popup', res.data.message)
             }
           } else {
-            this.togglePopup('center', 'popup', '查询费用模块' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.selectcostmode') + res.data.message)
           }
         })
         .catch(err => {
@@ -311,7 +311,7 @@ export default {
     },
     //手动付款
     handpay () {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -338,9 +338,9 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
-            this.togglePopup('center', 'popup', '手动付款' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           } else {
-            this.togglePopup('center', 'popup', '手动付款' + res.data.message)
+            this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           }
         })
         .catch(err => {

@@ -124,7 +124,7 @@
         {{ content }}
         <view style="text-align: center;margin-right:20upx;">
           <image
-            v-if="content=='请等待'"
+            v-if="content=='请等待'||content=='please wait'"
             class="loadingimg"
             src="../../../static/img/loading.gif"
           >
@@ -237,7 +237,7 @@ export default {
   },
   methods: {
     slockcom (value) {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -259,7 +259,7 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             console.log(res.data.message)
-            this.togglePopup('center', 'popup', '操作成功')
+            this.togglePopup('center', 'popup', this.$t('m.optionsuccess'))
           } else {
             this.togglePopup('center', 'popup', res.data.message)
           }
@@ -303,7 +303,7 @@ export default {
 
     },
     handin () {
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
@@ -337,7 +337,7 @@ export default {
     },
     handpay () {
       this.cancel('tip')
-      this.togglePopup('center', 'popup', '请等待')
+      this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       // 从localStorage的Token中获取userCode：U1
       let userC = JSON.parse(localStorage.token)
       let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")

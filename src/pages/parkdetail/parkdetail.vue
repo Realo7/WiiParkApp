@@ -542,8 +542,14 @@ export default {
   mounted () {
     this.getlockInfo()
     this.changetabbar()
+  },
+  //监听下拉状态
+  onPullDownRefresh () {
+    this.getlockInfo()
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
   }
-
 }
 </script>
 

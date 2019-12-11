@@ -24,11 +24,11 @@ export const m={
     controlStyle:"controlStyle",//控制方式
     chosepark:"chosepark",//选择停车场
      //下面是车位锁控制界面汉化
-    parklocknum:"ParkLockNum",
+    parklocknum:"Parking space number",
     parklockstate:"ParkLockState",
     basecontrol:"BaseControl",
     forceopen:"ForceOpen",
-    forceclose:"ForceOpen",
+    forceclose:"ForceClose",
     renormal:"ReturnNormal",
     cease:"Cease",
     parklockrestart:"ParkLockRestart",
@@ -60,13 +60,13 @@ export const m={
      //detailList模块
     AllStates:"All States",
     Free:"Free",
-    Newcarentrance:"New car entrance",
+    Newcarentrance:"New vehicle enter",
     Billing:"Billing",
     Paid:"Paid",
-    PaidNotLeft:"PaidNotLeft",
-    Paymentisoverdue:"Payment is overdue",
+    PaidNotLeft:"Paid but not leave",
+    Paymentisoverdue:"Paid but Grace Time expired",
     offline:"offline",
-    Riseandfall:"Rise and fall",
+    Riseandfall:"Falling got blocked",
     Dropinresistance:"Drop in resistance",
     Falsealarmofvehicledetector:"False alarm of vehicle detector",
     Other:"other",
@@ -110,6 +110,13 @@ export const m={
     micontorl:"micontrol",
     //
     needtodev:"Other functions to be developed",
-    loginout:"loginout"
+    loginout:"loginout",
+    //提示
+    plzwait:"please wait",
+    optionsuccess:"Operation succeeded",
+    taigan:"open device",
+    ticketnum:"Ticket Number",
+    selectcostmode:"Select Cost Mode",
+    handpay:"Pay by hand",
 
 }
