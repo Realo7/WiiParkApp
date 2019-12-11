@@ -100,14 +100,16 @@ export const m={
     //tabbar
     parkmanagement:"ParkManage",
     parkrecord:"ParkRecord",
-    InfoQuery:"QueryInfo",
+    InfoQuery:"Message",
     me:"Mine",
     // 头部
-    querymessage:"QueryMessage",
+    qmessage:"Message",
     parkabout:"Device about park",
     slockcontrol:"parklockcontrol",
     inoutcontrol:"inoutcontrol",
-    micontorl:"micontrol"
-    
+    micontorl:"micontrol",
+    //
+    needtodev:"Other functions to be developed",
+    loginout:"loginout"
 
 }

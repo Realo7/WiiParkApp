@@ -100,13 +100,15 @@ export const m={
      //tabbar
     parkmanagement:"车场管理",
     parkrecord:"停车记录",
-    InfoQuery:"信息查询",
+    InfoQuery:"信息",
     me:"我的",
     // 头部
-    querymessage:"消息查询",
+    qmessage:"信息",
     parkabout:"停车场相关设备",
     slockcontrol:"车位锁控制",
     inoutcontrol:"出入口控制",
-    micontorl:"咪表控制"
-
+    micontorl:"咪表控制",
+    //
+    needtodev:"其他功能待开发",
+    loginout:"退出登陆",
 }

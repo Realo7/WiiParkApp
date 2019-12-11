@@ -2,16 +2,17 @@
   <view class="content">
     <view class="btn-row">
       <button
-        v-if="!hasLogin"
+        v-if="!hadlogin"
         type="primary"
         class="primary"
         @tap="bindLogin"
-      >退出登录</button>
+      >{{$t('m.login')}}</button>
       <button
-        v-if="hasLogin"
-        type="default"
+        v-if="hadlogin"
+        type="primary"
+        class="primary"
         @tap="bindLogout"
-      >退出登录</button>
+      >{{$t('m.loginout')}}</button>
     </view>
   </view>
 </template>
@@ -23,28 +24,36 @@ import {
 } from 'vuex'
 
 export default {
+  data () {
+    return {
+      state: false,
+      hadlogin: "",
+    }
+  },
   computed: {
-    ...mapState(['hasLogin', 'forcedLogin'])
   },
   methods: {
-    ...mapMutations(['logout']),
     bindLogin () {
       uni.navigateTo({
         url: '../login/login',
       });
     },
+    //退出登录
     bindLogout () {
-      this.logout();
-      /**
-       * 如果需要强制登录跳转回登录页面
-       */
-      if (this.forcedLogin) {
-        uni.reLaunch({
-          url: '../login/login',
-        });
-      }
+      //清除token
+      localStorage.clear()
+      //提示
+      // this.$message.success('退出成功')
+      //来到login组件
+      uni.reLaunch({
+        url: '../login/login',
+      });
+
     },
     changetabbar () {
+      let userC = JSON.parse(localStorage.token)
+      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
+      this.hadlogin = userCode
       uni.setNavigationBarTitle({
         title: this.$t('m.me')
       });    }
@@ -56,4 +65,15 @@ export default {
 </script>
 
 <style>
+.primary {
+  width: 80%;
+  margin-top: 90%;
+}
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding: 10px;
+}
 </style>

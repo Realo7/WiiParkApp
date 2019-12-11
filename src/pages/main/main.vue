@@ -138,6 +138,18 @@ export default {
   mounted () {
     this.getInfo()
     this.changetabbar()
+  },
+  //newVue之前自动触发beforeCreate
+  beforeCreate () {
+    // 获取token
+    const token = localStorage.getItem('token')
+    //token 不存在 ->登录
+    if (!token) {
+      uni.navigateTo({
+        url: '../login/login',
+      });
+    }
+    //if token 存在 ->继续渲染组件
   }
 
 }

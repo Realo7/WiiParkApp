@@ -3,7 +3,7 @@
     class="content"
     :class="{'active':active}"
   >
-    其他功能待开发
+    {{$t('m.needtodev')}}
   </view>
 </template> 
 
@@ -29,7 +29,14 @@ export default {
       uni.navigateTo({
         url
       });
-    }
+    },
+    changetabbar () {
+      uni.setNavigationBarTitle({
+        title: this.$t('m.Other')
+      });    }
+  },
+  mounted () {
+    this.changetabbar()
   }
 };
 </script>
