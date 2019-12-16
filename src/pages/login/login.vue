@@ -12,7 +12,13 @@
         :disabled="cnactive"
       >中文</button>
     </div>
-
+    <view class="btn-row">
+      <button
+        type="primary"
+        class="btnlogin"
+        @tap="bindLogin"
+      >{{i18n.login}}</button>
+    </view>
     <image
       class="logo"
       src="/static/img/logo_huxiaor.png"
@@ -45,19 +51,12 @@
         ></m-input>
       </view>
     </view>
-    <view class="btn-row">
-      <button
-        type="primary"
-        class="btnlogin"
-        @tap="bindLogin"
-      >{{$t('m.login')}}</button>
-    </view>
 
   </view>
 </template>
 
 <script>
-import service from '../../service.js';
+
 import {
   mapState,
   mapMutations
@@ -65,8 +64,13 @@ import {
 import mInput from '../../components/m-input.vue'
 
 export default {
+  computed: {
+    i18n () {
+      return this.$t('m')
+    }
+  },
   components: {
-    mInput
+    mInput,
   },
   data () {
     return {
@@ -108,17 +112,17 @@ export default {
       ]
     }
   },
-  computed: mapState(['forcedLogin']),
+  // computed: mapState(['forcedLogin']),
   methods: {
     ...mapMutations(['login']),
 
-    initPosition () {
-      /**
-       * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
-       * 反向使用 top 进行定位，可以避免此问题。
-       */
-      this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
-    },
+    // initPosition () {
+    /**
+     * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
+     * 反向使用 top 进行定位，可以避免此问题。
+     */
+    // this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
+    // },
     bindLogin () {
       /**
        * 客户端对账号信息进行一些必要的校验。
@@ -202,47 +206,12 @@ export default {
     }
   }, //方法体的结尾
   onReady () {
-    this.initPosition();
+    // this.initPosition();
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.action-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.action-row navigator {
-  color: #007aff;
-  padding: 0 10px;
-}
-
-.oauth-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-.oauth-image {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #dddddd;
-  border-radius: 50px;
-  margin: 0 20px;
-  background-color: #ffffff;
-}
-
-.oauth-image image {
-  width: 30px;
-  height: 30px;
-  margin: 10px;
-}
 .logo {
   height: 200rpx;
   width: 200rpx;
@@ -322,37 +291,6 @@ page {
   font-size: 16px;
 }
 
-/* 每个页面公共css */
-
-/* #ifdef MP-BAIDU */
-page {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-swan-template {
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-}
-
-/* 原生组件模式下需要注意组件外部样式 */
-custom-component {
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-}
-
-/* #endif */
-
-/* #ifdef MP-ALIPAY */
-page {
-  min-height: 100vh;
-}
-
-/* #endif */
-
 /* 原生组件模式下需要注意组件外部样式 */
 m-input {
   width: 100%;
@@ -375,7 +313,6 @@ m-input {
   top: 0;
   left: 0;
   height: 1px;
-  content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;
@@ -387,7 +324,6 @@ m-input {
   bottom: 0;
   left: 0;
   height: 1px;
-  content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;
@@ -413,7 +349,6 @@ m-input {
   bottom: 0;
   left: 8px;
   height: 1px;
-  content: '';
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;

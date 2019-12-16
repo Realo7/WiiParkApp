@@ -23,6 +23,7 @@ Vue.component('uniListItem',uniListItem);
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
+Vue.config.productuinTip = false 
 
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios;
@@ -40,6 +41,8 @@ const i18n = new VueI18n({
       'en-US': require('./common/lang/en')    // 英文语言包
     }
 })
+Vue.prototype._i18n = i18n
+
 
 const app = new Vue({
     i18n,
