@@ -12,7 +12,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 import url from '../src/static/config'
-axios.defaults.baseURL = url.BaseUrl
+
 
 Vue.component("uniPopup",uniPopup);
 Vue.component("wPicker",wPicker);
@@ -27,9 +27,8 @@ Vue.config.productuinTip = false
 
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios;
-
-
 Vue.use(VueAxios, axios)
+
 
 App.mpType = 'app'
 

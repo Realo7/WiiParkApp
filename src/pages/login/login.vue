@@ -114,6 +114,7 @@ export default {
   },
   // computed: mapState(['forcedLogin']),
   methods: {
+
     ...mapMutations(['login']),
 
     // initPosition () {
@@ -151,12 +152,13 @@ export default {
       this.loginInfo.datas.passWord = this.password
       let submit = {}
       submit = JSON.stringify(this.loginInfo)
-      this.$axios({
-        method: 'post',
+      http.request({
+        method: 'POST',
         url: '/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         // headers: { 'Content-Type': 'application/json' },
         data: submit,
-        emulateJSON: true
+
+        // emulateJSON: true
       })
         .then(res => {
           console.log(res)
