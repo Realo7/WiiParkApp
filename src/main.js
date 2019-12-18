@@ -11,8 +11,9 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-import url from '../src/static/config'
+Vue.config.productionTip = false
 
+import url from '../src/common/config.js';
 
 Vue.component("uniPopup",uniPopup);
 Vue.component("wPicker",wPicker);
@@ -28,9 +29,11 @@ Vue.config.productuinTip = false
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios, axios)
-
+axios.defaults.baseURL=url.baseURL
 
 App.mpType = 'app'
+
+
 
 const i18n = new VueI18n({
     locale: 'zh-CN',    // 语言标识

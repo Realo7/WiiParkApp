@@ -56,13 +56,7 @@
 </template>
 
 <script>
-
-import {
-  mapState,
-  mapMutations
-} from 'vuex'
 import mInput from '../../components/m-input.vue'
-
 export default {
   computed: {
     i18n () {
@@ -112,18 +106,8 @@ export default {
       ]
     }
   },
-  // computed: mapState(['forcedLogin']),
+
   methods: {
-
-    ...mapMutations(['login']),
-
-    // initPosition () {
-    /**
-     * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
-     * 反向使用 top 进行定位，可以避免此问题。
-     */
-    // this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
-    // },
     bindLogin () {
       /**
        * 客户端对账号信息进行一些必要的校验。
@@ -144,7 +128,6 @@ export default {
         return;
       }
       /**
-       * 下面简单模拟下服务端的处理
        * 检测用户账号密码是否在已注册的用户列表中
        * 使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
        */
@@ -152,16 +135,13 @@ export default {
       this.loginInfo.datas.passWord = this.password
       let submit = {}
       submit = JSON.stringify(this.loginInfo)
-      http.request({
+      uni.request({
+        url: 'http://112.25.208.10:9932/Handlers/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         method: 'POST',
-        url: '/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-
-        // emulateJSON: true
-      })
-        .then(res => {
-          console.log(res)
+        success: (res => {
+          console.log("成功" + res)
           //保存后台返回的token到localStorage
           localStorage.setItem('token', res.data.datas)
           // localStorage.setItem('user', this.formdata.datas.userCode)
@@ -171,11 +151,11 @@ export default {
           } else {
             alert('账号或者密码错误')
           }
-        })
-        .catch(err => {
+        }),
+        fail: (res => {
           console.log('出现了错误' + err)
         })
-
+      })
     },
 
     toMain () {
