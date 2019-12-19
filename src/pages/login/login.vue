@@ -133,18 +133,22 @@ export default {
        */
       this.loginInfo.datas.userCode = this.account
       this.loginInfo.datas.passWord = this.password
+
       let submit = {}
       submit = JSON.stringify(this.loginInfo)
       uni.request({
-        url: 'http://112.25.208.10:9932/Handlers/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         method: 'POST',
+        url: this.$baseurl + '/CustomerLogInHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
         success: (res => {
           console.log("成功" + res)
-          //保存后台返回的token到localStorage
-          localStorage.setItem('token', res.data.datas)
-          // localStorage.setItem('user', this.formdata.datas.userCode)
+          //保存后台返回的token到Storage
+          // localStorage.setItem('token', res.data.datas)
+          uni.setStorage({
+            key: "token",
+            data: res.data.datas,
+          })
           //跳转home
           if (res.data.statusCode == '200') {
             this.toMain()
@@ -152,7 +156,7 @@ export default {
             alert('账号或者密码错误')
           }
         }),
-        fail: (res => {
+        fail: (err => {
           console.log('出现了错误' + err)
         })
       })

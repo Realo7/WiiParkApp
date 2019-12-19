@@ -185,6 +185,20 @@ export default {
 
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+          
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+
+        }
+      })
+      return userCode
+    },
     PickerChange: function (e) {
       this.index = e.target.value
       let index = this.index
@@ -193,49 +207,38 @@ export default {
     },
     inoutCon () {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
 
-      this.inoutinfo.datas.userId = userCode
+      this.inoutinfo.datas.userId = this.getuserCode()
       this.inoutinfo.datas.deviceAdr = this.devAdr
       // this.inoutinfo.datas.reasonId = "1"
       let submit = {}
       submit = JSON.stringify(this.inoutinfo)
       console.log("sub" + submit)
-      this.$axios({
-        method: 'post',
-        url: '/OpenGateFuncHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/OpenGateFuncHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
             this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
           } else {
-
             this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
-
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     // 手动入场
     inspace () {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
 
-      this.inspaceinfo.datas.userId = userCode
+      this.inspaceinfo.datas.userId = this.getuserCode()
       this.inspaceinfo.datas.devAdr = this.devAdr
       this.getnow()
       this.inspaceinfo.datas.inTm = this.time
@@ -244,14 +247,12 @@ export default {
       let submit = {}
       submit = JSON.stringify(this.inspaceinfo)
       console.log("sub" + submit)
-      this.$axios({
-        method: 'post',
-        url: '/PlateManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/PlateManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.inspaceback = JSON.parse(res.data.datas).ticketCode
@@ -261,20 +262,17 @@ export default {
           } else {
             this.togglePopup('center', 'popup', this.$t('m.handinpark') + res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     // 查询费用
     spay () {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
 
-      this.spayinfo.datas.userId = userCode
+      this.spayinfo.datas.userId = this.getuserCode()
       if (this.inspaceback) {
         this.spayinfo.datas.ticketCode = this.inspaceback
       } else {
@@ -285,13 +283,11 @@ export default {
       let submit = {}
       submit = JSON.stringify(this.spayinfo)
       console.log("sub" + submit)
-      this.$axios({
-        method: 'post',
-        url: '/PlateManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/PlateManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.status == '200') {
             if (res.data.datas != null) {
@@ -304,20 +300,17 @@ export default {
           } else {
             this.togglePopup('center', 'popup', this.$t('m.selectcostmode') + res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     //手动付款
     handpay () {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
 
-      this.handpayinfo.datas.userId = userCode
+      this.handpayinfo.datas.userId = this.getuserCode()
       this.handpayinfo.datas.ticketCode = this.spayback.ticketCode
       this.handpayinfo.datas.stayTm = this.spayback.stayTm
       this.handpayinfo.datas.shouldPay = this.spayback.shouldPay
@@ -326,14 +319,12 @@ export default {
       let submit = {}
       submit = JSON.stringify(this.handpayinfo)
       console.log("sub" + submit)
-      this.$axios({
-        method: 'post',
-        url: '/PlateManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/PlateManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -342,11 +333,11 @@ export default {
           } else {
             this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
-
+      })
     },
     getnow () {
       var now = new Date()

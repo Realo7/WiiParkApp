@@ -8,8 +8,8 @@ import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 import wPicker from "@/components/w-picker/w-picker.vue";
 import uniPopup from "@/components/uni-popup/uni-popup.vue";
 import store from './store'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import vTable from "@/components/no-bad-table/table.vue"
+
 
 Vue.config.productionTip = false
 
@@ -21,18 +21,17 @@ Vue.component('uniSearchBar',uniSearchBar);
 Vue.component('uniSection',uniSection);
 Vue.component('uniList',uniList);
 Vue.component('uniListItem',uniListItem);
+Vue.component('vTable',vTable);
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
 Vue.config.productuinTip = false 
 
-Vue.prototype.$store = store
-Vue.prototype.$axios = axios;
-Vue.use(VueAxios, axios)
-axios.defaults.baseURL=url.baseURL
+Vue.prototype.$baseurl=url.BaseUrl;
+
+Vue.prototype.$store = store;
 
 App.mpType = 'app'
-
 
 
 const i18n = new VueI18n({

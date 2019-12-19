@@ -334,6 +334,20 @@ export default {
     this.parkId = parkId
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+
+        }
+      })
+      return userCode
+    },
     result (val) {
       console.log('filter_result:' + JSON.stringify(val));
       this.filterResult = JSON.stringify(val, null, 2)
@@ -388,25 +402,20 @@ export default {
       }
     },
     getlockInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.lockInfo.datas.userId = userCode
+
+      this.lockInfo.datas.userId = this.getuserCode()
       this.lockInfo.datas.parkId = this.parkId
       // 搜索需要的信息
       this.lockInfo.datas.parkLockNum = this.searchVal
       let submit = {}
       submit = JSON.stringify(this.lockInfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/GetParkLockListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetParkLockListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.lockBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -417,30 +426,25 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     getcrkInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.crkInfo.datas.userId = userCode
+      this.crkInfo.datas.userId = this.getuserCode()
       this.crkInfo.datas.parkId = this.parkId
 
       let submit = {}
       submit = JSON.stringify(this.crkInfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/GetConnDeviceListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetConnDeviceListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.crkBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -452,30 +456,25 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     getzzjInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.zzjInfo.datas.userId = userCode
+      this.zzjInfo.datas.userId = this.getuserCode()
       this.zzjInfo.datas.parkId = this.parkId
 
       let submit = {}
       submit = JSON.stringify(this.zzjInfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/GetPayStationListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetPayStationListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.zzjBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -487,30 +486,26 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     getjiedianInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.jiedianInfo.datas.userId = userCode
+
+      this.jiedianInfo.datas.userId = this.getuserCode()
       this.jiedianInfo.datas.parkId = this.parkId
 
       let submit = {}
       submit = JSON.stringify(this.jiedianInfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/GetParkLockNodeListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetParkLockNodeListInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.jiedianBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -525,10 +520,11 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     input (res) {
       this.searchVal = res.value

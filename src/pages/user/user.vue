@@ -33,6 +33,20 @@ export default {
   computed: {
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+          
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+
+        }
+      })
+      return userCode
+    },
     bindLogin () {
       uni.navigateTo({
         url: '../login/login',
@@ -41,7 +55,7 @@ export default {
     //退出登录
     bindLogout () {
       //清除token
-      localStorage.clear()
+      uni.clearStorage()
       //提示
       // this.$message.success('退出成功')
       //来到login组件
@@ -51,12 +65,11 @@ export default {
 
     },
     changetabbar () {
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      this.hadlogin = userCode
+      this.hadlogin = this.getuserCode()
       uni.setNavigationBarTitle({
         title: this.$t('m.me')
-      });    }
+      });
+    }
   },
   mounted () {
     this.changetabbar()

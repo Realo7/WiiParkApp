@@ -72,23 +72,33 @@ export default {
     }
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+        }
+      })
+      return userCode
+    },
     getInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
-      this.GetParkInfo.datas.userCode = userCode
+      // console.log("基础URL" + this.$baseurl)
+      console.log("从token中获取的userCode:" + this.getuserCode())
+      this.GetParkInfo.datas.userCode = this.getuserCode()
       this.GetParkInfo.datas.parkName = this.searchVal
       let submit = {}
       submit = JSON.stringify(this.GetParkInfo)
-      this.$axios({
-        method: 'post',
-        url: '/GetParkInfoHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetParkInfoHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
+          // console.log("成功" + res)
           console.log(res)
           if (res.data.statusCode == '200') {
             this.parkInfoBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -96,10 +106,11 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     input (res) {
       this.searchVal = res.value
@@ -138,17 +149,23 @@ export default {
   mounted () {
     this.getInfo()
     this.changetabbar()
+
   },
   //newVue之前自动触发beforeCreate
   beforeCreate () {
     // 获取token
-    const token = localStorage.getItem('token')
-    //token 不存在 ->登录
-    if (!token) {
-      uni.navigateTo({
-        url: '../login/login',
-      });
-    }
+    uni.getStorage({
+      key: "token",
+      success (e) {
+      },
+      //token 不存在 ->登录
+      fail (e) {
+        uni.navigateTo({
+          url: '../login/login',
+        });
+      }
+    })
+
     //if token 存在 ->继续渲染组件
   },
   //监听下拉状态

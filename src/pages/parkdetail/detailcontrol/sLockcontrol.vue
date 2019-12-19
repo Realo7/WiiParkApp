@@ -236,26 +236,35 @@ export default {
     this.parkName = parkName
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+
+        }
+      })
+      return userCode
+    },
     slockcom (value) {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
-      this.slockinfo.datas.userId = userCode
+
+      this.slockinfo.datas.userId = this.getuserCode()
       this.slockinfo.datas.parkLockId = this.parkLockId
       this.slockinfo.datas.command = value
       let submit = {}
       submit = JSON.stringify(this.slockinfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/ParkLockControlHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/ParkLockControlHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             console.log(res.data.message)
@@ -263,31 +272,26 @@ export default {
           } else {
             this.togglePopup('center', 'popup', res.data.message)
           }
+        }),
+        fail: (err => {
+          console.log('出现了错误' + JSON.stringify(err))
         })
-        .catch(err => {
-          console.log('出现了错误' + err)
-        })
-
+      })
     },
     selectM () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.selectMinfo.datas.userId = userCode
+
+      this.selectMinfo.datas.userId = this.getuserCode()
 
       this.selectMinfo.datas.parkLockId = this.parkLockId
       let submit = {}
       submit = JSON.stringify(this.selectMinfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/ParkLockManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/ParkLockManualPayHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.selectMback = JSON.parse(res.data.datas)
@@ -296,54 +300,45 @@ export default {
           } else {
             this.togglePopup('center', 'popup', res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
-
+      })
     },
     handin () {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
-      this.handininfo.datas.userId = userCode
 
+      this.handininfo.datas.userId = this.getuserCode()
       this.handininfo.datas.parkLockId = this.parkLockId
       this.getnow()
       this.handininfo.datas.inTm = this.time
       let submit = {}
       submit = JSON.stringify(this.handininfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/ParkLockManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/ParkLockManualEntryHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res) => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.togglePopup('center', 'popup', res.data.message)
           } else {
             this.togglePopup('center', 'popup', res.data.message)
           }
+        },
+        fail: (err => {
+          this.togglePopup('center', 'popup', '出现了错误' + err)
         })
-        .catch(err => {
-          this.togglePopup('top', 'popup', '出现了错误' + err)
-        })
+      })
     },
     handpay () {
       this.cancel('tip')
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      // console.log("从token中获取的userCode:" + userCode)
 
-      this.handpayinfo.datas.userId = userCode
+      this.handpayinfo.datas.userId = this.getuserCode()
       this.handpayinfo.datas.parkLockId = this.parkLockId
       this.handpayinfo.datas.dealId = this.selectMback.dealId
       this.handpayinfo.datas.stayTm = this.selectMback.stayTm
@@ -354,24 +349,23 @@ export default {
       let submit = {}
       submit = JSON.stringify(this.handpayinfo)
       console.log(submit)
-      this.$axios({
-        method: 'post',
-        url: '/ParkLockManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/ParkLockManualPayHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.togglePopup('center', 'popup', res.data.message)
           } else {
             this.togglePopup('center', 'popup', res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           this.togglePopup('top', 'popup', '出现了错误' + err)
         })
+      })
     },
     getnow () {
       var now = new Date()

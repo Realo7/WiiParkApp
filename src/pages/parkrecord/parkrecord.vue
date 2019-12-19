@@ -134,26 +134,35 @@ export default {
     }
   },
   methods: {
+    getuserCode () {
+      var userCode
+      uni.getStorage({
+        key: "token",
+        success (e) {
+          let userC = JSON.parse(e.data)
+          
+          userCode = userC.userCode
+          console.log("从token中取出" + userCode)
+
+        }
+      })
+      return userCode
+    },
     search () {
       alert("搜索")
     },
     getrecordInfo () {
-      // 从localStorage的Token中获取userCode：U1
-      let userC = JSON.parse(localStorage.token)
-      let userCode = JSON.stringify(userC.userCode).replace(/"/g, "")
-      console.log("从token中获取的userCode:" + userCode)
-      this.wantInfo.datas.userId = userCode
+
+      this.wantInfo.datas.userId = this.getuserCode()
       let submit = {}
       submit = JSON.stringify(this.wantInfo)
       // console.log("sub" + submit)
-      this.$axios({
-        method: 'post',
-        url: '/GetParkLockDealInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
-        // headers: { 'Content-Type': 'application/json' },
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetParkLockDealInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
-        emulateJSON: true
-      })
-        .then(res => {
+        success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
@@ -162,10 +171,11 @@ export default {
           } else {
             alert(res.data.message)
           }
-        })
-        .catch(err => {
+        }),
+        fail: (err => {
           console.log('出现了错误' + err)
         })
+      })
     },
     toggleTab (item, index) {
       this.tabIndex = index;
