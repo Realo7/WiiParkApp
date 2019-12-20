@@ -27,142 +27,137 @@
     <uni-list v-if="showlist">
       <uni-list-item
         v-if="grid=='slock'"
-        :show-badge="true"
-        title=""
-        badge-text=""
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
       >
-        <view>
-          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
-          <table id="tb1">
-            <tr>
-              <td class="td3">{{item.parkLockNum}}</td>
-              <td class="td3">{{item.carState }}</td>
-              <td
+
+        <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
+        <view class="uni-flex uni-column">
+          <view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item ">{{item.parkLockNum}}</view>
+              <view class="flex-item ">{{item.carState }}</view>
+              <view
                 v-if="item.onlineState=='脱机'"
-                class="td3"
+                class="flex-item "
                 style="color:red"
-              >{{item.onlineState}}</td>
-              <td
+              >{{item.onlineState}}</view>
+              <view
                 v-if="item.onlineState!='脱机'"
+                class="flex-item "
                 style="color:green"
-              >{{item.onlineState}}</td>
-              <td class="td3">{{item.priority}}</td>
-              <td class="td3">{{item.parkLockState}}</td>
-            </tr>
-            <tr>
-              <td colspan="3">
-                <div> {{item.parkLockId}}</div>
-              </td>
-              <td
-                colspan="2"
+              >{{item.onlineState}}</view>
+
+              <view class="flex-item ">{{item.priority}}</view>
+              <view class="flex-item ">{{item.parkLockState}}</view>
+            </view>
+          </view>
+          <view>
+            <view class="uni-flex uni-row">
+              <view
+                class="flex-item"
+                style="width:60%"
+              >{{item.parkLockId}}</view>
+              <view
                 v-if="item.runState&&item.runState=='脱机'"
-                class="td3"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
-              <td
-                colspan="2"
+                class="flex-item"
+                style="color:red;width:40%;"
+              >{{$t('m.runState')}} {{item.runState}}
+              </view>
+              <view
                 v-if="item.runState&&item.runState!='脱机'"
-                class="td3"
-                style="color:red"
-              >{{$t('m.runState')}} {{item.runState}}</td>
-            </tr>
-
-          </table>
-
+                class="flex-item"
+                style="color:green;width:40%;"
+              >{{$t('m.runState')}} {{item.runState}}
+              </view>
+            </view>
+          </view>
         </view>
+
       </uni-list-item>
       <!-- //出入口设备的列表样式 -->
       <uni-list-item
         v-if="grid=='inout'"
-        :show-badge="true"
-        title=""
-        badge-text=""
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
       >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
-          <table id="tb1">
-            <tr>
-              <td class="td1">{{$t('m.deviceid')}}： {{item.devAdr}}</td>
-              <td class="td1">{{item.deviceType}}</td>
-            </tr>
-            <tr>
-              <td class="td1">{{$t('m.devicename')}}： {{item.devName}}</td>
-              <td
+          <view class="uni-flex uni-column">
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{$t('m.deviceid')}}： {{item.devAdr}}</view>
+              <view class="flex-item inoutflex">{{item.deviceType}}</view>
+            </view>
+
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{$t('m.devicename')}}： {{item.devName}}</view>
+              <view
                 v-if="item.onlineState=='脱机'"
-                class="td1"
+                class="flex-item inoutflex"
                 style="color:red"
-              >{{$t('m.linkState')}}：{{item.onlineState}}</td>
-              <td
+              >{{$t('m.linkState')}}：{{item.onlineState}}</view>
+              <view
                 v-if="item.onlineState!='脱机'"
-                class="td1"
+                class="flex-item inoutflex"
                 style="color:green"
-              >{{$t('m.linkState')}}：{{item.onlineState}}</td>
-            </tr>
-            <tr>
-              <td class="td1">{{$t('m.parkareaname')}}：{{item.parkAreaName}}</td>
-            </tr>
-          </table>
+              >{{$t('m.linkState')}}：{{item.onlineState}}</view>
+            </view>
+
+            <view class="flex-item inoutflex">
+              {{$t('m.parkareaname')}}：{{item.parkAreaName}}
+            </view>
+          </view>
         </view>
       </uni-list-item>
       <!-- //自助机 -->
       <uni-list-item
         v-if="grid=='zzj'"
-        :show-badge="true"
-        title=""
-        badge-text=""
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
       >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
-          <table id="tb1">
-            <tr>
-              <td class="td1">{{$t('m.address')}}：{{item.address}}</td>
-              <td>{{item.deviceId}}</td>
-            </tr>
-            <tr>
-              <td class="td1">
+          <view class="uni-flex uni-column">
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{$t('m.address')}}：{{item.address}}</view>
+              <view class="flex-item inoutflex">{{item.deviceId}}</view>
+            </view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">
                 {{item.parkAreaName}}
-              </td>
-              <td class="td1">{{$t('m.linkstate')}}：{{item.onlineState}}</td>
-            </tr>
-          </table>
+              </view>
+              <view class="flex-item inoutflex">{{$t('m.linkstate')}}：{{item.onlineState}}</view>
+            </view>
+          </view>
         </view>
       </uni-list-item>
       <!-- 节点 -->
       <uni-list-item
         v-if="grid=='jiedian'"
-        :show-badge="true"
-        title=""
-        badge-text=""
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
       >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
-          <table id="tb1">
-            <tr>
-              <td class="td1">{{item.deviceId}}</td>
-              <td class="td1">{{item.address}}</td>
-            </tr>
-            <tr>
-              <td class="td1">{{$t('m.devicename')}}：{{item.deviceName}}</td>
-              <td class="td1">
+          <view class="uni-flex uni-column">
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{item.deviceId}}</view>
+              <view class="flex-item inoutflex">{{item.address}}</view>
+            </view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{$t('m.devicename')}}：{{item.deviceName}}</view>
+              <view class="flex-item inoutflex">
                 {{item.parkAreaName}}
-              </td>
-            </tr>
-            <tr>
-              <td class="td1">{{$t('m.linkstate')}}：{{item.onlineState}}</td>
-            </tr>
-          </table>
+              </view>
+            </view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item inoutflex">{{$t('m.linkstate')}}：{{item.onlineState}}</view>
+            </view>
+          </view>
         </view>
       </uni-list-item>
     </uni-list>
@@ -564,29 +559,15 @@ export default {
 }
 .flex-item {
   width: 25%;
-  text-align: center;
+  text-align: left;
   padding-top: 25rpx;
 }
 .flex-item2 {
   width: 72%;
   text-align: center;
 }
-#tb1 {
-  // border: 1px solid #f00;
-  width: 100%;
-  tr {
-    .td1 {
-      width: 60%;
-      // border: 1px solid #f00;
-    }
-    .td2 {
-      width: 40%;
-      // border: 1px solid #f00;
-    }
-    .td3 {
-      width: 20%;
-      // border: 1px solid #f00;
-    }
-  }
+.inoutflex {
+  text-align: left;
+  width: 50%;
 }
 </style>

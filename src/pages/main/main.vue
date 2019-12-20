@@ -10,35 +10,33 @@
     <!-- badge-text小绿点 -->
     <uni-list>
       <uni-list-item
-        :show-badge="true"
-        title=""
-        badge-text=""
         v-for="(item, index) in parkInfoBack"
         :key="index"
         @click="goindetail(index)"
       >
-        <table id="tb1">
-          <tr>
-            <td class="td1">
-              <!-- <div>{{$t('m.parkname')}}</div> -->
-              <div>{{item.name}}</div>
-            </td>
-            <td class="td1">
+        <view class="uni-flex uni-column">
+
+          <view class="uni-flex uni-row">
+            <view class="flex-item td1">{{item.name}}</view>
+            <view class="flex-item td1">
               {{$t('m.totalnum')}}：
               {{item.totalSpace}}
-            </td>
-          </tr>
-          <tr>
-            <td class="td1">
+            </view>
+
+          </view>
+
+          <view class="uni-flex uni-row">
+            <view class="flex-item td2">
               {{$t('m.hadstopednum')}}：
               {{item.totalSpace-item.availableSpace}}
-            </td>
-            <td class="td1">
+            </view>
+            <view class="flex-item td2">
               {{$t('m.remainnum')}}：
               {{item.availableSpace}}
-            </td>
-          </tr>
-        </table>
+            </view>
+
+          </view>
+        </view>
       </uni-list-item>
     </uni-list>
 
@@ -291,18 +289,11 @@ view {
 .word-btn--hover {
   background-color: #4ca2ff;
 }
-#tb1 {
-  // border: 1px solid #f00;
-  width: 100%;
-  tr {
-    .td1 {
-      width: 50%;
-      // border: 1px solid #f00;
-    }
-    .td2 {
-      width: 50%;
-      // border: 1px solid #f00;
-    }
-  }
+
+.td1 {
+  width: 50%;
+}
+.td2 {
+  width: 50%;
 }
 </style>

@@ -10,21 +10,18 @@
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('COpen')"
         >{{$t('m.forceopen')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CClose')"
         >{{$t('m.forceclose')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CNormal')"
         >{{$t('m.renormal')}}</button>
@@ -33,21 +30,18 @@
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CStop')"
         >{{$t('m.cease')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('Reboot')"
         >{{$t('m.parklockrestart')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CClearErr')"
         >{{$t('m.clean')}}</button>
@@ -56,21 +50,19 @@
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CLVDReboot')"
         >{{$t('m.detectorrestart')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="selectM()"
         >{{$t('m.selectM')}}</button>
       </view>
       <!-- <view class="flex-item">
         <button
-          type="primary"
+          
           class="nbt1"
           @click="handpay()"
         >手动付费</button>
@@ -83,14 +75,12 @@
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CServerCheckLock')"
         >{{$t('m.selectlink')}}</button>
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom (
           COpenBus)"
@@ -98,7 +88,6 @@
       </view>
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="slockcom ('CCloseBus')"
         >{{$t('m.closebusiness')}}</button>
@@ -107,7 +96,6 @@
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <button
-          type="primary"
           class="nbt1"
           @click="handin"
         >{{$t('m.handinpark')}}</button>
@@ -142,7 +130,7 @@
         <text class="uni-tip-title">{{$t('m.payment')}}</text>
 
         <view class="uni-tip-content">
-          <div>{{$t('m.Transactionnumber')}}：{{selectMback.shouldPay}}</div>
+          <div>{{$t('m.Transactionnumber')}}：{{selectMback.dealId}}</div>
           <div>{{$t('m.parklocknum')}}：{{selectMback.parkLockNum}}</div>
           <div>{{$t('m.intime')}}：{{selectMback.inTm}}</div>
           <div>{{$t('m.staytime')}}：{{selectMback.stayTm}}</div>
@@ -279,9 +267,7 @@ export default {
       })
     },
     selectM () {
-
       this.selectMinfo.datas.userId = this.getuserCode()
-
       this.selectMinfo.datas.parkLockId = this.parkLockId
       let submit = {}
       submit = JSON.stringify(this.selectMinfo)
@@ -484,7 +470,7 @@ export default {
   font-size: 16upx;
 }
 button {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: white;
   color: black;
   font-size: 14px;
   height: 75%;

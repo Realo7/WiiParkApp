@@ -63,7 +63,7 @@
     ],
 "tabBar": {
         "borderStyle": "black",
-        "backgroundColor": "gainsboro",
+        "backgroundColor": "#DCDCDC",
         "color": "black",
         "selectedColor": "#1A43C9",
         "list": [{

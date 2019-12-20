@@ -1,6 +1,7 @@
 <template>
 
   <view class="uni-padding-wrap uni-common-mt">
+    <!-- <image src="../../../static/img/openinout.png"></image> -->
     <view class="uni-flex uni-column">
       <span class="tx">{{parkName}} {{deviceType}}</span>
       <view class="tx1">{{$t('m.controlopen')}}</view>
@@ -191,7 +192,7 @@ export default {
         key: "token",
         success (e) {
           let userC = JSON.parse(e.data)
-          
+
           userCode = userC.userCode
           console.log("从token中取出" + userCode)
 
@@ -402,11 +403,14 @@ export default {
 <style lang="scss">
 @import url('popup.css');
 .open {
-  background: url('../../../static/img/openinout.png');
-  background-size: 50% 70%;
+  // background: url('../../../static/img/openinout.png');
+  background-color: #00bfff;
+  border-radius: 50%;
+  // background-size: 50% 50%;
   background-repeat: no-repeat;
   background-position: center center;
   font-size: 50upx;
+  margin: 0 auto;
 }
 
 .blank {
@@ -425,7 +429,7 @@ export default {
 }
 .flex-item {
   width: 100%;
-  height: 480upx;
+  height: 380upx;
   text-align: center;
   line-height: 20upx;
 }
@@ -437,10 +441,10 @@ export default {
   width: 30%;
 }
 .flex-item-V {
-  width: 100%;
-  height: 480upx;
+  width: 300upx;
+  height: 300upx;
   text-align: center;
-  line-height: 480upx;
+  line-height: 300upx;
 }
 .text {
   margin: 15upx 10upx;

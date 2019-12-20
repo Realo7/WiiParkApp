@@ -37,45 +37,40 @@
         class="newbtn"
       >
         <view>
-          <table id="tb1">
-            <tr>
-              <td>{{item.parkName}}</td>
-              <td>{{item.parkLockId}}</td>
-              <td
+          <view class="uni-flex uni-column">
+            <view class="uni-flex uni-row">
+              <view class="flex-item td3">{{item.parkName}}</view>
+              <view class="flex-item">{{item.parkLockId}}</view>
+              <view
+                class="flex-item"
                 v-if="item.payState=='已支付'"
                 style="color:green"
-              >{{item.payState}}</td>
-              <td
+              >{{item.payState}}</view>
+              <view
+                class="flex-item"
                 v-if="item.payState!='已支付'"
                 style="color:red"
-              >{{item.payState}}</td>
-              <td
+              >{{item.payState}}</view>
+              <view
+                class="flex-item"
                 v-if="item.outState=='未出场'"
-                style="color:green"
-              >{{item.outState}}</td>
-              <td
+                style="color:red"
+              >{{item.outState}}</view>
+              <view
+                class="flex-item"
                 v-if="item.outState!='未出场'"
                 style="color:green"
-              >{{item.outState}}</td>
-            </tr>
-            <tr>
-              <td
-                class="td1"
-                colspan="2"
-              >{{$t('m.intime')}}：{{item.inTm}}</td>
-              <td
-                class="td1"
-                colspan="2"
-              >{{$t('m.staytime')}}：</td>
-            </tr>
-            <tr>
-              <td
-                class="td1"
-                colspan="2"
-              >{{$t('m.outtime')}}：{{item.outTm}}</td>
-              <td class="td2">{{$t('m.realpay')}}：{{item.realpay}}</td>
-            </tr>
-          </table>
+              >{{item.outState}}</view>
+            </view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item td1">{{$t('m.intime')}}：{{item.inTm}}</view>
+              <view class="flex-item td2">{{$t('m.staytime')}}：</view>
+            </view>
+            <view class="uni-flex uni-row">
+              <view class="flex-item td1">{{$t('m.outtime')}}：{{item.outTm}}</view>
+              <view class="flex-item td2">{{$t('m.realpay')}}：{{item.realpay}}</view>
+            </view>
+          </view>
         </view>
       </uni-list-item>
 
@@ -140,7 +135,7 @@ export default {
         key: "token",
         success (e) {
           let userC = JSON.parse(e.data)
-          
+
           userCode = userC.userCode
           console.log("从token中取出" + userCode)
 
@@ -232,26 +227,20 @@ export default {
 }
 .flex-item {
   width: 25%;
-  text-align: center;
+  text-align: left;
   padding-top: 25rpx;
 }
 .flex-item2 {
   width: 72%;
   text-align: center;
 }
-#tb1 {
-  width: 100%;
-  // border: 1px solid #f00;
-  tr {
-    .td1 {
-      width: 70%;
-    }
-    .td2 {
-      width: 30%;
-    }
-    .td3 {
-      width: 35%;
-    }
-  }
+.td1 {
+  width: 70%;
+}
+.td2 {
+  width: 30%;
+}
+.td3 {
+  width: 35%;
 }
 </style>
