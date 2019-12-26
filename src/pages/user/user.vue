@@ -39,7 +39,7 @@ export default {
         key: "token",
         success (e) {
           let userC = JSON.parse(e.data)
-          
+
           userCode = userC.userCode
           console.log("从token中取出" + userCode)
 
@@ -79,6 +79,7 @@ export default {
 
 <style>
 .primary {
+  background-color: black;
   width: 80%;
   margin-top: 90%;
 }

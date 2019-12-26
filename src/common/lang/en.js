@@ -89,6 +89,7 @@ export const m={
     open:"Open",
     inbyhand:"Manual entry (license plate recognition)",
     plzinticket:"Please enter the ticket number",
+    plzinplate:"Please enter the plate",
     querycost:"Inquiry cost",
     reason1:"Payment successful, the gate is not opened automatically",
     reason2:"Manual approval, manual opening",

@@ -4,9 +4,13 @@
     <!-- <image src="../../../static/img/openinout.png"></image> -->
     <view class="uni-flex uni-column">
       <span class="tx">{{parkName}} {{deviceType}}</span>
+
       <view class="tx1">{{$t('m.controlopen')}}</view>
-      <br>
-      <view class="uni-list">
+
+      <view
+        class="uni-list"
+        style="margin-bottom:20px;"
+      >
         <view class="uni-list-cell">
           <view class="uni-list-cell-left">
             {{$t('m.choseopenreason')}}
@@ -23,6 +27,7 @@
           </view>
         </view>
       </view>
+
       <view
         class="flex-item flex-item-V open"
         @click="inoutCon()"
@@ -34,17 +39,30 @@
           @click="inspace()"
         >{{$t('m.inbyhand')}}</button>
 
-        <br>
+        <view>
+          票号
+          <switch @change="switch1Change" />
+          车牌号
+        </view>
         <view
           v-if="deviceType=='出口'"
           class="uni-flex uni-row"
         >
+
           <view class="flex-item-ipt">
             <input
+              v-if="switch1==false"
               class="uni-input"
               focus
-              v-model="inpt"
+              v-model="inpt1"
               :placeholder="$t('m.plzinticket')"
+            />
+            <input
+              v-if="switch1==true"
+              class="uni-input"
+              focus
+              v-model="inpt2"
+              :placeholder="$t('m.plzinplate')"
             />
           </view>
           <view class="flex-item-btn">
@@ -104,7 +122,8 @@ export default {
   data () {
     return {
       title: 'Hello',
-      inpt: "",
+      inpt1: "",
+      inpt2: "",
       type: '',
       content1: 'popup',
       content2: "",
@@ -170,6 +189,7 @@ export default {
         }
       },
       handpayback: "",
+      switch1: false,
 
     }
   },
@@ -186,6 +206,11 @@ export default {
 
   },
   methods: {
+    switch1Change: function (e) {
+      console.log('switch1 发生 change 事件，携带值为', e.target.value)
+      this.switch1 = e.target.value
+      console.log(this.switch1)
+    },
     getuserCode () {
       var userCode
       uni.getStorage({
@@ -276,8 +301,10 @@ export default {
       this.spayinfo.datas.userId = this.getuserCode()
       if (this.inspaceback) {
         this.spayinfo.datas.ticketCode = this.inspaceback
+      } else if (switch1 = flase) {
+        this.spayinfo.datas.ticketCode = this.inpt1
       } else {
-        this.spayinfo.datas.ticketCode = this.inpt
+        this.spayinfo.datas.plate = this.inpt2
       }
       this.spayinfo.datas.plate = this.inplate
 
@@ -421,11 +448,13 @@ export default {
   font-size: 26px;
   font-family: MicroSoft-YaHei;
   text-align: center;
+  margin-bottom: 20px;
 }
 .tx1 {
   font-size: 18px;
   font-family: MicroSoft-YaHei;
   text-align: center;
+  margin-bottom: 20px;
 }
 .flex-item {
   width: 100%;

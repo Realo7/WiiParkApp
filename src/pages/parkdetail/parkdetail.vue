@@ -190,84 +190,82 @@ export default {
           'isMutiple': false,
           'key': 'Type',
           'defaultSelectedIndex': [0],
-          'detailList': [{
-            'title': this.$t('m.unlimited'),
-            'value': this.$t('m.parklock')
-          },
-          {
-            'title': this.$t('m.parklock'),
-            'value': this.$t('m.parklock')
-          },
-          {
-            'title': this.$t('m.inout'),
-            'value': this.$t('m.inout')
-          },
-          {
-            'title': this.$t('m.selfhelpmachine'),
-            'value': this.$t('m.selfhelpmachine')
-          },
-          {
-            'title': this.$t('m.node'),
-            'value': this.$t('m.node')
-          }
+          'detailList': [
+            {
+              'title': this.$t('m.parklock'),
+              'value': this.$t('m.parklock')
+            },
+            {
+              'title': this.$t('m.inout'),
+              'value': this.$t('m.inout')
+            },
+            {
+              'title': this.$t('m.selfhelpmachine'),
+              'value': this.$t('m.selfhelpmachine')
+            },
+            {
+              'title': this.$t('m.node'),
+              'value': this.$t('m.node')
+            }
           ]
 
         },
-        {
-          'title': this.$t('m.AllStates'),
-          'key': 'states',
-          'isMutiple': false,
-          'detailList': [{
-            'title': this.$t('m.AllStates'),
-            'value': ''
-          },
-          {
-            'title': this.$t('m.Free'),
-            'value': this.$t('m.Free')
-          },
-          {
-            'title': this.$t('m.Newcarentrance'),
-            'value': this.$t('m.Newcarentrance')
-          },
-          {
-            'title': this.$t('m.Billing'),
-            'value': this.$t('m.Billing')
-          },
-          {
-            'title': this.$t('m.Paid'),
-            'value': this.$t('m.Paid')
-          },
-          {
-            'title': this.$t('m.PaidNotLeft'),
-            'value': this.$t('m.PaidNotLeft')
-          },
-          {
-            'title': this.$t('m.Paymentisoverdue'),
-            'value': this.$t('m.Paymentisoverdue')
-          },
-          {
-            'title': this.$t('m.offline'),
-            'value': this.$t('m.offline')
-          },
-          {
-            'title': this.$t('m.Riseandfall'),
-            'value': this.$t('m.Riseandfall')
-          },
-          {
-            'title': this.$t('m.Dropinresistance'),
-            'value': this.$t('m.Dropinresistance')
-          },
-          {
-            'title': this.$t('m.Falsealarmofvehicledetector'),
-            'value': this.$t('m.Falsealarmofvehicledetector')
-          },
-          {
-            'title': this.$t('m.Other'),
-            'value': this.$t('m.Other')
-          }
-          ]
+        //状态筛选
+        // {
+        //   'title': this.$t('m.AllStates'),
+        //   'key': 'states',
+        //   'isMutiple': false,
+        //   'detailList': [{
+        //     'title': this.$t('m.AllStates'),
+        //     'value': ''
+        //   },
+        //   {
+        //     'title': this.$t('m.Free'),
+        //     'value': this.$t('m.Free')
+        //   },
+        //   {
+        //     'title': this.$t('m.Newcarentrance'),
+        //     'value': this.$t('m.Newcarentrance')
+        //   },
+        //   {
+        //     'title': this.$t('m.Billing'),
+        //     'value': this.$t('m.Billing')
+        //   },
+        //   {
+        //     'title': this.$t('m.Paid'),
+        //     'value': this.$t('m.Paid')
+        //   },
+        //   {
+        //     'title': this.$t('m.PaidNotLeft'),
+        //     'value': this.$t('m.PaidNotLeft')
+        //   },
+        //   {
+        //     'title': this.$t('m.Paymentisoverdue'),
+        //     'value': this.$t('m.Paymentisoverdue')
+        //   },
+        //   {
+        //     'title': this.$t('m.offline'),
+        //     'value': this.$t('m.offline')
+        //   },
+        //   {
+        //     'title': this.$t('m.Riseandfall'),
+        //     'value': this.$t('m.Riseandfall')
+        //   },
+        //   {
+        //     'title': this.$t('m.Dropinresistance'),
+        //     'value': this.$t('m.Dropinresistance')
+        //   },
+        //   {
+        //     'title': this.$t('m.Falsealarmofvehicledetector'),
+        //     'value': this.$t('m.Falsealarmofvehicledetector')
+        //   },
+        //   {
+        //     'title': this.$t('m.Other'),
+        //     'value': this.$t('m.Other')
+        //   }
+        //   ]
 
-        },
+        // },
       ],
       parkId: "",
       lockInfo: {
@@ -536,7 +534,10 @@ export default {
   },
   //监听下拉状态
   onPullDownRefresh () {
-    this.getlockInfo()
+    // 对当前选中进行判断
+    // this.getlockInfo()
+    this.filterinfo()
+
     setTimeout(function () {
       uni.stopPullDownRefresh();
     }, 1000);

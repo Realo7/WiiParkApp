@@ -168,7 +168,10 @@ export default {
   },
   //监听下拉状态
   onPullDownRefresh () {
-
+    this.getInfo()
+    setTimeout(function () {
+      uni.stopPullDownRefresh();
+    }, 1000);
   }
 }
 </script>

@@ -74,7 +74,7 @@ export default {
       hasProvider: false,
       account: '',
       password: '',
-      positionTop: 0,
+
       loginInfo: {
         "appId": "",
         "privatekey": "",
@@ -288,28 +288,17 @@ m-input {
 .input-group {
   background-color: #efeff4;
   margin-top: 0px;
-  position: relative;
   margin-left: 5%;
   width: 90%;
 }
 
 .input-group::before {
-  position: absolute;
-  right: 0;
-  top: 0;
-  left: 0;
-  height: 1px;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;
 }
 
 .input-group::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 1px;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;
@@ -318,7 +307,6 @@ m-input {
 .input-row {
   display: flex;
   flex-direction: row;
-  position: relative;
   font-size: 18px;
   line-height: 40px;
   margin-top: 8px;
@@ -330,11 +318,6 @@ m-input {
 }
 
 .input-row.border::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 8px;
-  height: 1px;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
   background-color: #c8c7cc;
