@@ -117,12 +117,12 @@
             src="../../../static/img/loading.gif"
           />
           <image
-            v-if="content=='成功'||content=='success'"
+            v-if="content=='操作成功'||content=='success'"
             class="loadingimg"
             src="../../../static/img/success.png"
           />
           <image
-            v-if="content=='失败'||content=='fail'"
+            v-if="content=='操作失败'||content=='fail'"
             class="loadingimg"
             src="../../../static/img/fail.png"
           />

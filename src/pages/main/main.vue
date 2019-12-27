@@ -172,6 +172,11 @@ export default {
     setTimeout(function () {
       uni.stopPullDownRefresh();
     }, 1000);
+  },
+  onReachBottom: function () {
+    var that = this;
+    that.GetParkInfo.pageSize = that.GetParkInfo.pageSize * 1 + 5
+    that.getInfo()
   }
 }
 </script>

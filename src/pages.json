@@ -9,7 +9,8 @@
         {
             "path": "pages/main/main",
             "style": {
-                "navigationBarTitleText": "停车场管理"
+                "navigationBarTitleText": "停车场管理",
+                "enablePullDownRefresh":true
             }
         },  {
             "path": "pages/user/user",
@@ -20,7 +21,8 @@
         {
             "path": "pages/parkrecord/parkrecord",
             "style": {
-                "navigationBarTitleText": "停车记录"
+                "navigationBarTitleText": "停车记录",
+                "enablePullDownRefresh":true
             }
         },
         {

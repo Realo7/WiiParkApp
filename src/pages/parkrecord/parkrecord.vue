@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!-- {{resultInfo.result}} -->
+    {{resultInfo.from}}
+    {{resultInfo.to}}
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <view
@@ -28,6 +29,29 @@
         class="flex-item2"
       />
     </view>
+
+    <view class="uni-flex uni-row">
+      <view class="flex-item1">
+        <picker
+          @change="bindPickerChange1"
+          :value="index1"
+          :range="parkarray"
+        >
+          <view class="uni-input">{{parkarray[index1]}}</view>
+        </picker>
+      </view>
+
+      <view class="flex-item1">
+        <picker
+          @change="bindPickerChange2"
+          :value="index2"
+          :range="devicearray"
+        >
+          <view class="uni-input">{{devicearray[index2]}}</view>
+        </picker>
+      </view>
+    </view>
+
     <uni-list>
       <uni-list-item
         :show-badge="true"
@@ -109,7 +133,7 @@ export default {
           "userId": "",
           "pageIndex": "1",
           "pageSize": "10",
-          "parkId": "PK0067",
+          "parkId": "",
           "parkName": "",
           "payMode": "-1",//支付方式
           "payState": "-1",//支付状态
@@ -125,10 +149,70 @@ export default {
         }
       },
       recordBack: [],
-      showlist: []
+      LPRInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "pageIndex": "1",
+          "pageSize": "10",
+          "parkId": "",
+          "parkName": "",
+          "payState": "-1",//支付状态
+          "outState": "-1",//交易状态
+          "inTmS": "",//起始入场时间
+          "inTmE": "",//截止入场时间
+          "outTmS": "",//起始出场时间
+          "outTmE": "",//截止出场时间
+          "code": ""//票号/车牌/用户名,进行模糊查询
+        }
+      },
+      LPRBack: [],
+      GetParkInfo: {
+        "appId": "",
+        "privatekey": "",
+        "datas": {
+          "userId": "",
+          "pageIndex": "1",
+          "pageSize": "10",
+          "parkName": "",
+          "longitude": "",//经度  
+          "latitude": "",//纬度
+          "provinceId": "",//省ID
+          "cityId": "",//市ID
+          "districtId": "",//县ID
+          "companyId": "",//公众号或者小程序Id
+        }
+      },
+      parkInfoBack: [],
+      showlist: [],
+      title: 'picker',
+      parkarray: ['选择停车场'],
+      devicearray: ['车位锁', '停车场'],
+      index1: 0,
+      index2: 0,
     }
   },
   methods: {
+    bindPickerChange1: function (e) {
+      console.log('picker发送选择改变，携带值为', e.target.value)
+      this.index1 = e.target.value
+      this.wantInfo.datas.parkId = this.parkInfoBack[e.target.value].parkId
+      // console.log(this.wantInfo.datas.parkId)
+
+      this.getrecordInfo()
+
+    },
+    bindPickerChange2: function (e) {
+      console.log('picker发送选择改变，携带值为', e.target.value)
+      this.index2 = e.target.value
+      if (e.target.value == 0) {
+        this.getrecordInfo()
+      } else if (e.target.value == 1) {
+        this.LPRInfo.datas.parkId = this.parkInfoBack[e.target.value].parkId
+        this.getLPRInfo()
+      }
+    },
     getuserCode () {
       var userCode
       uni.getStorage({
@@ -143,15 +227,44 @@ export default {
       })
       return userCode
     },
+    getparkInfo () {
+      // console.log("基础URL" + this.$baseurl)
+      console.log("从token中获取的userCode:" + this.getuserCode())
+      this.GetParkInfo.datas.userCode = this.getuserCode()
+      // this.GetParkInfo.datas.parkName = this.searchVal
+      let submit = {}
+      submit = JSON.stringify(this.GetParkInfo)
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetParkInfoHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: submit,
+        success: (res => {
+          // console.log("成功" + res)
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.parkInfoBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.parkInfoBack)
+            for (let i = 0; i < this.parkInfoBack.length; i++) {
+              this.parkarray[i] = this.parkInfoBack[i].name
+            }
+          } else {
+            console.log(res.data.message)
+          }
+        }),
+        fail: (err => {
+          console.log('出现了错误' + err)
+        })
+      })
+    },
     search () {
       alert("搜索")
     },
     getrecordInfo () {
-
       this.wantInfo.datas.userId = this.getuserCode()
       let submit = {}
       submit = JSON.stringify(this.wantInfo)
-      // console.log("sub" + submit)
+      console.log("sub提交" + submit)
       uni.request({
         method: 'POST',
         url: this.$baseurl + '/GetParkLockDealInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
@@ -172,6 +285,31 @@ export default {
         })
       })
     },
+    getLPRInfo () {
+      this.LPRInfo.datas.userId = this.getuserCode()
+      let submit = {}
+      submit = JSON.stringify(this.LPRInfo)
+      console.log("sub提交" + submit)
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetPlateDealInfoHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: submit,
+        success: (res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            this.LPRBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(this.LPRBack)
+            this.showlist = this.LPRBack
+          } else {
+            alert(res.data.message)
+          }
+        }),
+        fail: (err => {
+          console.log('出现了错误' + err)
+        })
+      })
+    },
     toggleTab (item, index) {
       this.tabIndex = index;
       this.mode = item.mode;
@@ -180,11 +318,9 @@ export default {
     },
     onConfirm (val) {
       console.log(val);
-      //如果页面需要调用多个mode类型，可以根据mode处理结果渲染到哪里;
-      // switch(this.mode){
-      // 	case "date":
-      // 		break;
-      // }
+      this.wantInfo.datas.inTmS = this.resultInfo.from
+      this.wantInfo.datas.outTmS = this.resultInfo.to
+      this.getrecordInfo()
       this.resultInfo = val;
     },
     changetabbar () {
@@ -195,6 +331,7 @@ export default {
   mounted () {
     this.getrecordInfo()
     this.changetabbar()
+    this.getparkInfo()
   },
   //监听下拉状态
   onPullDownRefresh () {
@@ -202,6 +339,14 @@ export default {
     setTimeout(function () {
       uni.stopPullDownRefresh();
     }, 1000);
+  },
+  // 页面滚动到底部的事件
+  onReachBottom: function () {
+    var that = this;
+    that.wantInfo.datas.pageIndex = that.wantInfo.datas.pageIndex * 1 + 1
+    that.getrecordInfo()
+    //将数据拼接在一起
+    // showwList.concat(res.data)
   }
 }
 </script>
@@ -211,6 +356,9 @@ export default {
   // border-bottom: 1px solid #4c83d6;
   // display: inline-block;
   // padding: 10upx 20upx;
+}
+picker {
+  margin-top: -8px;
 }
 .text {
   margin-top: 50px;
@@ -229,6 +377,10 @@ export default {
   width: 25%;
   text-align: left;
   padding-top: 25rpx;
+}
+.flex-item1 {
+  width: 50%;
+  text-align: center;
 }
 .flex-item2 {
   width: 72%;
