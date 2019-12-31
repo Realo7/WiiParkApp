@@ -50,14 +50,12 @@
             <input
               v-if="switch1==false"
               class="uni-input"
-              focus
               v-model="inpt1"
               :placeholder="$t('m.plzinticket')"
             />
             <input
               v-if="switch1==true"
               class="uni-input"
-              focus
               v-model="inpt2"
               :placeholder="$t('m.plzinplate')"
             />
@@ -438,7 +436,7 @@ export default {
   margin: 0 auto;
   color: white;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .blank {
@@ -469,7 +467,7 @@ export default {
   // border: 1px solid #4ca2ff;
   // border-radius: 8px;
 }
-uni-input {
+.uni-input {
   border: 1px solid #4ca2ff;
   border-radius: 8px;
 }
@@ -516,8 +514,7 @@ uni-input {
 }
 .pickreason {
   text-align: center;
-  border: 1px solid #4ca2ff;
-
+  // border: 1px solid #4ca2ff;
   color: black;
   width: 100%;
 }
