@@ -4,34 +4,31 @@
     <!-- <image src="../../../static/img/openinout.png"></image> -->
     <view class="uni-flex uni-column">
       <span class="tx">{{parkName}} {{deviceType}}</span>
+      <!-- <view class="tx1">{{$t('m.controlopen')}}</view> -->
 
-      <view class="tx1">{{$t('m.controlopen')}}</view>
-
-      <view
-        class="uni-list"
-        style="margin-bottom:20px;"
-      >
-        <view class="uni-list-cell">
-          <view class="uni-list-cell-left">
+      <!-- <view class="uni-list-cell"> -->
+      <!-- <view class="uni-list-cell-left ">
             {{$t('m.choseopenreason')}}
-          </view>
-          <view class="uni-list-cell-db">
-            <picker
-              @change="PickerChange"
-              :value="index"
-              :range="array"
-              range-key="name"
-            >
-              <view class="uni-input">{{array[index].name}}</view>
-            </picker>
-          </view>
-        </view>
-      </view>
+          </view> -->
+      <!-- <view class="uni-list-cell-db reason"> -->
+
+      <picker
+        @change="PickerChange"
+        :value="index"
+        :range="array"
+        range-key="name"
+        class="pickreason"
+      >
+        <view class="uni-input">{{array[index].name}}</view>
+      </picker>
+
+      <!-- </view> -->
 
       <view
         class="flex-item flex-item-V open"
         @click="inoutCon()"
       >{{$t('m.open')}}</view>
+
       <view class="blank"></view>
       <view class="flex-item">
         <button
@@ -67,6 +64,7 @@
           </view>
           <view class="flex-item-btn">
             <button
+              type="primary"
               class="newbtn"
               @click="spay()"
             >{{$t('m.querycost')}}</button>
@@ -430,14 +428,17 @@ export default {
 <style lang="scss">
 @import url('popup.css');
 .open {
-  // background: url('../../../static/img/openinout.png');
-  background-color: #00bfff;
-  border-radius: 50%;
-  // background-size: 50% 50%;
+  background: url('../../../static/img/openinout.png');
+  // background-color: #00bfff;
+  // border-radius: 50%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  font-size: 50upx;
+  font-size: 90upx;
   margin: 0 auto;
+  color: white;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .blank {
@@ -465,15 +466,23 @@ export default {
 .flex-item-ipt {
   padding-top: 3px;
   width: 65%;
+  // border: 1px solid #4ca2ff;
+  // border-radius: 8px;
 }
+uni-input {
+  border: 1px solid #4ca2ff;
+  border-radius: 8px;
+}
+
 .flex-item-btn {
-  width: 30%;
+  // width: 35%;
+  // background-color: #4ca2ff;
 }
 .flex-item-V {
-  width: 300upx;
-  height: 300upx;
+  width: 400upx;
+  height: 400upx;
   text-align: center;
-  line-height: 300upx;
+  line-height: 400upx;
 }
 .text {
   margin: 15upx 10upx;
@@ -487,10 +496,41 @@ export default {
 }
 .popup-content {
   width: 500upx;
-  height: 250upx;
+  height: 400upx;
   font-size: 20px;
   align-items: center;
   display: flex;
   justify-content: center;
+  background: url('../../../static/img/ok1.png');
+  background-size: 100% 100%;
+}
+.choose {
+  margin-top: 5%;
+}
+.reason {
+  text-align: center;
+  background-color: #ebebeb;
+  border: 1px solid #4ca2ff;
+  border-radius: 8px;
+  outline: none;
+}
+.pickreason {
+  text-align: center;
+  border: 1px solid #4ca2ff;
+
+  color: black;
+  width: 100%;
+}
+
+.uni-list-cell {
+  border: none;
+}
+.newbtn {
+  border: 1px solid #4ca2ff;
+  border-radius: 8px;
+  margin-top: 2%;
+  height: 85%;
+}
+.uni-popup {
 }
 </style>

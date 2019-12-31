@@ -18,7 +18,7 @@ export const m={
     SpaceNo:"车位号：",//车位号
     SpaceState:"车位状态：",// 车位状态
     SpaceLockNo:"车位锁号：",//车位锁号
-    linkState:"联机状态：",//联机状态
+    linkState:"联机状态",//联机状态
     SpaceLockState:"车位锁状态：",//车位锁状态
     runState:"运行状态：",//运行状态
     controlStyle:"控制方式：",//控制方式

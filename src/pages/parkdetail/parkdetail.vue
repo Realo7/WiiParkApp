@@ -1,29 +1,34 @@
 <template>
   <view class="content">
     <view class="uni-flex uni-row">
-      <view
-        class="flex-item"
-        @click="chosepark"
-      >
-        <text>{{$t('m.chosepark')}}</text>
-      </view>
       <uni-search-bar
         radius="100"
         :placeholder="$t('m.plzinput2')"
         @input="input"
         @confirm="getlockInfo"
+        bgColor="#4ca2ff"
         class="flex-item2"
       />
     </view>
     <!-- {{filterResult}} -->
-    <sl-filter
-      :independence="true"
-      :color="titleColor"
-      :themeColor="themeColor"
-      :menuList.sync="menuList"
-      @result="result"
-    >
-    </sl-filter>
+    <view>
+      <view
+        class="filter2"
+        style="float:left"
+        @click="chosepark"
+      >
+        <text>{{$t('m.chosepark')}}</text>
+      </view>
+      <sl-filter
+        :independence="true"
+        :color="titleColor"
+        :themeColor="themeColor"
+        :menuList.sync="menuList"
+        @result="result"
+        class="filter1"
+      >
+      </sl-filter>
+    </view>
     <uni-list v-if="showlist">
       <uni-list-item
         v-if="grid=='slock'"
@@ -88,9 +93,10 @@
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
+        class="listitem1"
       >
         <view>
-          <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
+          <div style="text-align:left;font-weight:bold;">{{item.parkName}}</div>
           <view class="uni-flex uni-column">
             <view class="uni-flex uni-row">
               <view class="flex-item inoutflex">{{$t('m.deviceid')}}： {{item.devAdr}}</view>
@@ -123,6 +129,7 @@
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
+        class="listitem1"
       >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
@@ -146,6 +153,7 @@
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
+        class="listitem1"
       >
         <view>
           <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
@@ -570,7 +578,7 @@ export default {
   padding-top: 25rpx;
 }
 .flex-item2 {
-  width: 72%;
+  width: 100%;
   text-align: center;
 }
 .inoutflex {
@@ -579,6 +587,21 @@ export default {
 }
 .listitem1 {
   background-color: #f9f9f9;
+
   margin-top: 5%;
+}
+.filter1 {
+  width: 40%;
+  float: right;
+  margin-top: -25rpx;
+}
+.filter2 {
+  margin-left: 10%;
+  width: 30%;
+  float: left;
+  text-align: center;
+  border: 2px solid #4ca2ff;
+  border-radius: 5px;
+  color: #4ca2ff;
 }
 </style>

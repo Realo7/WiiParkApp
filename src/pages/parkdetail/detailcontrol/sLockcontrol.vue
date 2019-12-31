@@ -6,101 +6,108 @@
       <view class="tt1">{{$t('m.parklocknum')}}：{{parkLockNum}}</view>
       <view class="tt1">{{$t('m.parklockstate')}}：{{parkLockState}}</view>
     </view>
-    <view class="CC1">{{$t('m.basecontrol')}}</view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('COpen')"
-        >{{$t('m.forceopen')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CClose')"
-        >{{$t('m.forceclose')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CNormal')"
-        >{{$t('m.renormal')}}</button>
-      </view>
-    </view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CStop')"
-        >{{$t('m.cease')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('Reboot')"
-        >{{$t('m.parklockrestart')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CClearErr')"
-        >{{$t('m.clean')}}</button>
-      </view>
-    </view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CLVDReboot')"
-        >{{$t('m.detectorrestart')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="selectM()"
-        >{{$t('m.selectM')}}</button>
-      </view>
-      <!-- <view class="flex-item">
+    <view class="CC1">
+      <view class="inCC1text">{{$t('m.basecontrol')}}</view>
+      <view class="inCC1">
+        <view class="uni-flex uni-row">
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('COpen')"
+            >{{$t('m.forceopen')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CClose')"
+            >{{$t('m.forceclose')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CNormal')"
+            >{{$t('m.renormal')}}</button>
+          </view>
+        </view>
+        <view class="uni-flex uni-row">
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CStop')"
+            >{{$t('m.cease')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('Reboot')"
+            >{{$t('m.parklockrestart')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CClearErr')"
+            >{{$t('m.clean')}}</button>
+          </view>
+        </view>
+        <view class="uni-flex uni-row">
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CLVDReboot')"
+            >{{$t('m.detectorrestart')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="selectM()"
+            >{{$t('m.selectM')}}</button>
+          </view>
+          <!-- <view class="flex-item">
         <button
           
           class="nbt1"
           @click="handpay()"
         >手动付费</button>
       </view> -->
+        </view>
+      </view>
     </view>
-
     <view class="CC2">
-      {{$t('m.emergencycontrol')}}
-    </view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CServerCheckLock')"
-        >{{$t('m.selectlink')}}</button>
+      <view class="inCC2text">
+        {{$t('m.emergencycontrol')}}
       </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom (
+      <view class="inCC2">
+        <view class="uni-flex uni-row">
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CServerCheckLock')"
+            >{{$t('m.selectlink')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom (
           COpenBus)"
-        >{{$t('m.startbusiness')}}</button>
-      </view>
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="slockcom ('CCloseBus')"
-        >{{$t('m.closebusiness')}}</button>
-      </view>
-    </view>
-    <view class="uni-flex uni-row">
-      <view class="flex-item">
-        <button
-          class="nbt1"
-          @click="handin"
-        >{{$t('m.handinpark')}}</button>
-      </view>
+            >{{$t('m.startbusiness')}}</button>
+          </view>
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="slockcom ('CCloseBus')"
+            >{{$t('m.closebusiness')}}</button>
+          </view>
+        </view>
+        <view class="uni-flex uni-row">
+          <view class="flex-item">
+            <button
+              class="nbt1"
+              @click="handin"
+            >{{$t('m.handinpark')}}</button>
+          </view>
 
+        </view>
+      </view>
     </view>
     <!-- <view style="height: 400px;"></view> -->
     <uni-popup
@@ -435,19 +442,49 @@ export default {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: black;
+  background: url('../../../static/img/slock (2).png');
+  background-size: 100% 100%;
   color: white;
   font-size: 16px;
   font-weight: bold;
+  height: 500upx;
+}
+.inCC1 {
+  width: 97%;
+  margin: 0 auto;
+}
+.inCC1text {
+  background: url('../../../static/img/slock (1).png');
+  background-size: 45% 100%;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  font-size: 16px;
 }
 .CC2 {
   text-align: center;
   margin-top: 2%;
   line-height: 100upx;
-  background-color: black;
+  background: url('../../../static/img/slock (2).png');
+  background-size: 100% 100%;
   color: white;
   font-size: 16px;
   font-weight: bold;
+  height: 380upx;
+}
+.inCC2 {
+  width: 97%;
+  margin: 0 auto;
+  button {
+    background: url('../../../static/img/slock (4).png');
+    background-size: 100% 100%;
+  }
+}
+.inCC2text {
+  background: url('../../../static/img/slock (1).png');
+  background-size: 45% 100%;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  font-size: 16px;
 }
 .nbt1 {
   margin-top: 20upx;
@@ -480,7 +517,8 @@ export default {
   font-size: 16upx;
 }
 button {
-  background-color: white;
+  background: url('../../../static/img/slock (3).png');
+  background-size: 100% 100%;
   color: black;
   font-size: 14px;
   height: 75%;
