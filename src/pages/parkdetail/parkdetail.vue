@@ -30,27 +30,32 @@
         v-for="(item, index) in showlist"
         :key="index"
         @click="goincontrol(index)"
+        class="listitem1"
       >
 
-        <div style="text-align:center;font-weight:bold;">{{item.parkName}}</div>
+        <div style="text-align:left;font-weight:bold;">{{item.parkName}}</div>
         <view class="uni-flex uni-column">
           <view>
             <view class="uni-flex uni-row">
-              <view class="flex-item ">{{item.parkLockNum}}</view>
-              <view class="flex-item ">{{item.carState }}</view>
+              <view class="flex-item ">{{item.parkLockNum}} &nbsp&nbsp&nbsp| </view>
+              <view class="flex-item ">{{item.carState }} &nbsp&nbsp&nbsp|</view>
               <view
                 v-if="item.onlineState=='脱机'"
                 class="flex-item "
                 style="color:red"
-              >{{item.onlineState}}</view>
+              >{{item.onlineState}}
+                <view style="display:inline;color:black;padding-left:15px;">|</view>
+              </view>
               <view
                 v-if="item.onlineState!='脱机'"
                 class="flex-item "
                 style="color:green"
-              >{{item.onlineState}}</view>
+              >{{item.onlineState}}
+                <view style="display:inline;color:black;padding-left:15px;"> |</view>
+              </view>
 
-              <view class="flex-item ">{{item.priority}}</view>
-              <view class="flex-item ">{{item.parkLockState}}</view>
+              <view class="flex-item ">{{item.priority}}&nbsp&nbsp&nbsp|</view>
+              <view class="flex-item ">{{item.parkLockState}} </view>
             </view>
           </view>
           <view>
@@ -59,6 +64,7 @@
                 class="flex-item"
                 style="width:60%"
               >{{item.parkLockId}}</view>
+
               <view
                 v-if="item.runState&&item.runState=='脱机'"
                 class="flex-item"
@@ -570,5 +576,9 @@ export default {
 .inoutflex {
   text-align: left;
   width: 50%;
+}
+.listitem1 {
+  background-color: #f9f9f9;
+  margin-top: 5%;
 }
 </style>

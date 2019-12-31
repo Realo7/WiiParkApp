@@ -1,24 +1,6 @@
 <template>
   <view class="content">
-    <div>
-      <button
-        class="enbtn"
-        @click="changeen()"
-        :disabled="enactive"
-      >English</button>
-      <button
-        class="cnbtn"
-        @click="changecn()"
-        :disabled="cnactive"
-      >中文</button>
-    </div>
-    <view class="btn-row">
-      <button
-        type="primary"
-        class="btnlogin"
-        @tap="bindLogin"
-      >{{i18n.login}}</button>
-    </view>
+
     <image
       class="logo"
       src="/static/img/logo_huxiaor.png"
@@ -50,6 +32,26 @@
           :placeholder="$t('m.pleaseinputyourpassword')"
         ></m-input>
       </view>
+
+      <view class="btn-row">
+        <button
+          type="primary"
+          class="btnlogin"
+          @tap="bindLogin"
+        >{{i18n.login}}</button>
+      </view>
+      <div class="div1">
+        <button
+          class="enbtn"
+          @click="changeen()"
+          :disabled="enactive"
+        >English</button>
+        <button
+          class="cnbtn"
+          @click="changecn()"
+          :disabled="cnactive"
+        >中文</button>
+      </div>
     </view>
 
   </view>
@@ -212,11 +214,11 @@ export default {
 }
 
 .btnlogin {
-  width: 400rpx;
+  width: 600rpx;
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
-  background-color: black;
+  border-radius: 20px;
 }
 
 .inp {
@@ -250,18 +252,21 @@ export default {
   flex-direction: column;
   margin: 5px;
 }
+.div1 {
+  margin-top: 80%;
+}
 .enbtn {
   width: 35%;
   margin-left: 15%;
   float: left;
-  background-color: black;
+  background-color: #007aff;
   color: #fff;
 }
 .cnbtn {
   width: 35%;
   margin-right: 15%;
   float: left;
-  background-color: black;
+  background-color: #007aff;
   color: #fff;
 }
 .content {

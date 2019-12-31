@@ -13,11 +13,12 @@
         v-for="(item, index) in parkInfoBack"
         :key="index"
         @click="goindetail(index)"
+        class="item1"
       >
         <view class="uni-flex uni-column">
 
           <view class="uni-flex uni-row">
-            <view class="flex-item td1">{{item.name}}</view>
+            <view class="flex-item td1 parkname">{{item.name}}</view>
             <view class="flex-item td1">
               {{$t('m.totalnum')}}：
               {{item.totalSpace}}
@@ -25,12 +26,12 @@
 
           </view>
 
-          <view class="uni-flex uni-row">
-            <view class="flex-item td2">
+          <view class="uni-flex uni-row td2">
+            <view class="flex-item td21">
               {{$t('m.hadstopednum')}}：
               {{item.totalSpace-item.availableSpace}}
             </view>
-            <view class="flex-item td2">
+            <view class="flex-item td22 leastspace">
               {{$t('m.remainnum')}}：
               {{item.availableSpace}}
             </view>
@@ -185,6 +186,9 @@ export default {
 .popup-btn {
   margin-top: 10px;
 }
+.item1 {
+  // padding-bottom: 10px;
+}
 .hello {
   display: flex;
   flex: 1;
@@ -302,6 +306,22 @@ view {
   width: 50%;
 }
 .td2 {
-  width: 50%;
+  margin-top: 10px;
+}
+.td21 {
+  width: 45%;
+}
+.td22 {
+  width: 55%;
+}
+.parkname {
+  font-weight: bold;
+}
+.leastspace {
+  background: url('../../static/img/parkmana4.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding-left: 8%;
+  padding-bottom: 3px;
 }
 </style>
