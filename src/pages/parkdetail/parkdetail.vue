@@ -587,7 +587,6 @@ export default {
 }
 .listitem1 {
   background-color: #f9f9f9;
-
   margin-top: 5%;
 }
 .filter1 {
@@ -600,8 +599,8 @@ export default {
   width: 30%;
   float: left;
   text-align: center;
-  border: 2px solid #4ca2ff;
-  border-radius: 5px;
-  color: #4ca2ff;
+  // border: 2px solid #4ca2ff;
+  // border-radius: 5px;
+  // color: #4ca2ff;
 }
 </style>

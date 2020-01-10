@@ -168,7 +168,7 @@
       <view class="uni-tip tipback">
         <text class="uni-tip-title">{{$t('m.payment')}}</text>
 
-        <view class="uni-tip-content">
+        <view class="uni-tip-content tipcontent">
           <div>{{$t('m.Transactionnumber')}}：{{selectMback.dealId}}</div>
           <div>{{$t('m.parklocknum')}}：{{selectMback.parkLockNum}}</div>
           <div>{{$t('m.intime')}}：{{selectMback.inTm}}</div>
@@ -177,7 +177,7 @@
 
           {{$t('m.Youneedtopay')}}{{selectMback.shouldPay}}{{$t('m.yuan')}}
         </view>
-        <view class="uni-tip-group-button">
+        <view class="uni-tip-group-button tipbottom">
           <text
             class="uni-tip-button"
             @click="cancel('tip')"
@@ -625,5 +625,13 @@ button {
 }
 .tipback {
   background: url('../../../static/img/pay.png');
+  background-size: 100% 100%;
+  height: 550upx;
+}
+.tipcontent {
+  padding-top: 120upx;
+}
+.tipbottom {
+  padding-top: 50upx;
 }
 </style>

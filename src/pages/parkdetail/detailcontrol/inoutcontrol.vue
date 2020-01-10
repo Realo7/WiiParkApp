@@ -30,17 +30,50 @@
       >{{$t('m.open')}}</view>
 
       <view class="blank"></view>
+      <view
+        class="uni-flex uni-row"
+        style="margin:auto;"
+        v-if="deviceType=='入口'"
+      >
+        <view style="padding-top:6%;">选择入场日期和时间</view>
+        <!-- 日期选择 -->
+        <picker
+          mode="date"
+          :value="date"
+          :start="time"
+          @change="bindDateChange"
+        >
+          <view
+            class="uni-input"
+            style="padding-top:15%;"
+          >{{date}}</view>
+        </picker>
+        <!-- 时间选择 -->
+        <picker
+          mode="time"
+          :value="time0"
+          start="09:01"
+          end="21:01"
+          @change="bindTimeChange"
+        >
+          <view
+            class="uni-input"
+            style="padding-top:25%;"
+          >{{time0}}</view>
+        </picker>
+      </view>
       <view class="flex-item">
         <button
           v-if="deviceType=='入口'"
           @click="inspace()"
         >{{$t('m.inbyhand')}}</button>
 
-        <view>
+        <view v-if="deviceType=='出口'">
           票号
           <switch @change="switch1Change" />
           车牌号
         </view>
+
         <view
           v-if="deviceType=='出口'"
           class="uni-flex uni-row"
@@ -169,6 +202,8 @@ export default {
       type: '',
       content1: 'popup',
       content2: "",
+      date: "2020-01-01",
+      time0: "00:00",
       time: "",
       devAdr: "",
       deviceType: "",
@@ -314,7 +349,7 @@ export default {
       this.inspaceinfo.datas.userId = this.getuserCode()
       this.inspaceinfo.datas.devAdr = this.devAdr
       this.getnow()
-      this.inspaceinfo.datas.inTm = this.time
+      this.inspaceinfo.datas.inTm = this.date + this.time0
       this.inspaceinfo.datas.codeType = "2"
 
       let submit = {}
@@ -469,7 +504,15 @@ export default {
     changetabbar () {
       uni.setNavigationBarTitle({
         title: this.$t('m.inoutcontrol')
-      });    }
+      });
+    },
+    bindDateChange: function (e) {
+      this.date = e.target.value
+    },
+    bindTimeChange: function (e) {
+      this.time0 = e.target.value
+    },
+
   },
   onBackPress () {
     this.$refs['showpopup'].close()

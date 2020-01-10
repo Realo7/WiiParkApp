@@ -1,7 +1,7 @@
 <template>
   <div>
-    {{resultInfo.from}}
-    {{resultInfo.to}}
+    <!-- {{resultInfo.from}}
+    {{resultInfo.to}} -->
     <view class="uni-flex uni-row">
       <view class="flex-item">
         <view
@@ -368,10 +368,8 @@ picker {
 }
 .newbtn {
   white-space: nowrap;
-  // background: url('../../static/img/fengexian.png');
-  // background-repeat: no-repeat;
-  // background-position-y: bottom; /*背景图片在纵向的最下方显示*/
-  // background-size: 100% 30%;
+  background-color: #f9f9f9;
+  margin-top: 5%;
 }
 .flex-item {
   width: 25%;
