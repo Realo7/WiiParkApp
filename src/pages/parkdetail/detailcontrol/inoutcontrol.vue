@@ -77,17 +77,62 @@
       </view>
     </view>
     <!-- <view style="height: 400px;"></view> -->
+    <!-- showpopup只是一个通知框而已 -->
     <uni-popup
+      v-if="popstate=='success'"
       ref="showpopup"
       :type="type"
       @change="change"
     >
-      <text class="popup-content">
+      <text class="popup-content popup-content1">
         {{ content1 }}
         <br>
         {{content2}}
       </text>
     </uni-popup>
+    <uni-popup
+      v-if="popstate=='fail'"
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
+      <text class="popup-content popup-content2">
+        {{ content1 }}
+        <br>
+        {{content2}}
+      </text>
+    </uni-popup>
+    <uni-popup
+      v-if="popstate=='wait'"
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
+      <text class="popup-content popup-content3">
+        {{ content1 }}
+        <br>
+        {{content2}}
+      </text>
+      <div class="loader-inner ld1">
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+      </div>
+    </uni-popup>
+
+    <!-- showtip(带确认和取消) -->
     <uni-popup
       ref="showtip"
       :type="type"
@@ -117,6 +162,7 @@
 export default {
   data () {
     return {
+      popstate: '',
       title: 'Hello',
       inpt1: "",
       inpt2: "",
@@ -228,8 +274,9 @@ export default {
 
     },
     inoutCon () {
+      // 改变弹出框状态
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-
       this.inoutinfo.datas.userId = this.getuserCode()
       this.inoutinfo.datas.deviceAdr = this.devAdr
       // this.inoutinfo.datas.reasonId = "1"
@@ -246,13 +293,17 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
           } else {
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
           }
         }),
         fail: (err => {
           console.log('出现了错误' + err)
+          this.popstate = 'fail'
+          this.togglePopup('center', 'popup', '抬杆失败')
         })
       })
     },
@@ -292,6 +343,8 @@ export default {
     },
     // 查询费用
     spay () {
+
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.spayinfo.datas.userId = this.getuserCode()
@@ -317,11 +370,14 @@ export default {
             if (res.data.datas != null) {
               this.spayback = JSON.parse(res.data.datas)
               console.log(this.spayback)
+
               this.togglePopup('center', 'tip', this.$t('m.Youneedtopay') + this.spayback.shouldPay + "元")
             } else {
+              this.popstate = 'success'
               this.togglePopup('center', 'popup', res.data.message)
             }
           } else {
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', this.$t('m.selectcostmode') + res.data.message)
           }
         }),
@@ -332,6 +388,7 @@ export default {
     },
     //手动付款
     handpay () {
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.handpayinfo.datas.userId = this.getuserCode()
@@ -353,8 +410,10 @@ export default {
           if (res.data.statusCode == '200') {
             // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
             console.log(res.data.message)
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           } else {
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           }
         }),
@@ -415,8 +474,7 @@ export default {
   onBackPress () {
     this.$refs['showpopup'].close()
     this.$refs['showtip'].close()
-    this.$refs['showimage'].close()
-    this.$refs['showshare'].close()
+
   },
   mounted () {
     this.changetabbar()
@@ -425,6 +483,7 @@ export default {
 </script>
 <style lang="scss">
 @import url('popup.css');
+@import url('../../../common/rainbowloading.css');
 .open {
   background: url('../../../static/img/openinout.png');
   // background-color: #00bfff;
@@ -492,14 +551,38 @@ export default {
   color: #777;
   font-size: 26upx;
 }
-.popup-content {
+.popup-content1 {
   width: 500upx;
   height: 400upx;
   font-size: 20px;
-  align-items: center;
   display: flex;
   justify-content: center;
+  // 以下是框内元素垂直居中
+  align-items: center;
   background: url('../../../static/img/ok1.png');
+  background-size: 100% 100%;
+}
+.popup-content2 {
+  width: 500upx;
+  height: 400upx;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  // 以下是框内元素垂直居中
+  align-items: center;
+  background: url('../../../static/img/fail1.png');
+  background-size: 100% 100%;
+}
+.popup-content3 {
+  width: 500upx;
+  height: 400upx;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  // 以下是框内元素垂直居中
+  // align-items: center;
+
+  // background: url('../../../static/img/plzwait.gif');
   background-size: 100% 100%;
 }
 .choose {
@@ -528,6 +611,6 @@ export default {
   margin-top: 2%;
   height: 85%;
 }
-.uni-popup {
+.ld1 {
 }
 </style>

@@ -110,32 +110,54 @@
       </view>
     </view>
     <!-- <view style="height: 400px;"></view> -->
+    <!-- showpopup只是一个通知框而已 -->
     <uni-popup
+      v-if="popstate=='success'"
       ref="showpopup"
       :type="type"
       @change="change"
     >
-      <view class="popup-content">
+      <text class="popup-content popup-content1">
         {{ content }}
-        <view style="text-align: center;margin-right:20upx;">
-          <image
-            v-if="content=='请等待'||content=='please wait'"
-            class="loadingimg"
-            src="../../../static/img/loading.gif"
-          />
-          <image
-            v-if="content=='操作成功'||content=='success'"
-            class="loadingimg"
-            src="../../../static/img/success.png"
-          />
-          <image
-            v-if="content=='操作失败'||content=='fail'"
-            class="loadingimg"
-            src="../../../static/img/fail.png"
-          />
-        </view>
-      </view>
+      </text>
+    </uni-popup>
+    <uni-popup
+      v-if="popstate=='fail'"
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
+      <text class="popup-content popup-content2">
+        {{ content }}
+      </text>
+    </uni-popup>
+    <uni-popup
+      v-if="popstate=='wait'"
+      ref="showpopup"
+      :type="type"
+      @change="change"
+    >
+      <text class="popup-content popup-content3">
+        {{ content}}
 
+      </text>
+      <div class="loader-inner ld1">
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-wrap">
+          <div class="loader-line"></div>
+        </div>
+      </div>
     </uni-popup>
     <uni-popup
       ref="showtip"
@@ -143,7 +165,7 @@
       :mask-click="false"
       @change="change"
     >
-      <view class="uni-tip">
+      <view class="uni-tip tipback">
         <text class="uni-tip-title">{{$t('m.payment')}}</text>
 
         <view class="uni-tip-content">
@@ -174,6 +196,7 @@ export default {
 
   data () {
     return {
+      popstate: "",
       time: "",
       lol: "lol",
       type: '',
@@ -256,6 +279,8 @@ export default {
       return userCode
     },
     slockcom (value) {
+      // 改变弹出框状态
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.slockinfo.datas.userId = this.getuserCode()
@@ -273,8 +298,12 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             console.log(res.data.message)
+            // 改变弹出框状态
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', this.$t('m.optionsuccess'))
           } else {
+            // 改变弹出框状态
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', res.data.message)
           }
         }),
@@ -299,17 +328,24 @@ export default {
           if (res.data.statusCode == '200') {
             this.selectMback = JSON.parse(res.data.datas)
             console.log(this.selectMback)
+
             this.togglePopup('center', 'tip', "您需要支付" + this.selectMback.shouldPay + "元")
           } else {
+            // 改变弹出框状态
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', res.data.message)
           }
         }),
         fail: (err => {
+          // 改变弹出框状态
+          this.popstate = 'fail'
           console.log('出现了错误' + err)
         })
       })
     },
     handin () {
+      // 改变弹出框状态
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.handininfo.datas.userId = this.getuserCode()
@@ -327,18 +363,26 @@ export default {
         success: (res) => {
           console.log(res)
           if (res.data.statusCode == '200') {
+            // 改变弹出框状态
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', res.data.message)
           } else {
+            // 改变弹出框状态
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', res.data.message)
           }
         },
         fail: (err => {
+          // 改变弹出框状态
+          this.popstate = 'fail'
           this.togglePopup('center', 'popup', '出现了错误' + err)
         })
       })
     },
     handpay () {
       this.cancel('tip')
+      // 改变弹出框状态
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.handpayinfo.datas.userId = this.getuserCode()
@@ -360,12 +404,18 @@ export default {
         success: (res => {
           console.log(res)
           if (res.data.statusCode == '200') {
+            // 改变弹出框状态
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', res.data.message)
           } else {
+            // 改变弹出框状态
+            this.popstate = 'fail'
             this.togglePopup('center', 'popup', res.data.message)
           }
         }),
         fail: (err => {
+          // 改变弹出框状态
+          this.popstate = 'fail'
           this.togglePopup('top', 'popup', '出现了错误' + err)
         })
       })
@@ -419,8 +469,6 @@ export default {
   onBackPress () {
     this.$refs['showpopup'].close()
     this.$refs['showtip'].close()
-    this.$refs['showimage'].close()
-    this.$refs['showshare'].close()
   },
   mounted () {
     this.changetabbar()
@@ -429,6 +477,7 @@ export default {
 </script>
 <style lang="scss">
 @import url('popup.css');
+@import url('../../../common/rainbowloading.css');
 .outout {
   width: 90%;
   margin-left: 5%;
@@ -475,8 +524,8 @@ export default {
   width: 97%;
   margin: 0 auto;
   button {
-    background: url('../../../static/img/slock (4).png');
-    background-size: 100% 100%;
+    border: 1px solid #ff5a20;
+    border-radius: 8px;
   }
 }
 .inCC2text {
@@ -517,33 +566,64 @@ export default {
   font-size: 16upx;
 }
 button {
-  background: url('../../../static/img/slock (3).png');
-  background-size: 100% 100%;
+  background-color: white;
   color: black;
   font-size: 14px;
   height: 75%;
-  width: 90%;
+  width: 92%;
   // text-align: center;
   align-items: center;
   display: flex;
   justify-content: center;
+  border: 1px solid #4ca2ff;
+  border-radius: 5px;
 }
 .tt1 {
   font-size: 16px;
   line-height: 35px;
 }
-.popup-content {
+.popup-content1 {
   width: 500upx;
   height: 400upx;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
+  // 以下是框内元素垂直居中
   align-items: center;
-  // display: flex;
-  // justify-content: center;
+  background: url('../../../static/img/ok1.png');
+  background-size: 100% 100%;
 }
+.popup-content2 {
+  width: 500upx;
+  height: 400upx;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  // 以下是框内元素垂直居中
+  align-items: center;
+  background: url('../../../static/img/fail1.png');
+  background-size: 100% 100%;
+}
+.popup-content3 {
+  width: 500upx;
+  height: 400upx;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  // 以下是框内元素垂直居中
+  // align-items: center;
+
+  // background: url('../../../static/img/plzwait.gif');
+  background-size: 100% 100%;
+}
+
 .loadingimg {
   width: 100%;
 }
 .desc {
   /* text-indent: 40upx; */
+}
+.tipback {
+  background: url('../../../static/img/pay.png');
 }
 </style>
