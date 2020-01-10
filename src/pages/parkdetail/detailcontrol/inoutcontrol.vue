@@ -215,7 +215,7 @@ export default {
       reasoninfo: {
         appId: '',
         privatekey: '',
-        datas: { userId: '' }
+        datas: { cashierCode: '' }
       },
       reasonback: '',
       inoutinfo: {
@@ -465,13 +465,13 @@ export default {
     },
     //获取开闸原因
     getcallreason () {
-      this.reasoninfo.datas.userId = '001'
+      this.reasoninfo.datas.cashierCode = this.getuserCode()
       let submit = {}
       submit = JSON.stringify(this.reasoninfo)
       console.log("sub" + submit)
       uni.request({
         method: 'POST',
-        url: this.$baseurl + '/GetCallReasonListHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        url: this.$baseurl + '/GetOpenReasonListHandler.ashx?method=POST&lan=' + this.$t('m.lan') + '&type=app&compress=00',
         header: { 'content-type': 'application/x-www-form-urlencoded' },
         data: submit,
         success: (res => {
@@ -481,7 +481,9 @@ export default {
             console.log(res.data.message)
             let back = JSON.stringify(res.data)
             this.reasonback = JSON.parse(JSON.parse(back).datas).list
+            console.log(this.reasonback)
             this.array = JSON.parse(this.reasonback)
+            console.log(this.array[1].reason)
           } else {
             console.log(res.data.message)
           }
