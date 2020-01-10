@@ -16,10 +16,11 @@
         @change="PickerChange"
         :value="index"
         :range="array"
-        range-key="name"
+        range-key="reason"
         class="pickreason"
+        @click="getcallreason()"
       >
-        <view class="uni-input">{{array[index].name}}</view>
+        <view class="uni-input">{{array[index].reason}}</view>
       </picker>
 
       <!-- </view> -->
@@ -35,7 +36,7 @@
         style="margin:auto;"
         v-if="deviceType=='入口'"
       >
-        <view style="padding-top:6%;">选择入场日期和时间</view>
+        <view style="padding-top:6%;">选择入场</view>
         <!-- 日期选择 -->
         <picker
           mode="date"
@@ -61,13 +62,12 @@
             style="padding-top:25%;"
           >{{time0}}</view>
         </picker>
-      </view>
-      <view class="flex-item">
         <button
-          v-if="deviceType=='入口'"
+          type="primary"
           @click="inspace()"
         >{{$t('m.inbyhand')}}</button>
-
+      </view>
+      <view class="flex-item">
         <view v-if="deviceType=='出口'">
           票号
           <switch @change="switch1Change" />
@@ -77,6 +77,7 @@
         <view
           v-if="deviceType=='出口'"
           class="uni-flex uni-row"
+          style="margin-top:50upx;padding-left:30upx;"
         >
 
           <view class="flex-item-ipt">
@@ -141,11 +142,11 @@
       :type="type"
       @change="change"
     >
-      <text class="popup-content popup-content3">
+      <!-- <text class="popup-content popup-content3">
         {{ content1 }}
         <br>
         {{content2}}
-      </text>
+      </text> -->
       <div class="loader-inner ld1">
         <div class="loader-line-wrap">
           <div class="loader-line"></div>
@@ -209,8 +210,14 @@ export default {
       deviceType: "",
       parkName: "",
       inplate: "",
-      array: [{ name: this.$t('m.reason1') }, { name: this.$t('m.reason2') }, { name: this.$t('m.reason3') }],
+      array: [{ reason: this.$t('m.reason1') }, { reason: this.$t('m.reason2') }, { reason: this.$t('m.reason3') }],
       index: 0,
+      reasoninfo: {
+        appId: '',
+        privatekey: '',
+        datas: { userId: '' }
+      },
+      reasonback: '',
       inoutinfo: {
         "appId": "",
         "privatekey": "",
@@ -222,7 +229,6 @@ export default {
           "reason": "",
           "callId": "",
           "reasonId": "",
-
         }
       },
       inoutback: [],
@@ -305,7 +311,7 @@ export default {
     PickerChange: function (e) {
       this.index = e.target.value
       let index = this.index
-      this.inoutinfo.reason = this.array[index].name
+      this.inoutinfo.datas.reason = this.array[index].name
 
     },
     inoutCon () {
@@ -450,6 +456,34 @@ export default {
           } else {
             this.popstate = 'fail'
             this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
+          }
+        }),
+        fail: (err => {
+          console.log('出现了错误' + err)
+        })
+      })
+    },
+    //获取开闸原因
+    getcallreason () {
+      this.reasoninfo.datas.userId = '001'
+      let submit = {}
+      submit = JSON.stringify(this.reasoninfo)
+      console.log("sub" + submit)
+      uni.request({
+        method: 'POST',
+        url: this.$baseurl + '/GetCallReasonListHandler.ashx?method=GET&lan=' + this.$t('m.lan') + '&type=app&compress=00',
+        header: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: submit,
+        success: (res => {
+          console.log(res)
+          if (res.data.statusCode == '200') {
+            // this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
+            console.log(res.data.message)
+            let back = JSON.stringify(res.data)
+            this.reasonback = JSON.parse(JSON.parse(back).datas).list
+            this.array = JSON.parse(this.reasonback)
+          } else {
+            console.log(res.data.message)
           }
         }),
         fail: (err => {

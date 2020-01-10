@@ -188,7 +188,7 @@ export default {
       showlist: [],
       title: 'picker',
       parkarray: ['选择停车场'],
-      devicearray: ['车位锁', '停车场'],
+      devicearray: ['车位锁', '出入口设备'],
       index1: 0,
       index2: 0,
     }
@@ -199,7 +199,6 @@ export default {
       this.index1 = e.target.value
       this.wantInfo.datas.parkId = this.parkInfoBack[e.target.value].parkId
       // console.log(this.wantInfo.datas.parkId)
-
       this.getrecordInfo()
 
     },

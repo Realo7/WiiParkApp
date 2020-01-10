@@ -87,7 +87,7 @@ export const m={
     controlopen:"点击按钮控制杆的抬起",
     choseopenreason:"选择开闸原因",
     open:"开",
-    inbyhand:"手动入场(车牌识别)",
+    inbyhand:"手动入场",
     plzinticket:"请输入票号",
     plzinplate:"请输入车牌号",
     querycost:"查询费用",

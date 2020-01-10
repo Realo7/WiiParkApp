@@ -106,10 +106,36 @@
             >{{$t('m.handinpark')}}</button>
           </view>
 
+          <!-- 日期选择 -->
+          <picker
+            mode="date"
+            :value="date"
+            :start="time"
+            @change="bindDateChange"
+          >
+            <view class="uni-input">{{date}}</view>
+          </picker>
+
+          <!-- 时间选择 -->
+
+          <picker
+            mode="time"
+            :value="time0"
+            start="09:01"
+            end="21:01"
+            @change="bindTimeChange"
+          >
+            <view class="uni-input">{{time0}}</view>
+          </picker>
+
         </view>
       </view>
     </view>
-    <!-- <view style="height: 400px;"></view> -->
+    <!--
+            <view
+            style="height: 400px;"
+          >
+        </view> -->
     <!-- showpopup只是一个通知框而已 -->
     <uni-popup
       v-if="popstate=='success'"
@@ -137,10 +163,9 @@
       :type="type"
       @change="change"
     >
-      <text class="popup-content popup-content3">
+      <!-- <text class="popup-content3">
         {{ content}}
-
-      </text>
+      </text> -->
       <div class="loader-inner ld1">
         <div class="loader-line-wrap">
           <div class="loader-line"></div>
@@ -224,6 +249,8 @@ export default {
         }
       },
       selectMback: {},
+      date: "2020-01-01",
+      time0: "00:00",
       handininfo: {
         "appId": "",
         "privatekey": "",
@@ -633,5 +660,13 @@ button {
 }
 .tipbottom {
   padding-top: 50upx;
+}
+.uni-input {
+  margin-top: 20upx;
+  height: 60upx;
+  margin-left: 10upx;
+  border: 1px solid #4ca2ff;
+  border-radius: 8px;
+  color: black;
 }
 </style>
