@@ -3,7 +3,7 @@
   <view class="uni-padding-wrap uni-common-mt">
     <!-- <image src="../../../static/img/openinout.png"></image> -->
     <view class="uni-flex uni-column">
-      <span class="tx">{{parkName}} {{deviceType}}</span>
+      <span class="tx">{{parkName}} {{devName}}</span>
       <!-- <view class="tx1">{{$t('m.controlopen')}}</view> -->
 
       <!-- <view class="uni-list-cell"> -->
@@ -208,6 +208,7 @@ export default {
       time: "",
       devAdr: "",
       deviceType: "",
+      devName: "",
       parkName: "",
       inplate: "",
       array: [{ reason: this.$t('m.reason1') }, { reason: this.$t('m.reason2') }, { reason: this.$t('m.reason3') }],
@@ -280,12 +281,14 @@ export default {
     let devAdr = options.devAdr;
     let parkName = options.parkName;
     let deviceType = options.deviceType;
-    console.log(devAdr)
-    console.log(parkName)
-    console.log(deviceType)
+    let devName = options.devName
+    // console.log(devAdr)
+    // console.log(parkName)
+    // console.log(deviceType)
     this.devAdr = devAdr
     this.parkName = parkName
     this.deviceType = deviceType
+    this.devName = devName
 
   },
   methods: {

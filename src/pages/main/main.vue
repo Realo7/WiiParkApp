@@ -186,9 +186,7 @@ export default {
 .popup-btn {
   margin-top: 10px;
 }
-.item1 {
-  // padding-bottom: 10px;
-}
+
 .hello {
   display: flex;
   flex: 1;

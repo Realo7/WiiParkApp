@@ -401,7 +401,7 @@ export default {
         });
       } else if (this.grid == "inout") {
         uni.navigateTo({
-          url: url + '?devAdr=' + this.crkBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName + '&deviceType=' + this.crkBack[index].deviceType,
+          url: url + '?devAdr=' + this.crkBack[index].devAdr + '&parkName=' + this.crkBack[index].parkName + '&deviceType=' + this.crkBack[index].deviceType + '&devName=' + this.crkBack[index].devName,
         });
       } else if ((this.grid == "zzj")) {
         alert("自助机没有详情")

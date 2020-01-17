@@ -253,7 +253,10 @@ export default {
   margin: 5px;
 }
 .div1 {
+  // height: 300upx;
   margin-top: 80%;
+  // position: fixed;
+  // bottom: 20upx;
 }
 .enbtn {
   width: 35%;
