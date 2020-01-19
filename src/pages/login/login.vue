@@ -165,18 +165,19 @@ export default {
             key: "token",
             data: res.data.datas,
           })
+          // console.log("wesadw")
           //跳转home
           if (res.data.statusCode == '200') {
             //登录成功将用户名密码存储到用户本地
-            if (that.rememberPsw) {//用户勾选“记住密码”
-              uni.setStorageSync('userName', that.account);
-              uni.setStorageSync('userPsw', that.password);
+            this.toMain()
+            if (this.rememberPsw) {//用户勾选“记住密码”
+              uni.setStorageSync('userName', this.account);
+              uni.setStorageSync('userPsw', this.password);
             } else {//用户没有勾选“记住密码”
               uni.removeStorageSync('userName');
               uni.removeStorageSync('userPsw');
-              that.account = "";
-              that.password = "";
-              this.toMain()
+              this.account = "";
+              this.password = "";
             }
           } else {
             alert('账号或者密码错误')
@@ -219,6 +220,9 @@ export default {
   }, //方法体的结尾
   onReady () {
     // this.initPosition();
+
+  },
+  mounted () {
     let that = this;
     //页面加载完成，获取本地存储的用户名及密码
     const userName = uni.getStorageSync('userName');
@@ -230,7 +234,7 @@ export default {
       that.account = "";
       that.password = "";
     }
-  }
+  },
 }
 </script>
 

@@ -27,7 +27,7 @@
 
       <view
         class="flex-item flex-item-V open"
-        @click="inoutCon()"
+        @click="showtip2open()"
       >{{$t('m.open')}}</view>
 
       <view class="blank"></view>
@@ -188,6 +188,28 @@
         </view>
       </view>
     </uni-popup>
+    <!-- showtip2 开闸点击之后的确认 -->
+    <uni-popup
+      ref="showtip2"
+      type="center"
+      :mask-click="false"
+      @change="change"
+    >
+      <view class="uni-tip">
+        <text class="uni-tip-title">{{$t('m.querycost')}}</text>
+        <text class="uni-tip-content">您确认要开闸吗？</text>
+        <view class="uni-tip-group-button">
+          <text
+            class="uni-tip-button"
+            @click="cancel('tip2')"
+          >{{$t('m.cancel')}}</text>
+          <text
+            class="uni-tip-button"
+            @click="inoutCon()"
+          >{{$t('m.confirm')}}</text>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 
 </template>
@@ -319,6 +341,7 @@ export default {
     },
     inoutCon () {
       // 改变弹出框状态
+      this.$refs['showtip2'].close()
       this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       this.inoutinfo.datas.userId = this.getuserCode()
@@ -514,6 +537,9 @@ export default {
     conver (a) {
       return a < 10 ? '0' + a : a
     },
+    showtip2open () {
+      this.$refs.showtip2.open()
+    },
     togglePopup (type, open, value1, value2) {
       switch (type) {
         case 'top':
@@ -556,7 +582,7 @@ export default {
   onBackPress () {
     this.$refs['showpopup'].close()
     this.$refs['showtip'].close()
-
+    this.$refs['showtip2'].close()
   },
   mounted () {
     this.changetabbar()

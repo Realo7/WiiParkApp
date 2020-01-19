@@ -543,7 +543,8 @@ export default {
 
   },
   mounted () {
-    this.getlockInfo()
+    // this.getlockInfo()
+    this.getcrkInfo()
     this.changetabbar()
   },
   //监听下拉状态

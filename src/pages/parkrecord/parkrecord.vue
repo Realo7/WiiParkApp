@@ -341,9 +341,11 @@ export default {
       });    }
   },
   mounted () {
-    this.getrecordInfo()
-    this.changetabbar()
     this.getparkInfo()
+    // this.getrecordInfo()
+    this.getLPRInfo()
+    this.changetabbar()
+
   },
   //监听下拉状态
   onPullDownRefresh () {
