@@ -32,6 +32,18 @@
           :placeholder="$t('m.pleaseinputyourpassword')"
         ></m-input>
       </view>
+      <!-- 记住密码 -->
+      <view class="remember-psw">
+        <checkbox-group>
+          <label>
+            <checkbox
+              value="psw"
+              :checked='rememberPsw'
+              @tap="rememberPsw =! rememberPsw"
+              color="#09CC86"
+            />记住账号密码</label>
+        </checkbox-group>
+      </view>
 
       <view class="btn-row">
         <button
@@ -70,6 +82,7 @@ export default {
   },
   data () {
     return {
+      rememberPsw: true,
       enactive: false,
       cnactive: true,
       providerList: [],
@@ -111,6 +124,7 @@ export default {
 
   methods: {
     bindLogin () {
+      const that = this
       /**
        * 客户端对账号信息进行一些必要的校验。
        * 根据业务需要进行处理，这里仅做示例。
@@ -153,7 +167,17 @@ export default {
           })
           //跳转home
           if (res.data.statusCode == '200') {
-            this.toMain()
+            //登录成功将用户名密码存储到用户本地
+            if (that.rememberPsw) {//用户勾选“记住密码”
+              uni.setStorageSync('userName', that.account);
+              uni.setStorageSync('userPsw', that.password);
+            } else {//用户没有勾选“记住密码”
+              uni.removeStorageSync('userName');
+              uni.removeStorageSync('userPsw');
+              that.account = "";
+              that.password = "";
+              this.toMain()
+            }
           } else {
             alert('账号或者密码错误')
           }
@@ -195,6 +219,17 @@ export default {
   }, //方法体的结尾
   onReady () {
     // this.initPosition();
+    let that = this;
+    //页面加载完成，获取本地存储的用户名及密码
+    const userName = uni.getStorageSync('userName');
+    const userPsw = uni.getStorageSync('userPsw');
+    if (userName && userPsw) {
+      that.account = userName;
+      that.password = userPsw;
+    } else {
+      that.account = "";
+      that.password = "";
+    }
   }
 }
 </script>
@@ -334,6 +369,8 @@ m-input {
 .btn-row {
   margin-top: 25px;
   padding: 10px;
+}
+.remember-psw {
 }
 
 button.primary {

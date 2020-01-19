@@ -1,9 +1,9 @@
 <template>
-
   <view class="uni-padding-wrap uni-common-mt">
     <!-- <image src="../../../static/img/openinout.png"></image> -->
     <view class="uni-flex uni-column">
-      <span class="tx">{{parkName}} {{devName}}</span>
+      <span class="tx">{{parkName}}</span>
+      <span class="tx">{{devName}}</span>
       <!-- <view class="tx1">{{$t('m.controlopen')}}</view> -->
 
       <!-- <view class="uni-list-cell"> -->
@@ -588,7 +588,7 @@ export default {
   font-size: 26px;
   font-family: MicroSoft-YaHei;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .tx1 {
   font-size: 18px;

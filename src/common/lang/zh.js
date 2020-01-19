@@ -76,7 +76,7 @@ export const m={
     //slock弹出框popup
     payment:"支付",
     Transactionnumber:"交易编号",
-    intime:"入场时间",
+    intime:"入场",
     staytime:"停留时间(分钟)",
     Preferentialamount:"优惠金额",
     Youneedtopay:"您需要支付",
@@ -96,7 +96,7 @@ export const m={
     reason3:"其他",
     //记录界面
     outtime:"出场",
-    realpay:"实付金额",
+    realpay:"实收",
     chosedate:"选择日期", 
      //tabbar
     parkmanagement:"车场管理",
@@ -119,4 +119,5 @@ export const m={
     ticketnum:"票号",
     selectcostmode:"查询费用模块",
     handpay:"手动付款",
+    
 }

@@ -63,8 +63,8 @@
         <view>
           <view class="uni-flex uni-column">
             <view class="uni-flex uni-row">
-              <view class="flex-item td3">{{item.parkName}}</view>
-              <view class="flex-item">{{item.parkLockId}}</view>
+              <view class="flex-item td3">{{item.plate}}</view>
+              <view class="flex-item">{{item.ticketCode}}</view>
               <view
                 class="flex-item"
                 v-if="item.payState=='已支付'"
@@ -88,11 +88,11 @@
             </view>
             <view class="uni-flex uni-row">
               <view class="flex-item td1">{{$t('m.intime')}}：{{item.inTm}}</view>
-              <view class="flex-item td2">{{$t('m.staytime')}}：</view>
+              <view class="flex-item td2">{{$t('m.realpay')}}：{{item.realPay}}</view>
             </view>
             <view class="uni-flex uni-row">
               <view class="flex-item td1">{{$t('m.outtime')}}：{{item.outTm}}</view>
-              <view class="flex-item td2">{{$t('m.realpay')}}：{{item.realpay}}</view>
+              <view class="flex-item td2">{{$t('m.Preferentialamount')}}：{{item.discountPay}}</view>
             </view>
           </view>
         </view>
@@ -132,7 +132,7 @@ export default {
         "datas": {
           "userId": "",
           "pageIndex": "1",
-          "pageSize": "10",
+          "pageSize": "6",
           "parkId": "",
           "parkName": "",
           "payMode": "-1",//支付方式
@@ -155,7 +155,7 @@ export default {
         "datas": {
           "userId": "",
           "pageIndex": "1",
-          "pageSize": "10",
+          "pageSize": "6",
           "parkId": "",
           "parkName": "",
           "payState": "-1",//支付状态
@@ -174,7 +174,7 @@ export default {
         "datas": {
           "userId": "",
           "pageIndex": "1",
-          "pageSize": "10",
+          "pageSize": "",
           "parkName": "",
           "longitude": "",//经度  
           "latitude": "",//纬度
@@ -195,21 +195,32 @@ export default {
   },
   methods: {
     bindPickerChange1: function (e) {
+      // 第一个选择框
       console.log('picker发送选择改变，携带值为', e.target.value)
       this.index1 = e.target.value
-      this.wantInfo.datas.parkId = this.parkInfoBack[e.target.value].parkId
       // console.log(this.wantInfo.datas.parkId)
-      this.getrecordInfo()
+      if (this.index2 == 0) {
+        this.wantInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
+        this.getrecordInfo()
+      } else if (this.index2 == 1) {
+        this.LPRInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
+        this.getLPRInfo()
+      }
+
 
     },
     bindPickerChange2: function (e) {
+      // 第二个选择框
       console.log('picker发送选择改变，携带值为', e.target.value)
+      this.wantInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
       this.index2 = e.target.value
       if (e.target.value == 0) {
         this.getrecordInfo()
       } else if (e.target.value == 1) {
-        this.LPRInfo.datas.parkId = this.parkInfoBack[e.target.value].parkId
+        this.LPRInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
         this.getLPRInfo()
+      } else {
+        console.log("页面刷新出现了问题")
       }
     },
     getuserCode () {
@@ -243,7 +254,7 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.parkInfoBack = JSON.parse(JSON.parse(res.data.datas).list)
-            console.log(this.parkInfoBack)
+            console.log("停车场名称结果集" + JSON.stringify(this.parkInfoBack))
             for (let i = 0; i < this.parkInfoBack.length; i++) {
               this.parkarray[i] = this.parkInfoBack[i].name
             }
@@ -273,8 +284,9 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.recordBack = JSON.parse(JSON.parse(res.data.datas).list)
-            console.log(this.recordBack)
-            this.showlist = this.recordBack
+            // console.log(this.recordBack)
+            this.showlist.concat(this.recordBack)
+            console.log("展示一下" + JSON.stringify(this.showlist))
           } else {
             alert(res.data.message)
           }
@@ -298,8 +310,9 @@ export default {
           console.log(res)
           if (res.data.statusCode == '200') {
             this.LPRBack = JSON.parse(JSON.parse(res.data.datas).list)
-            console.log(this.LPRBack)
-            this.showlist = this.LPRBack
+            // console.log(this.LPRBack)
+            this.showlist = this.showlist.concat(this.LPRBack)
+            console.log("出入口信息" + JSON.stringify(this.showlist))
           } else {
             alert(res.data.message)
           }
@@ -334,7 +347,16 @@ export default {
   },
   //监听下拉状态
   onPullDownRefresh () {
-    this.getrecordInfo()
+    if (this.index2 == 0) {
+      this.wantInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
+      this.showlist = ""
+      this.getrecordInfo()
+    } else if (this.index2 == 1) {
+      this.LPRInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
+      this.showlist = ""
+      this.getLPRInfo()
+    }
+
     setTimeout(function () {
       uni.stopPullDownRefresh();
     }, 1000);
@@ -342,8 +364,14 @@ export default {
   // 页面滚动到底部的事件
   onReachBottom: function () {
     var that = this;
-    that.wantInfo.datas.pageIndex = that.wantInfo.datas.pageIndex * 1 + 1
-    that.getrecordInfo()
+    if (this.index2 == 0) {
+      this.wantInfo.datas.pageIndex = that.wantInfo.datas.pageIndex * 1 + 1
+      that.getrecordInfo()
+    } else if (this.index2 == 1) {
+      this.LPRInfo.datas.pageIndex = that.LPRInfo.datas.pageIndex * 1 + 1
+      this.getLPRInfo()
+    }
+
     //将数据拼接在一起
     // showwList.concat(res.data)
   }
