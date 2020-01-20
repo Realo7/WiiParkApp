@@ -1,6 +1,5 @@
 <template>
   <view class="content">
-
     <image
       class="logo"
       src="/static/img/logo_huxiaor.png"
@@ -41,7 +40,7 @@
               :checked='rememberPsw'
               @tap="rememberPsw =! rememberPsw"
               color="#09CC86"
-            />记住账号密码</label>
+            />记住密码</label>
         </checkbox-group>
       </view>
 
@@ -292,10 +291,7 @@ export default {
   margin: 5px;
 }
 .div1 {
-  // height: 300upx;
-  margin-top: 80%;
-  // position: fixed;
-  // bottom: 20upx;
+  margin-top: 63%;
 }
 .enbtn {
   width: 35%;
@@ -317,8 +313,10 @@ export default {
   flex-direction: column;
   background-color: #efeff4;
   padding: 10px;
+  min-height: 100%;
 }
 page {
+  background-color: #efeff4;
   min-height: 100%;
   display: flex;
   font-size: 16px;
@@ -375,6 +373,8 @@ m-input {
   padding: 10px;
 }
 .remember-psw {
+  margin-top: 30upx;
+  margin-left: 70%;
 }
 
 button.primary {

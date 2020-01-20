@@ -16,11 +16,11 @@
         @change="PickerChange"
         :value="index"
         :range="array"
-        range-key="reason"
+        range-key="ReasonInfo"
         class="pickreason"
         @click="getcallreason()"
       >
-        <view class="uni-input">{{array[index].reason}}</view>
+        <view class="uni-input">{{array[index].ReasonInfo}}</view>
       </picker>
 
       <!-- </view> -->
@@ -346,7 +346,7 @@ export default {
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
       this.inoutinfo.datas.userId = this.getuserCode()
       this.inoutinfo.datas.deviceAdr = this.devAdr
-      // this.inoutinfo.datas.reasonId = "1"
+      this.inoutinfo.datas.reasonId = this.array[this.index].ReasonId
       let submit = {}
       submit = JSON.stringify(this.inoutinfo)
       console.log("sub" + submit)
@@ -509,7 +509,7 @@ export default {
             this.reasonback = JSON.parse(JSON.parse(back).datas).list
             console.log(this.reasonback)
             this.array = JSON.parse(this.reasonback)
-            console.log(this.array[1].reason)
+            console.log(this.array[1].ReasonInfo)
           } else {
             console.log(res.data.message)
           }
@@ -586,6 +586,7 @@ export default {
   },
   mounted () {
     this.changetabbar()
+    this.getcallreason()
   }
 }
 </script>
