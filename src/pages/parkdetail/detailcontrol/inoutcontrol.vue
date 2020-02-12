@@ -119,14 +119,17 @@
       @change="change"
     >
       <text class="popup-content popup-content1">
-        {{ content1 }}
-        <br>
+        <text
+          class="uni-tip-title"
+          style="margin-bottom:50upx;"
+        >{{content1}}\n</text>
+
         {{content2}}
       </text>
     </uni-popup>
     <uni-popup
       v-if="popstate=='fail'"
-      ref="showpopup"
+      ref="showpopup2"
       :type="type"
       @change="change"
     >
@@ -196,7 +199,7 @@
       @change="change"
     >
       <view class="uni-tip">
-        <text class="uni-tip-title">{{$t('m.querycost')}}</text>
+        <text class="uni-tip-title">提示</text>
         <text class="uni-tip-content">您确认要开闸吗？</text>
         <view class="uni-tip-group-button">
           <text
@@ -232,7 +235,8 @@ export default {
       deviceType: "",
       devName: "",
       parkName: "",
-      inplate: "",
+      parkId: "",
+
       array: [{ reason: this.$t('m.reason1') }, { reason: this.$t('m.reason2') }, { reason: this.$t('m.reason3') }],
       index: 0,
       reasoninfo: {
@@ -304,6 +308,7 @@ export default {
     let parkName = options.parkName;
     let deviceType = options.deviceType;
     let devName = options.devName
+    let parkId = options.parkId
     // console.log(devAdr)
     // console.log(parkName)
     // console.log(deviceType)
@@ -311,6 +316,7 @@ export default {
     this.parkName = parkName
     this.deviceType = deviceType
     this.devName = devName
+    this.parkId = parkId
 
   },
   methods: {
@@ -364,24 +370,25 @@ export default {
             this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
           } else {
             this.popstate = 'fail'
-            this.togglePopup('center', 'popup', this.$t('m.taigan') + res.data.message)
+            this.togglePopup('center', 'popup2', this.$t('m.taigan') + res.data.message)
           }
         }),
         fail: (err => {
           console.log('出现了错误' + err)
           this.popstate = 'fail'
-          this.togglePopup('center', 'popup', '抬杆失败')
+          this.togglePopup('center', 'popup2', '抬杆失败')
         })
       })
     },
     // 手动入场
     inspace () {
+      this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
-
+      // this.$refs['showpopup'].open()
       this.inspaceinfo.datas.userId = this.getuserCode()
       this.inspaceinfo.datas.devAdr = this.devAdr
       this.getnow()
-      this.inspaceinfo.datas.inTm = this.date + this.time0
+      this.inspaceinfo.datas.inTm = this.date + ' ' + this.time0
       this.inspaceinfo.datas.codeType = "2"
 
       let submit = {}
@@ -398,31 +405,36 @@ export default {
             this.inspaceback = JSON.parse(res.data.datas).ticketCode
             console.log(res.data.message)
             console.log(this.inspaceback)
+            this.popstate = 'success'
             this.togglePopup('center', 'popup', this.$t('m.handinpark') + res.data.message, this.$t('m.ticketnum') + this.inspaceback)
           } else {
-            this.togglePopup('center', 'popup', this.$t('m.handinpark') + res.data.message)
+            this.popstate = 'fail'
+            this.togglePopup('center', 'popup2', res.data.message)
           }
         }),
         fail: (err => {
           console.log('出现了错误' + err)
+          this.popstate = 'fail'
+          this.togglePopup('center', 'popup2', res.data.message)
         })
       })
     },
     // 查询费用
     spay () {
-
       this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
       this.spayinfo.datas.userId = this.getuserCode()
-      if (this.inspaceback) {
-        this.spayinfo.datas.ticketCode = this.inspaceback
-      } else if (switch1 = flase) {
-        this.spayinfo.datas.ticketCode = this.inpt1
-      } else {
+      this.spayinfo.datas.parkId = this.parkId
+      if (this.switch1) {
+        this.spayinfo.datas.ticketCode = ""
         this.spayinfo.datas.plate = this.inpt2
+      } else {
+        this.spayinfo.datas.plate = ""
+        this.spayinfo.datas.ticketCode = this.inpt1
+
       }
-      this.spayinfo.datas.plate = this.inplate
+
 
       let submit = {}
       submit = JSON.stringify(this.spayinfo)
@@ -433,7 +445,7 @@ export default {
         data: submit,
         success: (res => {
           console.log(res)
-          if (res.status == '200') {
+          if (res.statusCode == '200') {
             if (res.data.datas != null) {
               this.spayback = JSON.parse(res.data.datas)
               console.log(this.spayback)
@@ -445,7 +457,7 @@ export default {
             }
           } else {
             this.popstate = 'fail'
-            this.togglePopup('center', 'popup', this.$t('m.selectcostmode') + res.data.message)
+            this.togglePopup('center', 'popup2', this.$t('m.selectcostmode') + res.data.message)
           }
         }),
         fail: (err => {
@@ -455,6 +467,7 @@ export default {
     },
     //手动付款
     handpay () {
+      this.$refs['showtip'].close()
       this.popstate = 'wait'
       this.togglePopup('center', 'popup', this.$t('m.plzwait'))
 
@@ -481,7 +494,7 @@ export default {
             this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
           } else {
             this.popstate = 'fail'
-            this.togglePopup('center', 'popup', this.$t('m.handpay') + res.data.message)
+            this.togglePopup('center', 'popup2', this.$t('m.handpay') + res.data.message)
           }
         }),
         fail: (err => {
@@ -562,6 +575,8 @@ export default {
     },
     cancel (type) {
       this.$refs['show' + type].close()
+      this.$refs['showpopup'].close()
+
     },
     change (e) {
       console.log('是否打开:' + e.show)
@@ -581,6 +596,7 @@ export default {
   },
   onBackPress () {
     this.$refs['showpopup'].close()
+    this.$refs['showpopup2'].close()
     this.$refs['showtip'].close()
     this.$refs['showtip2'].close()
   },
