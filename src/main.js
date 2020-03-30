@@ -25,6 +25,7 @@ Vue.component('vTable',vTable);
 Vue.config.productionTip = false
 
 Vue.use(VueI18n)
+
 Vue.config.productuinTip = false 
 
 Vue.prototype.$baseurl=url.BaseUrl;

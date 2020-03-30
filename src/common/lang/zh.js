@@ -110,7 +110,7 @@ export const m={
     inoutcontrol:"出入口控制",
     micontorl:"咪表控制",
     //
-    needtodev:"其他功能待开发",
+    needtodev:"功能尚未开放，请联系管理员",
     loginout:"退出登陆",
     //提示
     plzwait:"请等待",

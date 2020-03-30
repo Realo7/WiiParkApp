@@ -1,68 +1,51 @@
 <template>
   <view class="content">
-    <image
-      class="logo"
-      src="/static/img/logo_huxiaor.png"
-    ></image>
+    <image class="logo"
+           src="/static/img/logo_huxiaor.png"></image>
     <view class="input-group">
       <view class="input-row border">
-        <image
-          class="logo left"
-          src="/static/img/yonghuming.png"
-        ></image>
-        <m-input
-          class="m-input"
-          type="text"
-          clearable
-          focus
-          v-model="account"
-          :placeholder="$t('m.pleaseinputyouraccount')"
-        ></m-input>
+        <image class="logo left"
+               src="/static/img/yonghuming.png"></image>
+        <m-input class="m-input"
+                 type="text"
+                 clearable
+                 focus
+                 v-model="account"
+                 :placeholder="$t('m.pleaseinputyouraccount')"></m-input>
       </view>
       <view class="input-row">
-        <image
-          class="logo left"
-          src="/static/img/mima.png"
-        ></image>
-        <m-input
-          type="password"
-          displayable
-          v-model="password"
-          :placeholder="$t('m.pleaseinputyourpassword')"
-        ></m-input>
+        <image class="logo left"
+               src="/static/img/mima.png"></image>
+        <m-input type="password"
+                 displayable
+                 v-model="password"
+                 :placeholder="$t('m.pleaseinputyourpassword')"></m-input>
       </view>
       <!-- 记住密码 -->
       <view class="remember-psw">
         <checkbox-group>
           <label>
-            <checkbox
-              value="psw"
-              :checked='rememberPsw'
-              @tap="rememberPsw =! rememberPsw"
-              color="#09CC86"
-            />记住密码</label>
+            <checkbox value="psw"
+                      :checked='rememberPsw'
+                      @tap="rememberPsw =! rememberPsw"
+                      color="#09CC86" />记住密码</label>
         </checkbox-group>
       </view>
 
       <view class="btn-row">
-        <button
-          type="primary"
-          class="btnlogin"
-          @tap="bindLogin"
-        >{{i18n.login}}</button>
+        <button type="primary"
+                class="btnlogin"
+                @tap="bindLogin">{{i18n.login}}</button>
       </view>
       <div class="div1">
-        <button
-          class="enbtn"
-          @click="changeen()"
-          :disabled="enactive"
-        >English</button>
-        <button
-          class="cnbtn"
-          @click="changecn()"
-          :disabled="cnactive"
-        >中文</button>
+        <button class="enbtn"
+                @click="changeen()"
+                :disabled="enactive">English</button>
+        <button class="cnbtn"
+                @click="changecn()"
+                :disabled="cnactive">中文</button>
       </div>
+      <div class="div2">&copy;江苏慧乔信息科技有限公司</div>
     </view>
 
   </view>
@@ -221,6 +204,9 @@ export default {
     // this.initPosition();
 
   },
+  onResize () {
+    this.windowHeight = size.windowHeight;
+  },
   mounted () {
     let that = this;
     //页面加载完成，获取本地存储的用户名及密码
@@ -291,7 +277,10 @@ export default {
   margin: 5px;
 }
 .div1 {
-  margin-top: 63%;
+  margin-top: 60%;
+}
+.div2 {
+  margin-left: 45%;
 }
 .enbtn {
   width: 35%;

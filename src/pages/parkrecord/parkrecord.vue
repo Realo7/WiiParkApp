@@ -4,87 +4,67 @@
     {{resultInfo.to}} -->
     <view class="uni-flex uni-row">
       <view class="flex-item">
-        <view
-          class="tab"
-          :class="{'active':index==tabIndex}"
-          @tap="toggleTab(item,index)"
-          v-for="(item,index) in tabList"
-          :key="index"
-        >{{item.name}}</view>
-        <w-picker
-          mode="range"
-          startYear="2017"
-          endYear="2030"
-          :defaultVal="['2019','01','01','-','2019','12','31']"
-          :current="false"
-          @confirm="onConfirm"
-          ref="range"
-          themeColor="#f00"
-        ></w-picker>
+        <view class="tab"
+              :class="{'active':index==tabIndex}"
+              @tap="toggleTab(item,index)"
+              v-for="(item,index) in tabList"
+              :key="index">{{item.name}}</view>
+        <w-picker mode="range"
+                  startYear="2017"
+                  endYear="2030"
+                  :defaultVal="['2019','01','01','-','2019','12','31']"
+                  :current="false"
+                  @confirm="onConfirm"
+                  ref="range"
+                  themeColor="#f00"></w-picker>
       </view>
-      <uni-search-bar
-        radius="100"
-        :placeholder="$t('m.plzinput2')"
-        @confirm="search"
-        class="flex-item2"
-      />
+      <uni-search-bar radius="100"
+                      :placeholder="$t('m.plzinput2')"
+                      @confirm="search"
+                      class="flex-item2" />
     </view>
 
     <view class="uni-flex uni-row">
       <view class="flex-item1">
-        <picker
-          @change="bindPickerChange1"
-          :value="index1"
-          :range="parkarray"
-        >
+        <picker @change="bindPickerChange1"
+                :value="index1"
+                :range="parkarray">
           <view class="uni-input">{{parkarray[index1]}}</view>
         </picker>
       </view>
 
       <view class="flex-item1">
-        <picker
-          @change="bindPickerChange2"
-          :value="index2"
-          :range="devicearray"
-        >
+        <picker @change="bindPickerChange2"
+                :value="index2"
+                :range="devicearray">
           <view class="uni-input">{{devicearray[index2]}}</view>
         </picker>
       </view>
     </view>
 
     <uni-list>
-      <uni-list-item
-        :show-badge="true"
-        :show-arrow="false"
-        v-for="(item, index) in showlist"
-        :key="index"
-        class="newbtn"
-      >
+      <uni-list-item :show-badge="true"
+                     :show-arrow="false"
+                     v-for="(item, index) in showlist"
+                     :key="index"
+                     class="newbtn">
         <view>
           <view class="uni-flex uni-column">
             <view class="uni-flex uni-row">
               <view class="flex-item td3">{{item.plate}}</view>
               <view class="flex-item">{{item.ticketCode}}</view>
-              <view
-                class="flex-item"
-                v-if="item.payState=='已支付'"
-                style="color:green"
-              >{{item.payState}}</view>
-              <view
-                class="flex-item"
-                v-if="item.payState!='已支付'"
-                style="color:red"
-              >{{item.payState}}</view>
-              <view
-                class="flex-item"
-                v-if="item.outState=='未出场'"
-                style="color:red"
-              >{{item.outState}}</view>
-              <view
-                class="flex-item"
-                v-if="item.outState!='未出场'"
-                style="color:green"
-              >{{item.outState}}</view>
+              <view class="flex-item"
+                    v-if="item.payState=='已支付'"
+                    style="color:green">{{item.payState}}</view>
+              <view class="flex-item"
+                    v-if="item.payState!='已支付'"
+                    style="color:red">{{item.payState}}</view>
+              <view class="flex-item"
+                    v-if="item.outState=='未出场'"
+                    style="color:red">{{item.outState}}</view>
+              <view class="flex-item"
+                    v-if="item.outState!='未出场'"
+                    style="color:green">{{item.outState}}</view>
             </view>
             <view class="uni-flex uni-row">
               <view class="flex-item td1">{{$t('m.intime')}}：{{item.inTm}}</view>
@@ -107,6 +87,7 @@ export default {
   data () {
 
     return {
+      tobottom: false,
       title: 'Hello',
       startYear: new Date().getFullYear(),
       mode: "range",
@@ -311,8 +292,12 @@ export default {
           if (res.data.statusCode == '200') {
             this.LPRBack = JSON.parse(JSON.parse(res.data.datas).list)
             // console.log(this.LPRBack)
-            this.showlist = this.showlist.concat(this.LPRBack)
-            console.log("出入口信息" + JSON.stringify(this.showlist))
+            if (this.tobottom == true) {
+              this.showlist = this.showlist.concat(this.LPRBack)
+            } else if (this.tobottom == false) {
+              this.showlist = this.LPRBack
+              console.log("出入口信息" + JSON.stringify(this.showlist))
+            }
           } else {
             alert(res.data.message)
           }
@@ -349,6 +334,7 @@ export default {
   },
   //监听下拉状态
   onPullDownRefresh () {
+    this.tobottom = false
     if (this.index2 == 0) {
       this.wantInfo.datas.parkId = this.parkInfoBack[this.index1].parkId
       this.showlist = ""
@@ -365,6 +351,7 @@ export default {
   },
   // 页面滚动到底部的事件
   onReachBottom: function () {
+    this.tobottom = true;
     var that = this;
     if (this.index2 == 0) {
       this.wantInfo.datas.pageIndex = that.wantInfo.datas.pageIndex * 1 + 1

@@ -60,7 +60,7 @@
     "babel-plugin-import": "^1.13.0",
     "mini-types": "0.0.5",
     "miniprogram-api-typings": "^2.10.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "postcss-comment": "^2.0.0",
     "sass-loader": "^8.0.0",
     "vue-loader": "^15.8.3",

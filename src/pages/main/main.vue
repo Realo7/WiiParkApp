@@ -1,20 +1,17 @@
 <template>
   <view class="content">
     <!-- {{searchVal}} -->
-    <uni-search-bar
-      radius="100"
-      @input="input"
-      :placeholder="$t('m.plzinput1')"
-      @confirm="getInfo"
-    />
+    <uni-search-bar radius="100"
+                    @input="input"
+                    :placeholder="$t('m.plzinput1')"
+                    @confirm="getInfo"
+                    @cancel="cancelsearch" />
     <!-- badge-text小绿点 -->
     <uni-list>
-      <uni-list-item
-        v-for="(item, index) in parkInfoBack"
-        :key="index"
-        @click="goindetail(index)"
-        class="item1"
-      >
+      <uni-list-item v-for="(item, index) in parkInfoBack"
+                     :key="index"
+                     @click="goindetail(index)"
+                     class="item1">
         <view class="uni-flex uni-column">
 
           <view class="uni-flex uni-row">
@@ -83,6 +80,10 @@ export default {
         }
       })
       return userCode
+    },
+    cancelsearch () {
+      this.searchVal = ''
+      this.getInfo()
     },
     getInfo () {
       // console.log("基础URL" + this.$baseurl)
@@ -213,7 +214,7 @@ export default {
   font-family: uniicons;
   font-weight: normal;
   font-style: normal;
-  src: url('~@/static/uni.ttf') format('truetype');
+  src: url("~@/static/uni.ttf") format("truetype");
 }
 
 /* #endif */
@@ -316,7 +317,7 @@ view {
   font-weight: bold;
 }
 .leastspace {
-  background: url('../../static/img/parkmana4.png');
+  background: url("../../static/img/parkmana4.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding-left: 8%;

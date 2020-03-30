@@ -12,94 +12,82 @@
           </view> -->
       <!-- <view class="uni-list-cell-db reason"> -->
 
-      <picker
-        @change="PickerChange"
-        :value="index"
-        :range="array"
-        range-key="ReasonInfo"
-        class="pickreason"
-        @click="getcallreason()"
-      >
+      <picker @change="PickerChange"
+              :value="index"
+              :range="array"
+              range-key="ReasonInfo"
+              class="pickreason"
+              @click="getcallreason()">
         <view class="uni-input">{{array[index].ReasonInfo}}</view>
       </picker>
 
       <!-- </view> -->
 
-      <view
-        class="flex-item flex-item-V open"
-        @click="showtip2open()"
-      >{{$t('m.open')}}</view>
+      <view class="flex-item flex-item-V open"
+            @click="showtip2open()">{{$t('m.open')}}</view>
 
       <view class="blank"></view>
-      <view
-        class="uni-flex uni-row"
-        style="margin:auto;"
-        v-if="deviceType=='入口'"
-      >
+      <view class="uni-flex uni-row"
+            style="margin:auto;"
+            v-if="deviceType=='入口'">
         <view style="padding-top:6%;">选择入场</view>
         <!-- 日期选择 -->
-        <picker
-          mode="date"
-          :value="date"
-          :start="time"
-          @change="bindDateChange"
-        >
-          <view
-            class="uni-input"
-            style="padding-top:15%;"
-          >{{date}}</view>
+        <picker mode="date"
+                :value="date"
+                :start="time"
+                @change="bindDateChange">
+          <view class="uni-input"
+                style="padding-top:15%;">{{date}}</view>
         </picker>
         <!-- 时间选择 -->
-        <picker
-          mode="time"
-          :value="time0"
-          start="09:01"
-          end="21:01"
-          @change="bindTimeChange"
-        >
-          <view
-            class="uni-input"
-            style="padding-top:25%;"
-          >{{time0}}</view>
+        <picker mode="time"
+                :value="time0"
+                start="09:01"
+                end="21:01"
+                @change="bindTimeChange">
+          <view class="uni-input"
+                style="padding-top:25%;">{{time0}}</view>
         </picker>
-        <button
-          type="primary"
-          @click="inspace()"
-        >{{$t('m.inbyhand')}}</button>
+        <button type="primary"
+                @click="inspace()">{{$t('m.inbyhand')}}</button>
       </view>
       <view class="flex-item">
         <view v-if="deviceType=='出口'">
-          票号
+          <span v-if="switch1==false"
+                style="color:red;"> 票号</span>
+          <span v-if="switch1==true"
+                style="color:black;"> 票号</span>
           <switch @change="switch1Change" />
-          车牌号
+          <span v-if="switch1==false"
+                style="color:black;"> 车牌号</span>
+          <span v-if="switch1==true"
+                style="color:red;"> 车牌号</span>
         </view>
 
-        <view
-          v-if="deviceType=='出口'"
-          class="uni-flex uni-row"
-          style="margin-top:50upx;padding-left:30upx;"
-        >
+        <view v-if="deviceType=='出口'"
+              class="uni-flex uni-row"
+              style="margin-top:50upx;padding-left:30upx;">
 
           <view class="flex-item-ipt">
-            <input
-              v-if="switch1==false"
-              class="uni-input"
-              v-model="inpt1"
-              :placeholder="$t('m.plzinticket')"
-            />
-            <input
-              v-if="switch1==true"
-              class="uni-input"
-              v-model="inpt2"
-              :placeholder="$t('m.plzinplate')"
-            />
+            <input v-if="switch1==false"
+                   class="uni-input"
+                   v-model="inpt1"
+                   :placeholder="$t('m.plzinticket')" />
+            <input v-if="switch1==true"
+                   class="uni-input"
+                   :placeholder="$t('m.plzinplate')"
+                   disabled="true"
+                   @tap="plateShow=true"
+                   v-model.trim="plateNo"></input>
+            <plate-input v-if="plateShow"
+                         :plate="plateNo"
+                         @export="setPlate"
+                         @close="plateShow=false"></plate-input>
           </view>
           <view class="flex-item-btn">
-            <button
-              type="primary"
-              class="newbtn"
-              @click="spay()"
-            >{{$t('m.querycost')}}</button>
+            <button type="primary"
+                    class="newbtn"
+                    @click="spay()">{{$t('m.querycost')}}</button>
           </view>
         </view>
 
@@ -112,39 +100,31 @@
     </view>
     <!-- <view style="height: 400px;"></view> -->
     <!-- showpopup只是一个通知框而已 -->
-    <uni-popup
-      v-if="popstate=='success'"
-      ref="showpopup"
-      :type="type"
-      @change="change"
-    >
+    <uni-popup v-if="popstate=='success'"
+               ref="showpopup"
+               :type="type"
+               @change="change">
       <text class="popup-content popup-content1">
-        <text
-          class="uni-tip-title"
-          style="margin-bottom:50upx;"
-        >{{content1}}\n</text>
+        <text class="uni-tip-title"
+              style="margin-bottom:50upx;">{{content1}}\n</text>
 
         {{content2}}
       </text>
     </uni-popup>
-    <uni-popup
-      v-if="popstate=='fail'"
-      ref="showpopup2"
-      :type="type"
-      @change="change"
-    >
+    <uni-popup v-if="popstate=='fail'"
+               ref="showpopup2"
+               :type="type"
+               @change="change">
       <text class="popup-content popup-content2">
         {{ content1 }}
         <br>
         {{content2}}
       </text>
     </uni-popup>
-    <uni-popup
-      v-if="popstate=='wait'"
-      ref="showpopup"
-      :type="type"
-      @change="change"
-    >
+    <uni-popup v-if="popstate=='wait'"
+               ref="showpopup"
+               :type="type"
+               @change="change">
       <!-- <text class="popup-content popup-content3">
         {{ content1 }}
         <br>
@@ -170,46 +150,34 @@
     </uni-popup>
 
     <!-- showtip(带确认和取消) -->
-    <uni-popup
-      ref="showtip"
-      :type="type"
-      :mask-click="false"
-      @change="change"
-    >
+    <uni-popup ref="showtip"
+               :type="type"
+               :mask-click="false"
+               @change="change">
       <view class="uni-tip">
         <text class="uni-tip-title">{{$t('m.querycost')}}</text>
         <text class="uni-tip-content">{{$t('m.Youneedtopay')}}{{spayback.shouldPay}}{{$t('m.yuan')}}</text>
         <view class="uni-tip-group-button">
-          <text
-            class="uni-tip-button"
-            @click="cancel('tip')"
-          >{{$t('m.cancel')}}</text>
-          <text
-            class="uni-tip-button"
-            @click="handpay()"
-          >{{$t('m.handpay')}}</text>
+          <text class="uni-tip-button"
+                @click="cancel('tip')">{{$t('m.cancel')}}</text>
+          <text class="uni-tip-button"
+                @click="handpay()">{{$t('m.handpay')}}</text>
         </view>
       </view>
     </uni-popup>
     <!-- showtip2 开闸点击之后的确认 -->
-    <uni-popup
-      ref="showtip2"
-      type="center"
-      :mask-click="false"
-      @change="change"
-    >
+    <uni-popup ref="showtip2"
+               type="center"
+               :mask-click="false"
+               @change="change">
       <view class="uni-tip">
         <text class="uni-tip-title">提示</text>
         <text class="uni-tip-content">您确认要开闸吗？</text>
         <view class="uni-tip-group-button">
-          <text
-            class="uni-tip-button"
-            @click="cancel('tip2')"
-          >{{$t('m.cancel')}}</text>
-          <text
-            class="uni-tip-button"
-            @click="inoutCon()"
-          >{{$t('m.confirm')}}</text>
+          <text class="uni-tip-button"
+                @click="cancel('tip2')">{{$t('m.cancel')}}</text>
+          <text class="uni-tip-button"
+                @click="inoutCon()">{{$t('m.confirm')}}</text>
         </view>
       </view>
     </uni-popup>
@@ -218,7 +186,11 @@
 </template>
 
 <script>
+import plateInput from '@/components/uni-plate-input/uni-plate-input.vue'
 export default {
+  components: {
+    plateInput
+  },
   data () {
     return {
       popstate: '',
@@ -300,6 +272,8 @@ export default {
       },
       handpayback: "",
       switch1: false,
+      plateNo: '',
+      plateShow: false,
 
     }
   },
@@ -320,6 +294,13 @@ export default {
 
   },
   methods: {
+    setPlate (plate) {
+      if (plate.length >= 7) {
+        this.plateNo = plate
+        this.inpt2 = plate
+        this.plateShow = false
+      }
+    },
     switch1Change: function (e) {
       console.log('switch1 发生 change 事件，携带值为', e.target.value)
       this.switch1 = e.target.value
@@ -607,16 +588,16 @@ export default {
 }
 </script>
 <style lang="scss">
-@import url('popup.css');
-@import url('../../../common/rainbowloading.css');
+@import url("popup.css");
+@import url("../../../common/rainbowloading.css");
 .open {
-  background: url('../../../static/img/openinout.png');
+  background: url("../../../static/img/openinout.png");
   // background-color: #00bfff;
   // border-radius: 50%;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  font-size: 90upx;
+  font-size: 70upx;
   margin: 0 auto;
   color: white;
   margin-top: 50px;
@@ -641,7 +622,7 @@ export default {
 }
 .flex-item {
   width: 100%;
-  height: 380upx;
+  height: 280upx;
   text-align: center;
   line-height: 20upx;
 }
@@ -661,10 +642,10 @@ export default {
   // background-color: #4ca2ff;
 }
 .flex-item-V {
-  width: 400upx;
-  height: 400upx;
+  width: 300upx;
+  height: 300upx;
   text-align: center;
-  line-height: 400upx;
+  line-height: 300upx;
 }
 .text {
   margin: 15upx 10upx;
@@ -684,7 +665,7 @@ export default {
   justify-content: center;
   // 以下是框内元素垂直居中
   align-items: center;
-  background: url('../../../static/img/ok1.png');
+  background: url("../../../static/img/ok1.png");
   background-size: 100% 100%;
 }
 .popup-content2 {
@@ -695,7 +676,7 @@ export default {
   justify-content: center;
   // 以下是框内元素垂直居中
   align-items: center;
-  background: url('../../../static/img/fail1.png');
+  background: url("../../../static/img/fail1.png");
   background-size: 100% 100%;
 }
 .popup-content3 {
@@ -736,6 +717,17 @@ export default {
   margin-top: 2%;
   height: 85%;
 }
-.ld1 {
+.cu-form-group {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  background-color: #ffffff;
+  padding: 1upx 30upx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  min-height: 100upx;
+  justify-content: space-between;
 }
 </style>
